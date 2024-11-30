@@ -1,12 +1,14 @@
 import React from "react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import Navbar1 from "./navbar";
+import Features1 from "./features";
 import Image from "next/image";
 import { Input } from "@/components/ui/input";
-import Navbar1 from "@/components/landingpage/navbar";
-import Features1 from "@/components/landingpage/features";
-import Cta2 from "@/components/landingpage/cta";
-import BasicFooter from "@/components/landingpage/footer";
+import BasicFooter from "./footer";
+import Cta2 from "./cta";
+import { send } from "process";
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 
 const HeroSection1 = async (props: { searchParams: SearchParams }) => {
