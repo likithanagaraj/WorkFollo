@@ -1,9 +1,6 @@
 "use client";
 import ClientForm from "@/components/client-form";
 import CreateButton from "@/components/create-button";
-import MainNavbar from "@/components/main-navbar";
-import { Button } from "@/components/ui/button";
-import { Form } from "@/components/ui/form";
 import { X } from "lucide-react";
 import { usePathname } from "next/navigation";
 import React from "react";
@@ -37,7 +34,7 @@ function page() {
     <div className="flex flex-col justify-center items-center gap-10 bg-white" >
       <CreateNav/>
       <div className="flex flex-col gap-8 pb-10 bg-white  ">
-        <h1 className="text-4xl font-semibold ">Who's your Client?</h1>
+        <h1 className="text-4xl font-semibold ">Who&apos;s your Client?</h1>
         <ClientForm/>
       </div>
     </div>

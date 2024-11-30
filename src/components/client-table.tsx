@@ -3,9 +3,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 function DataTableTab({ tabs }: { tabs: { label: string; content: React.ReactNode }[] }) {
   return (
-    <div className="border bg-white">
-      <Tabs defaultValue={tabs[0]?.label || ""} className="">
-        <TabsList className="bg-white border-b">
+    <div className="border bg-white ">
+      <Tabs defaultValue={tabs[0]?.label || ""} className=" ">
+        <TabsList className="bg-white border-b ">
           {tabs.map((tab) => (
             <TabsTrigger
               key={tab.label}

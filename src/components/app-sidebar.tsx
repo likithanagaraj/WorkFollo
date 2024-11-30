@@ -1,4 +1,4 @@
-import { Calendar, LucideUserCircle, Inbox, FilesIcon,ChartLine,  } from "lucide-react"
+import {  LucideUserCircle,  FilesIcon,ChartLine,  } from "lucide-react"
 
 import {
   Sidebar,

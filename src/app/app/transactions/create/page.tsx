@@ -1,7 +1,7 @@
 
 "use client"
 import CreateButton from '@/components/create-button'
-import ProjectForm from '@/components/project-form'
+import TranscationForm from '@/components/transaction-form'
 import {  X } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 import React from 'react'
@@ -27,8 +27,9 @@ function page() {
     <div className="flex flex-col justify-center items-center gap-10 bg-white" >
       <CreateNav/>
       <div className="flex flex-col gap-8 pb-10 bg-white  ">
-        <h1 className="text-4xl font-semibold ">Who&apos;s your Client?</h1>
-        <ProjectForm/>
+      <h1 className="text-4xl font-semibold "> Transcation</h1>
+        <TranscationForm/>
+        {/* <ProjectForm/> */}
       </div>
     </div>
   )

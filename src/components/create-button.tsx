@@ -1,10 +1,10 @@
-import React, { Children } from 'react'
+import React from 'react'
 import { Button } from './ui/button'
 import Link from 'next/link'
 
 interface props  {
   children: React.ReactNode
-  link : any
+  link : string
   className?: string
 }
 

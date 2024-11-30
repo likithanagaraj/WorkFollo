@@ -12,9 +12,8 @@ import { Calendar, CalendarProps } from "@/components/ui/calendar";
 import { Input } from "@/components/ui/input";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Calendar as CalendarIcon, LucideTextCursorInput } from "lucide-react";
+import { Calendar as CalendarIcon } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { format } from "date-fns";
 
 /* -------------------------------------------------------------------------- */
 /*                               Inspired By:                                 */

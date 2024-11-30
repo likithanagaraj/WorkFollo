@@ -1,8 +1,5 @@
-import NextAuth, { AuthError, CredentialsSignin } from "next-auth";
+import NextAuth, {  CredentialsSignin } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { signInFormSchema } from "@/types/index";
-import { z } from "zod";
-import { getUserDetails } from "@/actions/auth.action";
 import prisma from "./db";
  
 class CustomAuthError extends CredentialsSignin {
@@ -34,7 +31,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           throw new CustomAuthError("No such email found");
         }
  
-        if (dbUser.password !== credentials.password) {
+        if (dbUser.hashedPassword !== credentials.password) {
           throw new CustomAuthError("Password is incorrect");
         }
  
@@ -58,7 +55,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return token;
     },
     // used when client useSession is called
-    session: async ({ session, token, user }) => {
+    session: async ({ session, token, }) => { // user can be deconstructed from token
       if (session?.user) {
         session.user.id = token.id as string;
       }

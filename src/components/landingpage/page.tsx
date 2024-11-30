@@ -1,5 +1,4 @@
 import React from "react";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Navbar1 from "./navbar";
@@ -8,7 +7,6 @@ import Image from "next/image";
 import { Input } from "@/components/ui/input";
 import BasicFooter from "./footer";
 import Cta2 from "./cta";
-import { send } from "process";
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 
 const HeroSection1 = async (props: { searchParams: SearchParams }) => {

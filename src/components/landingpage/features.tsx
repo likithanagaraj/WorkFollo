@@ -1,7 +1,5 @@
 import React from "react";
 import { Card } from "@/components/ui/card";
-import { BsSpeedometer } from "react-icons/bs";
-import { AiTwotoneProject } from "react-icons/ai";
 import { TiHome } from "react-icons/ti";
 import { FaArrowsDownToPeople } from "react-icons/fa6";
 import { GrTransaction } from "react-icons/gr";
