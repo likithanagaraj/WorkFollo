@@ -17,7 +17,6 @@ import Link from "next/link";
 import { signInFormSchema } from "@/types/index";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { signIn } from "@/lib/auth";
 import { signInAction } from "@/actions/auth.action";
  
 const SignInForm = () => {
