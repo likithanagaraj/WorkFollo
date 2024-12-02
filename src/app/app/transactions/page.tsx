@@ -1,9 +1,20 @@
-import React from 'react'
+import CreateButton from "@/components/create-button";
+import TranscationTable from "@/components/transaction-table";
+import React from "react";
 
-function page() {
+
+async function page() {
+  
   return (
-    <div>page</div>
-  )
+    <div className="px-10 py-20 flex flex-col gap-8">
+      <CreateButton className="rounded-none p-5" link="/app/transactions/create">
+        New Transcation
+      </CreateButton>
+
+      {/* {clients.length > 0 && clients.map((client) => <div>1</div>)} */}
+      <TranscationTable/>
+    </div>
+  );
 }
 
-export default page
+export default page;

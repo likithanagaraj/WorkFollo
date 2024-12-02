@@ -7,7 +7,7 @@ import { usePathname } from 'next/navigation';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const routesWithoutSidebar = ['/app/clients/create','/app/projects/create'];
+  const routesWithoutSidebar = ['/app/clients/create','/app/projects/create','/app/transactions/create'];
 
   // Check if the current route should show the sidebar
   const shouldShowSidebar = !routesWithoutSidebar.includes(pathname);

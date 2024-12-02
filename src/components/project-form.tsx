@@ -1,76 +1,76 @@
-"use client"
-import {
-  useState
-} from "react"
-import {
-  toast
-} from "sonner"
-import {
-  useForm
-} from "react-hook-form"
-import {
-  zodResolver
-} from "@hookform/resolvers/zod"
-import * as z from "zod"
-import {
-  cn
-} from "@/lib/utils"
-import {
-  Button
-} from "@/components/ui/button"
+"use client";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import {
-  Input
-} from "@/components/ui/input"
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue
-} from "@/components/ui/select"
-
-import {
-  bg
-} from "date-fns/locale"
-import { SmartDatetimeInput } from "./smart-datetime-input"
-
-const formSchema = z.object({
-  projectName: z.string(),
-  client: z.string(),
-  startDate: z.coerce.date(),
-  endDate: z.coerce.date(),
-  serviceName: z.string(),
-  amount: z.number(),
-  unit: z.string(),
-  billing: z.string()
-});
+  SelectValue,
+} from "@/components/ui/select";
+import { SmartDatetimeInput } from "./smart-datetime-input";
+import { fetchClients } from "@/actions/client.actions";
+import { addNewProjectformSchema } from "@/types";
+import { createProject } from "@/actions/project.actions";
+import { useRouter } from "next/navigation";
 
 function ProjectForm() {
-  const form = useForm < z.infer < typeof formSchema >> ({
-    resolver: zodResolver(formSchema),
+  const router = useRouter();
+  const [clients, setClients] = useState<{ id: number; companyName: string }[]>(
+    []
+  );
+  const form = useForm<z.infer<typeof addNewProjectformSchema>>({
+    resolver: zodResolver(addNewProjectformSchema),
     defaultValues: {
-      "startDate": new Date(),
-      "endDate": new Date()
+      projectName: "",
+      client: undefined,
+      startDate: undefined,
+      endDate: undefined,
+      serviceName: "",
+      amount: 0,
+      unit: "",
+      billing: "",
+      contract: "",
+      description: "",
+      status: "",
     },
-  })
+  });
 
-  function onSubmit(values: z.infer < typeof formSchema > ) {
+  useEffect(() => {
+    const loadClients = async () => {
+      try {
+        const fetchedClients = await fetchClients();
+        setClients(fetchedClients);
+      } catch (error) {
+        toast.error("Failed to load clients");
+        console.error(error);
+      }
+    };
+
+    loadClients();
+  }, []);
+
+  async function onSubmit(values: z.infer<typeof addNewProjectformSchema>) {
     try {
       console.log(values);
-      toast(
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(values, null, 2)}</code>
-        </pre>
-      );
+      const response = await createProject(values);
+      if (response.success) {
+        toast("Event has been created.");
+        router.push("/app/projects");
+      } else toast("Error creating event");
     } catch (error) {
       console.error("Form submission error", error);
       toast.error("Failed to submit the form. Please try again.");
@@ -85,100 +85,157 @@ function ProjectForm() {
           className="space-y-5 max-w-3xl mx-auto py-10"
         >
           <h1 className="text-[25px] font-semibold ">Project Details</h1>
-         <div className="bg-[#FAFAFA] p-7 shadow-sm flex flex-col gap-2">
-         <FormField
-            control={form.control}
-            name="projectName"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Project Name</FormLabel>
-                <FormControl>
-                  <Input placeholder="Project Name" type="text" {...field} />
-                </FormControl>
-                {/* <FormDescription>Project Name</FormDescription> */}
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="client"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Client</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
+          <div className="bg-[#FAFAFA] p-7 shadow-sm flex flex-col gap-3">
+            <FormField
+              control={form.control}
+              name="projectName"
+              render={({ field }) => (
+                <FormItem className="">
+                  <FormLabel>Project Name</FormLabel>
                   <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder=" " />
-                    </SelectTrigger>
+                    <Input placeholder="Project Name" type="text" {...field} />
                   </FormControl>
-                  <SelectContent>
-                    <SelectItem value="m@example.com">m@example.com</SelectItem>
-                    <SelectItem value="m@google.com">m@google.com</SelectItem>
-                    <SelectItem value="m@support.com">m@support.com</SelectItem>
-                  </SelectContent>
-                </Select>
-                {/* <FormDescription>Client List</FormDescription> */}
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+                  {/* <FormDescription>Project Name</FormDescription> */}
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          <div className="grid grid-cols-12 gap-4">
-            <div className="col-span-6">
-              <FormField
-                control={form.control}
-                name="startDate"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Start Date</FormLabel>
+            <FormField
+              control={form.control}
+              name="client"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Client</FormLabel>
+                  <Select
+                    onValueChange={(value) => field.onChange(Number(value))} // Convert to number
+                    defaultValue={field.value?.toString()}
+                  >
                     <FormControl>
-                      <SmartDatetimeInput
-                        value={field.value}
-                        onValueChange={field.onChange}
-                        placeholder="e.g. Tomorrow morning 9am"
-                        // locale={bg}
-                        // hour12
-                      />
+                      <SelectTrigger>
+                        <SelectValue placeholder=" " />
+                      </SelectTrigger>
                     </FormControl>
-                    {/* <FormDescription>Start Date of Project </FormDescription> */}
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+                    <SelectContent>
+                      {clients.map((client) => (
+                        <SelectItem
+                          key={client.id}
+                          value={client.id.toString()}
+                        >
+                          {client.companyName}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  {/* <FormDescription>Client List</FormDescription> */}
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="contract"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Contract</FormLabel>
+                  <FormControl>
+                    <Input placeholder="contract" type="text" {...field} />
+                  </FormControl>
+                  {/* <FormDescription>Contract</FormDescription> */}
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Description</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Description" type="text" {...field} />
+                  </FormControl>
+                  {/* <FormDescription>Description</FormDescription> */}
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="status"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Status</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="status" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="incomplete">incomplete</SelectItem>
+                      <SelectItem value="on progress">on progress</SelectItem>
+                      <SelectItem value="done">done</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  {/* <FormDescription>status</FormDescription> */}
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <div className="grid grid-cols-12 gap-4">
+              <div className="col-span-6">
+                <FormField
+                  control={form.control}
+                  name="startDate"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Start Date</FormLabel>
+                      <FormControl>
+                        <SmartDatetimeInput
+                          value={field.value}
+                          onValueChange={field.onChange}
+                          placeholder="e.g. Tomorrow morning 9am"
+                          // locale={bg}
+                          // hour12
+                        />
+                      </FormControl>
+                      {/* <FormDescription>Start Date of Project </FormDescription> */}
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
 
-            <div className="col-span-6">
-              <FormField
-                control={form.control}
-                name="endDate"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>End Date</FormLabel>
-                    <FormControl>
-                      <SmartDatetimeInput
-                        value={field.value}
-                        onValueChange={field.onChange}
-                        placeholder="e.g. Tomorrow morning 9am"
-                        // locale={bg}
-                        // hour12
-                      />
-                    </FormControl>
-                    {/* <FormDescription>End Date of Project </FormDescription> */}
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <div className="col-span-6">
+                <FormField
+                  control={form.control}
+                  name="endDate"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>End Date</FormLabel>
+                      <FormControl>
+                        <SmartDatetimeInput
+                          value={field.value}
+                          onValueChange={field.onChange}
+                          placeholder="e.g. Tomorrow morning 9am"
+                          // locale={bg}
+                          // hour12
+                        />
+                      </FormControl>
+                      {/* <FormDescription>End Date of Project </FormDescription> */}
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
             </div>
           </div>
-         </div>
           <h1 className="text-[25px] font-semibold">Services</h1>
           <div className="grid grid-cols-12 gap-4 bg-[#FAFAFA] p-7 shadow-sm">
-            
             <div className="col-span-4">
               <FormField
                 control={form.control}
@@ -216,7 +273,7 @@ function ProjectForm() {
                 )}
               />
             </div>
-            
+
             <div className="col-span-4">
               <FormField
                 control={form.control}
@@ -234,15 +291,11 @@ function ProjectForm() {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="m@example.com">
-                          m@example.com
-                        </SelectItem>
-                        <SelectItem value="m@google.com">
-                          m@google.com
-                        </SelectItem>
-                        <SelectItem value="m@support.com">
-                          m@support.com
-                        </SelectItem>
+                        <SelectItem value="Flat fee">Flat fee</SelectItem>
+                        <SelectItem value="Per hour">Per hour</SelectItem>
+                        <SelectItem value="Per day">Per day</SelectItem>
+                        <SelectItem value="Per item">Per item</SelectItem>
+                        <SelectItem value="Per word">Per word</SelectItem>
                       </SelectContent>
                     </Select>
                     {/* <FormDescription>Unit</FormDescription> */}
@@ -254,35 +307,38 @@ function ProjectForm() {
           </div>
           <h1 className="text-[25px] font-semibold">Billing</h1>
           <div className="bg-[#FAFAFA] p-7 shadow-sm">
-          <FormField
-            control={form.control}
-            name="billing"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>How are you taking payments</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="m@example.com">m@example.com</SelectItem>
-                    <SelectItem value="m@google.com">m@google.com</SelectItem>
-                    <SelectItem value="m@support.com">m@support.com</SelectItem>
-                  </SelectContent>
-                </Select>
+            <FormField
+              control={form.control}
+              name="billing"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>How are you taking payments</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="Once">Once</SelectItem>
+                      <SelectItem value="weekly">weekly</SelectItem>
+                      <SelectItem value="Monthly">Monthly</SelectItem>
+                      <SelectItem value="On milestone">On milestone</SelectItem>
+                    </SelectContent>
+                  </Select>
 
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </div>
-         
-          <Button className="w-full" type="submit">Submit</Button>
+
+          <Button className="w-full" type="submit">
+            Submit
+          </Button>
         </form>
       </Form>
     </div>

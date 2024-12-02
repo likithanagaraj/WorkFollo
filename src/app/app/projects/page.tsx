@@ -1,16 +1,8 @@
 
 import CreateButton from "@/components/create-button";
-import DataTableTab from "@/components/data-table-tab";
+import ProjectDataTable from "@/components/project-table";
 import React from "react";
 
-const tabs = [
-  { label: "Project", content: "There are no projects yet." },
-  { label: "Client", content: "There are no projects yet." },
-  { label: "Starts", content: "There are no projects yet." },
-  { label: "Ends", content: "There are no projects yet." },
-  { label: "Status", content: "There are no projects yet." },
-  { label: "Amount Invoice", content: "There are no projects yet." },
-]
 
 
 function page() {
@@ -19,8 +11,9 @@ function page() {
       <CreateButton className="rounded-none p-5" link="/app/projects/create">
         New Projects
       </CreateButton>
-  <DataTableTab tabs={tabs} />
-      
+  
+  {/* <DataTableTab tabs={tabs} /> */}
+      <ProjectDataTable/>
     </div>
   );
 }
