@@ -7,10 +7,10 @@ import { z } from "zod"
 export const createProject = async (values: z.infer<typeof addNewProjectformSchema>) => {
   try {
     console.log("Project creating...")
-    const client = await prisma.project.create({
+    const project = await prisma.project.create({
       data:{
         name: values.projectName,
-        Client: { connect: { id: values.client } },
+       clientId: values.client,
         startDate: values.startDate,
         endDate: values.endDate,
         contract: values.contract,
@@ -19,7 +19,7 @@ export const createProject = async (values: z.infer<typeof addNewProjectformSche
         status: values.status,
       }
     })
-    console.log("Client created", client)
+    console.log("Client created", project)
 
     return { success: true }
   } catch (error) {

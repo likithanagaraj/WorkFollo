@@ -3,7 +3,7 @@ import DataTable from "@/components/table";
 import React from "react";
 
 
-async function page() {
+async function page({}) {
   
   return (
     <div className="px-10 py-20 flex flex-col gap-8">

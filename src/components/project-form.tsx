@@ -28,7 +28,7 @@ import { createProject } from "@/actions/project.actions";
 import { useRouter } from "next/navigation";
 
 function ProjectForm() {
-  const router = useRouter(); 
+  const router = useRouter();
   const [clients, setClients] = useState<{ id: number; companyName: string }[]>(
     []
   );
@@ -46,7 +46,6 @@ function ProjectForm() {
       contract: "",
       description: "",
       status: "",
-      
     },
   });
 
@@ -70,11 +69,8 @@ function ProjectForm() {
       const response = await createProject(values);
       if (response.success) {
         toast("Event has been created.");
-        router.push("/app/projects")
-      }
-      
-      else toast("Error creating event");
-
+        router.push("/app/projects");
+      } else toast("Error creating event");
     } catch (error) {
       console.error("Form submission error", error);
       toast.error("Failed to submit the form. Please try again.");
@@ -97,7 +93,7 @@ function ProjectForm() {
                 <FormItem className="">
                   <FormLabel>Project Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Project Name"  type="text" {...field} />
+                    <Input placeholder="Project Name" type="text" {...field} />
                   </FormControl>
                   {/* <FormDescription>Project Name</FormDescription> */}
                   <FormMessage />
@@ -122,7 +118,10 @@ function ProjectForm() {
                     </FormControl>
                     <SelectContent>
                       {clients.map((client) => (
-                        <SelectItem key={client.id} value={client.id.toString()}>
+                        <SelectItem
+                          key={client.id}
+                          value={client.id.toString()}
+                        >
                           {client.companyName}
                         </SelectItem>
                       ))}

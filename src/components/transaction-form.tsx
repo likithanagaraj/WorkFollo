@@ -22,7 +22,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { SmartDatetimeInput } from "./smart-datetime-input";
 import { addTransactionformSchema } from "@/types";
-import { createTransaction } from "@/actions/transcation.actions";
+import { createTransaction, fetchProjectBasedonClient } from "@/actions/transcation.actions";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { fetchClients } from "@/actions/client.actions";
@@ -32,16 +32,18 @@ export default function TranscationForm() {
   const [clients, setClients] = useState<{ id: number; companyName: string }[]>(
     []
   );
+  const [project, setProject] = useState<{ id: number; name: string }[]>([]);
   const form = useForm<z.infer<typeof addTransactionformSchema>>({
     resolver: zodResolver(addTransactionformSchema),
     defaultValues: {
-      client: "",
+      Client: undefined,
       title: "",
       amount: 0,
       type: "",
       description: "",
       date: undefined,
       category: "",
+      Project: undefined,
     },
   });
 
@@ -49,7 +51,11 @@ export default function TranscationForm() {
     const loadClients = async () => {
       try {
         const fetchedClients = await fetchClients();
+        const { id } = fetchedClients[0];
+        console.log(id);
+        const fetchedProject = await fetchProjectBasedonClient(id);
         setClients(fetchedClients);
+        setProject(fetchedProject);
       } catch (error) {
         toast.error("Failed to load clients");
         console.error(error);
@@ -59,13 +65,25 @@ export default function TranscationForm() {
     loadClients();
   }, []);
 
+  const handleClient = async (value: string) => {
+    try {
+      
+      const id = Number(value);
+      const fetchedProject = await fetchProjectBasedonClient(id);
+      setProject(fetchedProject);
+    } catch (error) {
+      toast.error("Failed to load project");
+      console.error(error);
+    }
+  }
+
   async function onSubmit(values: z.infer<typeof addTransactionformSchema>) {
     try {
       console.log(values);
       const response = await createTransaction(values);
       if (response.success) {
         toast("Event has been created.");
-        router.push("/app/projects");
+        router.push("/app/transactions");
       } else toast("Error creating event");
     } catch (error) {
       console.error("Form submission error", error);
@@ -82,23 +100,57 @@ export default function TranscationForm() {
         >
           <FormField
             control={form.control}
-            name="client"
+            name="Client"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Client </FormLabel>
                 <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
+                  onValueChange={(value: string) => {
+                  field.onChange(Number(value));
+                  handleClient(value);
+                  }}
+                  defaultValue={field.value?.toString()}
+                >
+                  <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="client" />
+                  </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                  {clients.map((client: { id: number; companyName: string }) => (
+                    <SelectItem key={client.id} value={client.id.toString()}>
+                    {client.companyName}
+                    </SelectItem>
+                  ))}
+                  </SelectContent>
+                </Select>
+                {/* <FormDescription>Client List</FormDescription> */}
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="Project"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Project </FormLabel>
+                <Select
+                  onValueChange={(value) => field.onChange(Number(value))}
+                  defaultValue={field.value?.toString()}
                 >
                   <FormControl>
                     <SelectTrigger>
-                      <SelectValue placeholder="client" />
+                      <SelectValue placeholder="Project" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {clients.map((client) => (
-                      <SelectItem key={client.id} value={client.id.toString()}>
-                        {client.companyName}
+                    {project.map((project) => (
+                      <SelectItem
+                        key={project.id}
+                        value={project.id.toString()}
+                      >
+                        {project.name}
                       </SelectItem>
                     ))}
                   </SelectContent>

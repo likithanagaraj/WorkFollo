@@ -23,8 +23,10 @@ async function ProjectDataTable() {
           <TableRow>
             <TableHead className="">Project</TableHead>
             <TableHead>Client</TableHead>
-            <TableHead>Starts</TableHead>
-            <TableHead className="">Ends</TableHead>
+            <TableHead>Company</TableHead>
+            <TableHead>Email</TableHead>
+            {/* <TableHead>Starts</TableHead>
+            <TableHead className="">Ends</TableHead> */}
             <TableHead className="">Contract</TableHead>
             <TableHead className="">Status</TableHead>
             <TableHead className="">Description</TableHead>
@@ -34,9 +36,11 @@ async function ProjectDataTable() {
           {projects.map((project) => (
             <TableRow key={project.id}>
               <TableCell className="font-medium">{project.name}</TableCell>
+              <TableCell className="font-medium">{project.Client.contactName}</TableCell>
               <TableCell className="font-medium">{project.Client.companyName}</TableCell>
-              <TableCell className="font-medium">{project.startDate.toDateString()}</TableCell>
-              <TableCell className="font-medium">{project.endDate?.toDateString()}</TableCell>
+              <TableCell className="font-medium">{project.Client.contactEmail}</TableCell>
+              {/* <TableCell className="font-medium">{project.startDate.toDateString()}</TableCell>
+              <TableCell className="font-medium">{project.endDate?.toDateString()}</TableCell> */}
               <TableCell className="font-medium">{project.contract}</TableCell>
               <TableCell className="font-medium">{project.status}</TableCell>
               <TableCell className="font-medium">{project.description}</TableCell>

@@ -12,7 +12,8 @@ import React from "react";
 async function TranscationTable() {
   const transaction = await prisma.transaction.findMany({
     include: {
-      Client: true // This will include the full client information
+      Client: true ,
+      Project:true
     }
   });
   return (
@@ -21,7 +22,9 @@ async function TranscationTable() {
         {/* <TableCaption>A list of your recent invoices.</TableCaption> */}
         <TableHeader>
           <TableRow>
-            <TableHead  className="">Client</TableHead>
+            <TableHead  className=""> Contact Name</TableHead>
+            <TableHead  className="">Company Name</TableHead>
+            <TableHead  className="">Project Name</TableHead>
             <TableHead>Title</TableHead>
             <TableHead>Amount</TableHead>
             <TableHead className="">Note</TableHead>
@@ -33,7 +36,9 @@ async function TranscationTable() {
           {
             transaction.map((transaction) => (
               <TableRow key={transaction.id}>
+                <TableCell className="font-medium">{transaction?.Client?.contactName}</TableCell>
                 <TableCell className="font-medium">{transaction?.Client?.companyName}</TableCell>
+                <TableCell className="font-medium">{transaction?.Project?.name}</TableCell>
                 <TableCell className="font-medium">{transaction.title}</TableCell>
                 <TableCell className="font-medium">{transaction.amount}</TableCell>
                 <TableCell className="font-medium">{transaction.description}</TableCell>

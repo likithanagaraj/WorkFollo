@@ -42,11 +42,12 @@ export const addNewProjectformSchema = z.object({
 
 
 export const addTransactionformSchema = z.object({
-  client: z.string().optional(),
+  Client: z.number(),
   title: z.string(),
   amount: z.string().transform((val) => parseFloat(val)),
   date: z.coerce.date(),
   type: z.string(),
   description: z.string(),
-  category:z.string()
+  category:z.string(),
+  Project : z.number()
 });
