@@ -7,6 +7,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import prisma from "@/lib/db";
+import Link from "next/link";
 import React from "react";
 
 async function ProjectDataTable() {
@@ -35,7 +36,7 @@ async function ProjectDataTable() {
         <TableBody>
           {projects.map((project) => (
             <TableRow key={project.id}>
-              <TableCell className="font-medium">{project.name}</TableCell>
+              <Link href={`/app/projects/${project.id}`}><TableCell className="font-medium">{project.name}</TableCell></Link>
               <TableCell className="font-medium">{project.Client.contactName}</TableCell>
               <TableCell className="font-medium">{project.Client.companyName}</TableCell>
               <TableCell className="font-medium">{project.Client.contactEmail}</TableCell>

@@ -34,7 +34,7 @@ async function DataTable() {
             <TableHead className="">Contact Email</TableHead>
             <TableHead className="">Contact Phone</TableHead>
             <TableHead className="">Description</TableHead>
-            <TableHead className="">Actions</TableHead>
+            {/* <TableHead className="">Actions</TableHead> */}
           </TableRow>
         </TableHeader>
         {clients.map((client) => (
@@ -48,19 +48,7 @@ async function DataTable() {
               <TableCell className="">{client.contactEmail}</TableCell>
               <TableCell className="">{client.contactPhone}</TableCell>
               <TableCell className="">{client.description}</TableCell>
-              <TableCell className="">
-                <DropdownMenu>
-                  <DropdownMenuTrigger>
-                    <LucideEllipsis className="w-6 h-6" />
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    {/* <DropdownMenuLabel>My Account</DropdownMenuLabel> */}
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem>Edit</DropdownMenuItem>
-                    <DropdownMenuItem>Delete</DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </TableCell>
+                
             </TableRow>
           </TableBody>
         ))}

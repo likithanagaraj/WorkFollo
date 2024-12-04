@@ -1,4 +1,10 @@
-import {  LucideUserCircle,  FilesIcon,ChartLine,  } from "lucide-react"
+import {
+  LucideUserCircle,
+  FilesIcon,
+  ChartLine,
+  LucideHome,
+  Home,
+} from "lucide-react";
 
 import {
   Sidebar,
@@ -9,24 +15,30 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar"
-import Link from "next/link"
+  SidebarTrigger,
+} from "@/components/ui/sidebar";
+import Link from "next/link";
 
 // Menu items.
 const items = [
   {
+    title: "Dashboard",
+    url: "/app/dashboard",
+    icon: Home,
+  },
+  {
     title: "Clients",
-    url: "../../app/clients",
-    icon: LucideUserCircle ,
+    url: "/app/clients",
+    icon: LucideUserCircle,
   },
   {
     title: "Projects",
-    url: "../../app/projects",
+    url: "/app/projects",
     icon: FilesIcon,
   },
   {
     title: "Transcations",
-    url: "../../app/transactions",
+    url: "/app/transactions",
     icon: ChartLine,
   },
   // {
@@ -39,22 +51,29 @@ const items = [
   //   url: "#",
   //   icon: Settings,
   // },
-]
+];
 
 export function AppSidebar() {
   return (
-    <Sidebar  variant="sidebar" className="">
+    <Sidebar collapsible="icon" variant="sidebar" className="">
       <SidebarContent className="bg-[#FFFFFF] ">
-        <SidebarGroup className="py-2  ">
-          <SidebarGroupLabel className="text-[17px] font-bold pl-5">Freelance Flow</SidebarGroupLabel >
+        <SidebarGroup className=" ">
+          <SidebarGroupLabel className="text-[20px]  text-black   font-bold mb-5">Freelance Flow
+          {/* <SidebarTrigger /> */}
+          </SidebarGroupLabel>
+         
           <SidebarGroupContent className="">
-            <SidebarMenu className="gap-5 py-5">
+            <SidebarMenu className="gap-5 ">
               {items.map((item) => (
-                <SidebarMenuItem className="pl-4" key={item.title}>
-                  <SidebarMenuButton className=""  asChild>
+                <SidebarMenuItem className="" key={item.title}>
+                  <SidebarMenuButton className="" asChild>
                     <Link className="" href={item.url}>
-                      <span className=""><item.icon    /></span>
-                      <span className="text-[15px] font-bold">{item.title}</span>
+                      <span className="">
+                        <item.icon />
+                      </span>
+                      <span className="text-[15px] font-bold">
+                        {item.title}
+                      </span>
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -64,5 +83,5 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
     </Sidebar>
-  )
+  );
 }

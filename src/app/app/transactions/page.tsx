@@ -11,7 +11,7 @@ async function page() {
         New Transcation
       </CreateButton>
 
-      {/* {clients.length > 0 && clients.map((client) => <div>1</div>)} */}
+     
       <TranscationTable/>
     </div>
   );

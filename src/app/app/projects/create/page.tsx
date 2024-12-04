@@ -27,7 +27,7 @@ function page() {
     <div className="flex flex-col justify-center items-center gap-10 bg-white" >
       <CreateNav/>
       <div className="flex flex-col gap-8 pb-10 bg-white  ">
-        <h1 className="text-4xl font-semibold ">Who&apos;s your Client?</h1>
+        <h1 className="text-4xl font-semibold ">What&apos;s your Project?</h1>
         <ProjectForm/>
       </div>
     </div>
