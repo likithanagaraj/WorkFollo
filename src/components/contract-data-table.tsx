@@ -10,14 +10,14 @@ import prisma from "@/lib/db";
 import Link from "next/link";
 import React from "react";
 
-async function ProjectDataTable() {
+  
+
+async function ContractDataTable() {
   const projects = await prisma.project.findMany({
     include: {
       Client: true, // This will include the full client information
     },
   });
-
-
   return (
     <div className="bg-white p-2 shadow-sm border min-h-60">
       <Table>
@@ -55,8 +55,9 @@ async function ProjectDataTable() {
               <TableCell className="font-medium">{project.endDate?.toDateString()}</TableCell> */}
               <TableCell className="font-medium">{project.contract}</TableCell>
               <TableCell className="font-medium">{project.status}</TableCell>
-              <TableCell className="font-medium">{project.totalBudget}</TableCell>
-              
+              <TableCell className="font-medium">
+                {project.totalBudget}
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -65,4 +66,4 @@ async function ProjectDataTable() {
   );
 }
 
-export default ProjectDataTable;
+export default ContractDataTable;

@@ -1,3 +1,5 @@
+"use client";
+
 import {
   LucideUserCircle,
   FilesIcon,
@@ -18,12 +20,14 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 // Menu items.
 const items = [
   {
     title: "Dashboard",
-    url: "/app/dashboard",
+    url: "/app",
     icon: Home,
   },
   {
@@ -41,11 +45,11 @@ const items = [
     url: "/app/transactions",
     icon: ChartLine,
   },
-  // {
-  //   title: "Search",
-  //   url: "#",
-  //   icon: Search,
-  // },
+  {
+    title: "Contract",
+    url: "/app/contracts",
+    icon: FilesIcon,
+  },
   // {
   //   title: "Settings",
   //   url: "#",
@@ -54,26 +58,27 @@ const items = [
 ];
 
 export function AppSidebar() {
+  const path = usePathname();
+  console.log(path)
   return (
     <Sidebar collapsible="icon" variant="sidebar" className="">
       <SidebarContent className="bg-[#FFFFFF] ">
         <SidebarGroup className=" ">
-          <SidebarGroupLabel className="text-[20px]  text-black   font-bold mb-5">Freelance Flow
-          {/* <SidebarTrigger /> */}
+          <SidebarGroupLabel className="text-[20px]  text-black   font-bold mb-5">
+            Freelance Flow
+            {/* <SidebarTrigger /> */}
           </SidebarGroupLabel>
-         
+
           <SidebarGroupContent className="">
-            <SidebarMenu className="gap-5 ">
+            <SidebarMenu className=" ">
               {items.map((item) => (
                 <SidebarMenuItem className="" key={item.title}>
                   <SidebarMenuButton className="" asChild>
-                    <Link className="" href={item.url}>
+                    <Link className={cn('', path === item.url && "text-primary")} href={item.url}>
                       <span className="">
-                        <item.icon />
+                        <item.icon size={18} />
                       </span>
-                      <span className="text-[15px] font-bold">
-                        {item.title}
-                      </span>
+                      <span className="">{item.title}</span>
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>

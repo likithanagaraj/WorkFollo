@@ -66,7 +66,7 @@ export function PieChartGraph() {
       <CardContent className="flex-1 pb-0">
         <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-square h-[380px]"
+          className="mx-auto aspect-square h-[210px]"
         >
           <PieChart>
             <ChartTooltip

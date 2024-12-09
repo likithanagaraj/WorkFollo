@@ -7,69 +7,83 @@ import Link from "next/link";
 import React from "react";
 import CreateButton from "@/components/create-button";
 import { Button } from "react-day-picker";
-type Params = Promise<{ client: string }>;
-const page = async ({ params }: { params: Params }) => {
-  const { client } = await params;
+import { ArrowRight, Plus } from "lucide-react";
+import { notFound } from "next/navigation";
 
-  const clients = await prisma.client.findMany({
-    where: {
-      id: Number(client),
-    },
-    include: {
-      projects: true,
-    },
+type Params = Promise<{ client: string }>;
+
+const page = async ({ params }: { params: Params }) => {
+  const { client: clientId } = await params;
+  if (!clientId || !Number(clientId)) notFound();
+
+  const client = await prisma.client.findUnique({
+    where: { id: Number(clientId) },
+    include: { projects: true },
   });
 
+  if (!client) notFound();
+
   return (
-    <>
-      {clients.map((client) => {
-        return (
-          <main
-            key={client.id}
-            className="p-10 relative flex flex-col gap-[55px]"
+    <main key={client.id} className="p-10 relative flex flex-col">
+      <div className="flex justify-between  w-full">
+        <div>
+          <h1 className="text-3xl font-medium ">{client.companyName}</h1>
+          <p className="text-muted-foreground">{client.description}</p>
+          <Link
+            href={`/app/clients/${client.id}/transactions`}
+            className="text-primary flex items-center"
           >
-            <h1 className="text-4xl font-bold ">{client.companyName}</h1>
-            <Link href={`/app/clients/${client.id}/transactions`}>
-              <h2 className="text-2xl  hover:underline ">Transaction</h2>
-            </Link>
-            <div className="absolute right-[110px] top-[20px]">
-              {" "}
-              <PieChartGraph />
-            </div>
-            <div className="flex gap-8 ">
-              <h2 className="text-2xl  ">Projects</h2>
-              <CreateButton
-                link={`/app/projects/create`}
-                className="font-semibold rounded-none"
-              >
-                CREATE PROJECTS
-              </CreateButton>
-            </div>
+            Transaction <ArrowRight className="" size={16} />
+          </Link>
+        </div>
+        <PieChartGraph />
+      </div>
+      <section>
+        <div className="flex w-full justify-between">
+          <h2 className="text-2xl ">Projects</h2>
+          <CreateButton
+            link={`/app/projects/create`}
+            className=""
+          >
+            New Project <Plus />
+          </CreateButton>
+        </div>
 
-            <div className="flex flex-row gap-10 ">
-              {client.projects.map((project) => {
-                return (
-                  <div
-                    key={project.id}
-                    className=" flex flex-col gap-5 border px-5 py-8 shadow-sm  "
-                  >
-                    <div className="flex gap-10 items-center justify-between">
-                      <h1 className="text-[22px] font-semibold">
-                        {project.name}
-                      </h1>
-
-                      <Badge className=" h-5 max-w-52">OnProgress</Badge>
-                    </div>
-                    <Progress className=" border h-3" value={40} />
-                  </div>
-                );
-              })}
-            </div>
-          </main>
-        );
-      })}
-    </>
+        <div className="flex  gap-4 flex-wrap">
+          {client.projects.map((project) => {
+            return <ProjectCard data={project} />;
+          })}
+        </div>
+      </section>
+    </main>
   );
 };
 
 export default page;
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Project } from "@prisma/client";
+
+function ProjectCard({ data }: { data: Project }) {
+  return (
+    <Card key={data.id} className="border rounded-lg w-80">
+      <CardHeader className="pb-2">
+        <CardDescription>{data.status}</CardDescription>
+        <CardTitle className="text-3xl">{data.name}</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="text-xs text-muted-foreground">{data.description}</div>
+      </CardContent>
+      <CardFooter>
+        <Progress value={12} aria-label="12% increase" />
+      </CardFooter>
+    </Card>
+  );
+}

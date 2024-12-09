@@ -16,6 +16,10 @@ async function TranscationTable() {
       Project:true
     }
   });
+  const expenses = transaction.reduce((acc, transaction) => 
+  {
+      return acc + (transaction.amount || 0);
+  }, 0);
   return (
     <div className="bg-white p-2 shadow-sm border min-h-60">
       <Table>
@@ -30,6 +34,7 @@ async function TranscationTable() {
             <TableHead className="">Note</TableHead>
             <TableHead className="">Type</TableHead>
             <TableHead className="">Date</TableHead>
+            
           </TableRow>
         </TableHeader>
         <TableBody>

@@ -41,14 +41,18 @@ async function DataTable() {
           <TableBody key={client.id}>
             <TableRow>
               {/* <TableCell className="font-medium">{client.id}</TableCell> */}
-              <Link href={`/app/clients/${client.id}`}>
-                <TableCell>{client.companyName}</TableCell>
-              </Link>
+
+              <TableCell>
+                {" "}
+                <Link href={`/app/clients/${client.id}`}>
+                  {client.companyName}{" "}
+                </Link>
+              </TableCell>
+
               <TableCell>{client.contactName}</TableCell>
               <TableCell className="">{client.contactEmail}</TableCell>
               <TableCell className="">{client.contactPhone}</TableCell>
               <TableCell className="">{client.description}</TableCell>
-                
             </TableRow>
           </TableBody>
         ))}

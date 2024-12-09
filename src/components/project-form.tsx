@@ -27,11 +27,17 @@ import { addNewProjectformSchema } from "@/types";
 import { createProject } from "@/actions/project.actions";
 import { useRouter } from "next/navigation";
 
+
+
 function ProjectForm() {
   const router = useRouter();
   const [clients, setClients] = useState<{ id: number; companyName: string }[]>(
     []
   );
+
+  const handleContract: () => void = () => {
+  router.push("/app/agreements");
+  };
   const form = useForm<z.infer<typeof addNewProjectformSchema>>({
     resolver: zodResolver(addNewProjectformSchema),
     defaultValues: {
@@ -43,7 +49,7 @@ function ProjectForm() {
       amount: 0,
       unit: "",
       billing: "",
-      contract: "",
+      // contract: "",
       description: "",
       status: "",
     },
@@ -132,20 +138,7 @@ function ProjectForm() {
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="contract"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Contract</FormLabel>
-                  <FormControl>
-                    <Input placeholder="contract" type="text" {...field} />
-                  </FormControl>
-                  {/* <FormDescription>Contract</FormDescription> */}
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            {/* Contract Input */}
             <FormField
               control={form.control}
               name="description"
@@ -319,7 +312,7 @@ function ProjectForm() {
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="" />
+                        <SelectValue placeholder="How are you taking payments" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -335,6 +328,43 @@ function ProjectForm() {
               )}
             />
           </div>
+          <h1 className="text-[25px] font-semibold">Contract</h1>
+          <div className="bg-[#FAFAFA] p-7 shadow-sm ">
+            <FormField
+              control={form.control}
+              name="billing"
+              render={({ field }) => (
+                <FormItem className="">
+                  <FormLabel>Contract</FormLabel>
+                 <div className="flex gap-10 items-center">
+                 <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Pick a template" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="Once">Default</SelectItem>
+
+                      {/* <SelectItem value="weekly">weekly</SelectItem>
+                      <SelectItem value="Monthly">Monthly</SelectItem>
+                      <SelectItem value="On milestone">On milestone</SelectItem> */}
+                    </SelectContent>
+                  </Select>
+                  <Button onClick={handleContract}>
+                    Submit
+                  </Button>
+                 </div>
+                  <FormMessage />
+                  
+                </FormItem>
+                
+              )}
+            />
+          </div>
 
           <Button className="w-full" type="submit">
             Submit
@@ -346,3 +376,19 @@ function ProjectForm() {
 }
 
 export default ProjectForm;
+
+// <FormField
+//               control={form.control}
+//               name="contract"
+//               render={({ field }) => (
+//                 <FormItem>
+//                   <FormLabel>Contract</FormLabel>
+//                   <FormControl>
+//                     <Input placeholder="contract" type="text" {...field} />
+//                     {/* <Tiptap/> */}
+//                   </FormControl>
+//                   <FormDescription>Contract</FormDescription>
+//                   <FormMessage />
+//                 </FormItem>
+//               )}
+//             />

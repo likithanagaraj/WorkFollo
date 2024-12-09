@@ -11,6 +11,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     "/app/clients/create",
     "/app/projects/create",
     "/app/transactions/create",
+    "/app/contracts/create",
+    "/app/agreements",
   ];
 
   // Check if the current route should show the sidebar
