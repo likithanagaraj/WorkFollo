@@ -1,12 +1,8 @@
 import { PieChartGraph } from "@/components/pi-chart";
-import { Badge } from "@/components/ui/badge";
-import prisma from "@/lib/db";
 import { Progress } from "@/components/ui/progress";
-
 import Link from "next/link";
 import React from "react";
 import CreateButton from "@/components/create-button";
-import { Button } from "react-day-picker";
 import { ArrowRight, Plus } from "lucide-react";
 import { notFound } from "next/navigation";
 
@@ -70,6 +66,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Project } from "@prisma/client";
+import prisma from "@/lib/db";
 
 function ProjectCard({ data }: { data: Project }) {
   return (

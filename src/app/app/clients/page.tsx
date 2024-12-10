@@ -1,6 +1,5 @@
 import CreateButton from "@/components/create-button";
 import DataTable from "@/components/table";
-import Tiptap from "@/components/tiptap";
 import React from "react";
 
 

@@ -1,6 +1,6 @@
 "use client";
-import ClientForm from "@/components/client-form";
 import CreateButton from "@/components/create-button";
+import Tiptap from "@/components/tiptap";
 import { X } from "lucide-react";
 import { usePathname } from "next/navigation";
 import React from "react";
@@ -36,7 +36,7 @@ function page() {
       <div className="flex flex-col gap-8 pb-10   ">
         <h1 className="text-4xl font-semibold ">Custom Contract</h1>
        <div className="bg-[#FAFAFA] p-5 w-[1200px]">
-       {/* <Tiptap/> */}
+       <Tiptap/>
        </div>
       </div>
     </div>

@@ -10,7 +10,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { RevenueGraph } from "@/components/revenue-graph";
-import { ProjectTackerGraph } from "@/components/project-track-graph";
 import prisma from "@/lib/db";
 
 const Page = async () => {

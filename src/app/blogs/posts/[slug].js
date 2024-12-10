@@ -1,8 +1,8 @@
-const Post = () => {
-  return (
-    <h1>Post</h1>
-  )
-}
+// const Post = () => {
+//   return (
+//     <h1>Post</h1>
+//   )
+// }
 
 /*
 Similarly to the blog overview page, you will be pre-rendering each post page.

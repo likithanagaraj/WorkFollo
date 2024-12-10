@@ -4,7 +4,6 @@ import {
   LucideUserCircle,
   FilesIcon,
   ChartLine,
-  LucideHome,
   Home,
 } from "lucide-react";
 
@@ -17,7 +16,6 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarTrigger,
 } from "@/components/ui/sidebar";
 import Link from "next/link";
 import { usePathname } from "next/navigation";

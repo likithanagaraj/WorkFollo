@@ -4,7 +4,7 @@ import React from "react";
 import {
   Table,
   TableBody,
-  TableCaption,
+
   TableCell,
   TableHead,
   TableHeader,
@@ -19,9 +19,9 @@ export default async function Page(props: {
   searchParams: SearchParams;
 }) {
   const params = await props.params;
-  const searchParams = await props.searchParams;
+  // const searchParams = await props.searchParams;
   const client = params.client;
-  const query = searchParams.query;
+  // const query = searchParams.query;
 
   // const data = await prisma.transaction.findMany({
   //   where: {

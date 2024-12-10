@@ -1,15 +1,12 @@
 "use client";
-import { Bar, BarChart, Rectangle, XAxis } from "recharts";
 
-import { TrendingUp } from "lucide-react";
-import { CartesianGrid, Dot, Line, LineChart } from "recharts";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-  CardFooter,
+
 } from "@/components/ui/card";
 
 const chartConfig = {
@@ -40,18 +37,16 @@ const chartConfig = {
 } satisfies ChartConfig;
 import {
   ChartConfig,
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
+
 } from "@/components/ui/chart";
 import { ProjectTackerGraph } from "./project-track-graph";
-const chartData = [
-  { browser: "chrome", visitors: 275, fill: "" },
-  { browser: "safari", visitors: 200, fill: "" },
-  { browser: "firefox", visitors: 187, fill: "" },
-  { browser: "edge", visitors: 173, fill: "" },
-  { browser: "other", visitors: 90, fill: "" },
-];
+// const chartData = [
+//   { browser: "chrome", visitors: 275, fill: "" },
+//   { browser: "safari", visitors: 200, fill: "" },
+//   { browser: "firefox", visitors: 187, fill: "" },
+//   { browser: "edge", visitors: 173, fill: "" },
+//   { browser: "other", visitors: 90, fill: "" },
+// ];
 
 interface Props {
   title: string;
