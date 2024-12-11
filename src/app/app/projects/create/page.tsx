@@ -2,12 +2,15 @@
 "use client"
 import CreateButton from '@/components/create-button'
 import ProjectForm from '@/components/project-form'
+import prisma from '@/lib/db'
 import {  X } from 'lucide-react'
 import { usePathname } from 'next/navigation'
-import React from 'react'
+import React, { useEffect } from 'react'
 
 
 function CreateNav(){
+  
+    
   const Pathname = usePathname()
   const title = Pathname.split('/')[2]?.replace(/^\w/, (c) => c.toUpperCase()) || '';
   const backPath = Pathname.split('/').slice(0, -1).join('/')
@@ -25,8 +28,8 @@ function page() {
   
   return (
     <div className="flex flex-col justify-center items-center gap-10 bg-white" >
-      <CreateNav/>
-      <div className="flex flex-col gap-8 pb-10 bg-white  ">
+      {/* <CreateNav/> */}
+      <div className="flex flex-col gap-8   p-10  ">
         <h1 className="text-4xl font-semibold ">What&apos;s your Project?</h1>
         <ProjectForm/>
       </div>

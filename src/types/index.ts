@@ -31,9 +31,12 @@ export const addNewProjectformSchema = z.object({
   client: z.number(),
   startDate: z.coerce.date(),
   endDate: z.coerce.date(),
-  serviceName: z.string(),
-  amount: z.string().transform((val) => parseFloat(val)),
-  unit: z.string(),
+  services: z.array(z.object({
+    name: z.string().min(1, "Service name is required"),
+    amount: z.number().positive("Amount must be positive"),
+    unit: z.string().min(1, "Unit is required"),
+    description: z.string().optional()
+  })).optional(),
   billing: z.string(),
   contract: z.string(),
   description: z.string(),

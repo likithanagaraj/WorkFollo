@@ -31,9 +31,9 @@ function CreateNav() {
 
 function page() {
   return (
-    <div className="flex flex-col justify-center items-center  gap-10 bg-white" >
-      <CreateNav/>
-      <div className="flex flex-col gap-8 pb-10   ">
+    <div className="flex flex-col justify-center items-center  gap-10 " >
+      {/* <CreateNav/> */}
+      <div className="flex flex-col gap-8 p-10   ">
         <h1 className="text-4xl font-semibold ">Custom Contract</h1>
        <div className="bg-[#FAFAFA] p-5 w-[1200px]">
        <Tiptap/>

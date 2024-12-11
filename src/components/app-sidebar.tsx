@@ -31,23 +31,26 @@ const items = [
   {
     title: "Clients",
     url: "/app/clients",
+    // url2: "/app/clients/**",
     icon: LucideUserCircle,
   },
   {
     title: "Projects",
-    url: "/app/projects",
+    url: "/app/projects" ,
+    // url2: "/app/projects/** " ,
     icon: FilesIcon,
   },
   {
     title: "Transcations",
     url: "/app/transactions",
+    // url2: "/app/projects/** " ,
     icon: ChartLine,
   },
-  {
-    title: "Contract",
-    url: "/app/contracts",
-    icon: FilesIcon,
-  },
+  // {
+  //   title: "Contract",
+  //   url: "/app/contracts",
+  //   icon: FilesIcon,
+  // },
   // {
   //   title: "Settings",
   //   url: "#",
@@ -57,7 +60,7 @@ const items = [
 
 export function AppSidebar() {
   const path = usePathname();
-  console.log(path)
+  // console.log(path)
   return (
     <Sidebar collapsible="icon" variant="sidebar" className="">
       <SidebarContent className="bg-[#FFFFFF] ">
@@ -72,7 +75,7 @@ export function AppSidebar() {
               {items.map((item) => (
                 <SidebarMenuItem className="" key={item.title}>
                   <SidebarMenuButton className="" asChild>
-                    <Link className={cn('', path === item.url && "text-primary")} href={item.url}>
+                    <Link className={cn('', path === item.url  && "text-primary")} href={item.url}>
                       <span className="">
                         <item.icon size={18} />
                       </span>

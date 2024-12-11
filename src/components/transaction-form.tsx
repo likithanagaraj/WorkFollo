@@ -85,7 +85,7 @@ export default function TranscationForm() {
       const response = await createTransaction(values);
       if (response.success) {
         toast("Event has been created.");
-        router.push("/transactions");
+        router.push("/app/transactions");
       } else toast("Error creating event");
     } catch (error) {
       console.error("Form submission error", error);

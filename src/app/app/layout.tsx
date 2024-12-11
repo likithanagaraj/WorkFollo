@@ -8,11 +8,7 @@ import { usePathname } from "next/navigation";
 export default function Layout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const routesWithoutSidebar = [
-    "/app/clients/create",
-    "/app/projects/create",
-    "/app/transactions/create",
-    "/app/contracts/create",
-    "/app/agreements",
+   ""
   ];
 
   // Check if the current route should show the sidebar
@@ -21,6 +17,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
       {shouldShowSidebar ? (
+        
         <SidebarProvider>
           <AppSidebar />
           <main className="flex flex-col w-full">

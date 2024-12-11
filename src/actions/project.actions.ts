@@ -5,6 +5,7 @@ import { addNewProjectformSchema } from "@/types"
 import { z } from "zod"
 
 export const createProject = async (values: z.infer<typeof addNewProjectformSchema>) => {
+  const totalBudget = values.services ? values.services.reduce((sum, service) => sum + service.amount, 0) : 0
   try {
     console.log("Project creating...")
     const project = await prisma.project.create({
@@ -15,11 +16,11 @@ export const createProject = async (values: z.infer<typeof addNewProjectformSche
         endDate: values.endDate,
         contract: values.contract,
         description: values.description,  
-        totalBudget: values.amount,
+        totalBudget: totalBudget,
         status: values.status,
       }
     })
-    console.log("Client created", project)
+    console.log("Client created", values)
 
     return { success: true }
   } catch (error) {

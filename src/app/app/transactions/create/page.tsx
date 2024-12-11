@@ -25,8 +25,8 @@ function page() {
   
   return (
     <div className="flex flex-col justify-center items-center gap-10 bg-white" >
-      <CreateNav/>
-      <div className="flex flex-col gap-8 pb-10 bg-white  ">
+      {/* <CreateNav/> */}
+      <div className="flex flex-col gap-8 p-10   ">
       <h1 className="text-4xl font-semibold "> Transcation</h1>
         <TranscationForm/>
         {/* <ProjectForm/> */}

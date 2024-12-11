@@ -31,7 +31,7 @@ const Page = async () => {
     },
   });
   const expenses = transaction.reduce((acc, transaction) => {
-    if (transaction.type === "expense") {
+    if (transaction.type === "Expenses") {
       return acc + transaction.amount;
     }
     return acc;

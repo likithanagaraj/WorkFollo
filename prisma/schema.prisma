@@ -84,7 +84,7 @@ model Transaction {
   amount      Float
   date        DateTime
   type        String //(income, expense)
-  category    String
+  category    String //TODO:wt to do with this?
   description String?
   createdAt DateTime @default(now())
   User      User     @relation(fields: [userId], references: [id])
