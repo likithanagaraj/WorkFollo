@@ -47,7 +47,7 @@ const page = async ({ params }: { params: Params }) => {
 
         <div className="flex  gap-4 flex-wrap">
           {client.projects.map((project) => {
-            return <ProjectCard data={project} />;
+            return <ProjectCard key={project.clientId} data={project} />;
           })}
         </div>
       </section>

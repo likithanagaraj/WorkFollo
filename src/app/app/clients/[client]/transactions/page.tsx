@@ -9,6 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Transaction } from "@prisma/client";
 
 type Params = Promise<{ client: string }>;
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
@@ -30,70 +31,96 @@ export default async function Page(props: {
     },
   });
 
+  // Function to calculate the total amounts for each transaction type
+  const calculateTypeAmounts = (transactions: Transaction[]) => {
+   
+    return {
+      
+      expenses: transactions
+        .filter((t) => t.type === "Expenses")
+        .reduce((sum, t) => sum + (t.amount ? Number(t.amount) : 0), 0),
+      cac: transactions
+        .filter((t) => t.type === "CAC")
+        .reduce((sum, t) => sum + (t.amount ? Number(t.amount) : 0), 0),
+      payments: transactions
+        .filter((t) => t.type === "Payments")
+        .reduce((sum, t) => sum + (t.amount ? Number(t.amount) : 0), 0),
+    };
+    
+  };
+
   return (
     <div className="px-10 py-10 relative">
-      {/* <h1 className="text-4xl font-bold mb-5">Client Details</h1> */}
-
-      <div className="absolute right-[50px] top-[20px] z-10">
-        <PieChartGraph />
-      </div>
-
       <div>
-        {data.map((client) => (
-          <div key={client.id} className="max-w-[700px] flex flex-col gap-20">
-            {/* Projects Section */}
-            <div>
-              {/* <h2 className="text-2xl font-semibold mb-3">Projects</h2> */}
-              {client.projects.map((project) => (
-                <div key={project.id} className="">
-                  <h3 className="text-3xl font-medium">{project.name}</h3>
-                  <p className="text-sm text-gray-600">
-                     {project.description || ""}
-                  </p>
-                  {/* <p className="text-sm text-gray-600">
-                    Start Date: {project.startDate.toDateString()}
-                  </p>
-                  <p className="text-sm text-gray-600">
-                    End Date: {project.endDate?.toDateString()}
-                  </p> */}
-                </div>
-              ))}
-            </div>
+        {data.map((client) => {
+          const typeAmounts = calculateTypeAmounts(client.Transaction);
 
-            {/* Transactions Section */}
-            <div>
-              <h2 className="text-2xl font-semibold mb-3">Transactions</h2>
-              {client.Transaction.map((transaction) => (
-                <div key={transaction.id} className="mb-5">
-                  <Table className="bg-white">
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Title</TableHead>
-                        <TableHead>Description</TableHead>
-                        <TableHead>Amount</TableHead>
-                        {/* <TableHead>Purpose</TableHead> */}
-                       
-                        <TableHead>Type</TableHead>
-                        <TableHead>Date</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      <TableRow>
+          return (
+            <div key={client.id} className="max-w-[700px] flex flex-col gap-20">
+              <h2 className="text-2xl font-semibold mb-3">
+                {client.companyName}
+              </h2>
+              <div className="absolute right-[50px] top-[20px] z-10">
+                <PieChartGraph
+                  profit={typeAmounts.payments}
+                  expense={typeAmounts.expenses}
+                  cac={typeAmounts.cac}
+                />
+                {/* Type Amount Summary */}
+              <div className="bg-white p-4 rounded shadow">
+                <h3 className="text-xl font-semibold mb-3">
+                  Transaction  Summary
+                </h3>
+                <div className="grid grid-cols-3 gap-4">
+                  <div className="text-center">
+                    <p className="font-semibold text-red-500">Expenses</p>
+                    <p>${typeAmounts.expenses.toFixed(2)}</p>
+                  </div>
+                  <div className="text-center">
+                    <p className="font-semibold text-blue-500">CAC</p>
+                    <p>${typeAmounts.cac.toFixed(2)}</p>
+                  </div>
+                  <div className="text-center">
+                    <p className="font-semibold text-green-500">Payments</p>
+                    <p>${typeAmounts.payments.toFixed(2)}</p>
+                  </div>
+                </div>
+              </div>
+              </div>
+              
+              {/* Transactions Section */}
+              <div>
+                <h2 className="text-2xl font-semibold mb-3">Transactions</h2>
+                <Table className="bg-white">
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Title</TableHead>
+                      <TableHead>Description</TableHead>
+                      <TableHead>Amount</TableHead>
+                      <TableHead>Type</TableHead>
+                      <TableHead>Date</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {client.Transaction.map((transaction) => (
+                      <TableRow key={transaction.id}>
                         <TableCell>{transaction.title}</TableCell>
                         <TableCell>{transaction.description}</TableCell>
-                        <TableCell>{transaction.amount}</TableCell>
-                        {/* <TableCell>{transaction. || "N/A"}</TableCell> */}
-                        
+                        <TableCell>
+                          ${transaction.amount ? transaction.amount.toFixed(2) : "0.00"}
+                        </TableCell>
                         <TableCell>{transaction.type}</TableCell>
-                        <TableCell>{transaction.date.toDateString()}</TableCell>
+                        <TableCell>
+                          {new Date(transaction.date).toLocaleDateString()}
+                        </TableCell>
                       </TableRow>
-                    </TableBody>
-                  </Table>
-                </div>
-              ))}
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

@@ -38,7 +38,7 @@ export default function TranscationForm() {
     defaultValues: {
       Client: undefined,
       title: "",
-      amount: 0,
+      amount: undefined,
       type: "",
       description: "",
       date: undefined,
@@ -80,8 +80,9 @@ export default function TranscationForm() {
   }
 
   async function onSubmit(values: z.infer<typeof addTransactionformSchema>) {
+    console.log(values);
     try {
-      console.log(values);
+     
       const response = await createTransaction(values);
       if (response.success) {
         toast("Event has been created.");
@@ -239,7 +240,7 @@ export default function TranscationForm() {
                       </FormControl>
                       <SelectContent>
                         <SelectItem value="CAC">CAC</SelectItem>
-                        <SelectItem value="Expenses ">Expenses </SelectItem>
+                        <SelectItem value="Expenses">Expenses </SelectItem>
                         <SelectItem value="Payments">Payments</SelectItem>
                       </SelectContent>
                     </Select>

@@ -10,23 +10,18 @@ import prisma from "@/lib/db";
 import Link from "next/link";
 import React from "react";
 
-async function  TranscationTable() {
+async function TranscationTable() {
   const transaction = await prisma.transaction.findMany({
     include: {
       Client: true,
       Project: true,
     },
   });
-  const expenses = transaction.reduce((acc, transaction) => {
-    return acc + (transaction.amount || 0);
-  }, 0);
   return (
     <div className="bg-white p-2 shadow-sm border min-h-60">
       <Table>
-        {/* <TableCaption>A list of your recent invoices.</TableCaption> */}
         <TableHeader>
           <TableRow>
-            
             <TableHead className="">Company Name</TableHead>
             <TableHead className="">Project Name</TableHead>
             <TableHead className=""> Contact Name</TableHead>
@@ -42,17 +37,17 @@ async function  TranscationTable() {
             <TableRow key={transaction.id}>
               <TableCell className="font-medium">
                 {""}
-                <Link
-                  href={`/app/clients/${transaction?.Client?.id}`}
-                >
+                <Link href={`/app/clients/${transaction?.Client?.id}`}>
                   {" "}
                   {transaction?.Client?.companyName}
                 </Link>
               </TableCell>
 
               <TableCell className="font-medium">
-                <Link href={`/app/clients/${transaction.Client?.id}/transactions`}>
-                {transaction?.Project?.name}
+                <Link
+                  href={`/app/clients/${transaction.Client?.id}/transactions`}
+                >
+                  {transaction?.Project?.name}
                 </Link>
               </TableCell>
               <TableCell className="font-medium">
@@ -65,7 +60,10 @@ async function  TranscationTable() {
               <TableCell className="font-medium">
                 {transaction.description}
               </TableCell>
-              <TableCell className="font-medium">{transaction.type}</TableCell>
+              <TableCell className="font-medium">
+                {transaction.type}
+              </TableCell>
+
               <TableCell className="font-medium">
                 {transaction.date.toDateString()}
               </TableCell>

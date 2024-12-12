@@ -1,41 +1,34 @@
+"use client";
 
-"use client"
-import CreateButton from '@/components/create-button'
-import ProjectForm from '@/components/project-form'
-import prisma from '@/lib/db'
-import {  X } from 'lucide-react'
-import { usePathname } from 'next/navigation'
-import React, { useEffect } from 'react'
+import ProjectForm from "@/components/project-form";
 
+import React from "react";
 
-function CreateNav(){
-  
-    
-  const Pathname = usePathname()
-  const title = Pathname.split('/')[2]?.replace(/^\w/, (c) => c.toUpperCase()) || '';
-  const backPath = Pathname.split('/').slice(0, -1).join('/')
-  
-  return(
-    <nav className='flex justify-between items-center h-12 border-b w-full' >
-      <CreateButton link={backPath} className=' rounded-none h-12 px-5 bg-white shadow-none text-gray-600 border'><X/></CreateButton>
-      <h1 className='text-[24px] font-semibold '>Create {title}</h1>
-      <CreateButton link={backPath} className='rounded-none h-12 px-8 capitalize'>Create{title}</CreateButton>
-    </nav>
-  )
-}
+// function CreateNav(){
+
+//   const Pathname = usePathname()
+//   const title = Pathname.split('/')[2]?.replace(/^\w/, (c) => c.toUpperCase()) || '';
+//   const backPath = Pathname.split('/').slice(0, -1).join('/')
+
+//   return(
+//     <nav className='flex justify-between items-center h-12 border-b w-full' >
+//       <CreateButton link={backPath} className=' rounded-none h-12 px-5 bg-white shadow-none text-gray-600 border'><X/></CreateButton>
+//       <h1 className='text-[24px] font-semibold '>Create {title}</h1>
+//       <CreateButton link={backPath} className='rounded-none h-12 px-8 capitalize'>Create{title}</CreateButton>
+//     </nav>
+//   )
+// }
 
 function page() {
-  
   return (
-    <div className="flex flex-col justify-center items-center gap-10 bg-white" >
+    <div className="flex flex-col justify-center items-center gap-10 bg-white">
       {/* <CreateNav/> */}
       <div className="flex flex-col gap-8   p-10  ">
         <h1 className="text-4xl font-semibold ">What&apos;s your Project?</h1>
-        <ProjectForm/>
+        <ProjectForm />
       </div>
     </div>
-  )
+  );
 }
 
-export default page
-
+export default page;

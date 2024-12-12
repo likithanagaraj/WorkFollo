@@ -8,7 +8,7 @@ export const createTransaction = async (values: z.infer<typeof addTransactionfor
     console.log("Transcation creating...")
     const client = await prisma.transaction.create({
       data:{
-        amount: 0,
+        amount: values.amount,
         description: values.description,
         type: values.type,
         date: values.date,

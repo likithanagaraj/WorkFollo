@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { usePathname } from "next/navigation";
 import { SidebarTrigger } from "./ui/sidebar";
@@ -11,7 +11,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 
-import { Bell, LogOut, Settings, User } from "lucide-react";
+import {  LogOut, Settings, User } from "lucide-react";
 
 function MainNavbar() {
   

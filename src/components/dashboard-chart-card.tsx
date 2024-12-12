@@ -9,37 +9,37 @@ import {
 
 } from "@/components/ui/card";
 
-const chartConfig = {
-  visitors: {
-    label: "Visitors",
-    // color: "hsl(var(--chart-2))",
-  },
-  chrome: {
-    label: "Chrome",
-    // color: "hsl(var(--chart-1))",
-  },
-  safari: {
-    label: "Safari",
-    // color: "hsl(var(--chart-2))",
-  },
-  firefox: {
-    label: "Firefox",
-    // color: "hsl(var(--chart-3))",
-  },
-  edge: {
-    label: "Edge",
-    // color: "hsl(var(--chart-4))",
-  },
-  other: {
-    label: "Other",
-    // color: "hsl(var(--chart-5))",
-  },
-} satisfies ChartConfig;
-import {
-  ChartConfig,
+// const chartConfig = {
+//   visitors: {
+//     label: "Visitors",
+//     // color: "hsl(var(--chart-2))",
+//   },
+//   chrome: {
+//     label: "Chrome",
+//     // color: "hsl(var(--chart-1))",
+//   },
+//   safari: {
+//     label: "Safari",
+//     // color: "hsl(var(--chart-2))",
+//   },
+//   firefox: {
+//     label: "Firefox",
+//     // color: "hsl(var(--chart-3))",
+//   },
+//   edge: {
+//     label: "Edge",
+//     // color: "hsl(var(--chart-4))",
+//   },
+//   other: {
+//     label: "Other",
+//     // color: "hsl(var(--chart-5))",
+//   },
+// } satisfies ChartConfig;
+// import {
+//   ChartConfig,
 
-} from "@/components/ui/chart";
-import { ProjectTackerGraph } from "./project-track-graph";
+// } from "@/components/ui/chart";
+// import { ProjectTackerGraph } from "./project-track-graph";
 // const chartData = [
 //   { browser: "chrome", visitors: 275, fill: "" },
 //   { browser: "safari", visitors: 200, fill: "" },
