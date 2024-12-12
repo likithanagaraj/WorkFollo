@@ -10,8 +10,8 @@ async function page({}) {
       <CreateButton className="rounded-none p-5" link="/app/clients/create">
         New Clients
       </CreateButton>
-
-      {/* {clients.length > 0 && clients.map((client) => <div>1</div>)} */}
+      
+      
       <DataTable/>
     </div>
   );

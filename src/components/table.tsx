@@ -34,33 +34,25 @@ async function DataTable() {
             <TableHead className="">Contact Email</TableHead>
             <TableHead className="">Contact Phone</TableHead>
             <TableHead className="">Description</TableHead>
-            <TableHead className="">Actions</TableHead>
+            {/* <TableHead className="">Actions</TableHead> */}
           </TableRow>
         </TableHeader>
         {clients.map((client) => (
           <TableBody key={client.id}>
             <TableRow>
               {/* <TableCell className="font-medium">{client.id}</TableCell> */}
-              <Link href={`/app/clients/${client.id}`}>
-                <TableCell>{client.companyName}</TableCell>
-              </Link>
+
+              <TableCell>
+                {" "}
+                <Link href={`/app/clients/${client.id}`}>
+                  {client.companyName}{" "}
+                </Link>
+              </TableCell>
+
               <TableCell>{client.contactName}</TableCell>
               <TableCell className="">{client.contactEmail}</TableCell>
               <TableCell className="">{client.contactPhone}</TableCell>
               <TableCell className="">{client.description}</TableCell>
-              <TableCell className="">
-                <DropdownMenu>
-                  <DropdownMenuTrigger>
-                    <LucideEllipsis className="w-6 h-6" />
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    {/* <DropdownMenuLabel>My Account</DropdownMenuLabel> */}
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem>Edit</DropdownMenuItem>
-                    <DropdownMenuItem>Delete</DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </TableCell>
             </TableRow>
           </TableBody>
         ))}

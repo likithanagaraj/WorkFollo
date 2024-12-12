@@ -7,7 +7,14 @@ import Navbar1 from "@/components/landingpage/navbar";
 import Features1 from "@/components/landingpage/features";
 import Cta2 from "@/components/landingpage/cta";
 import BasicFooter from "@/components/landingpage/footer";
+import { Metadata } from "next";
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
+
+export const metadata:Metadata= {
+  title: "Freelance Flow",
+  description: "Simplify Freelancing & Agency Work with Our All-in-One Tool",
+  keywords: "freelance, agency, management, tool",
+}
 
 const HeroSection1 = async (props: { searchParams: SearchParams }) => {
   const searchParams = await props.searchParams;
@@ -20,12 +27,12 @@ const HeroSection1 = async (props: { searchParams: SearchParams }) => {
 
   
   return (
-    <main className="bg-white text-black">
+    <main className=" text-black">
       <section className="min-h-screen">
         <div className="absolute inset-0 -z-10 h-full w-full bg-white opacity-5 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]"></div>
         <Navbar1 />
         <section className="px-5 md:py-16 p-5 pb-30 sm:flex sm:flex-col items-center">
-          <Badge>🎉 Something special is waiting!</Badge>
+          <Badge>🎉 We are launching soon!!!</Badge>
           <h1 className="text-5xl mt-2 sm:text-6xl sm:w-2/3 sm:text-center">
             Simplify Freelancing & Agency Work with Our{" "}
             <span className="text-primary ">All-in-One Tool</span>
