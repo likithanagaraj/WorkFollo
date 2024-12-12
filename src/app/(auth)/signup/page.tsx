@@ -7,7 +7,7 @@ const page = async () => {
   const session = await auth();
   if (session?.user) redirect("/app");	 
   return (
-    <div className="">
+    <div className="flex items-center justify-center h-screen">
       <SignUpForm />
     </div>
   );

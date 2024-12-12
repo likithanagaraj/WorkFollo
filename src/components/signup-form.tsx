@@ -37,82 +37,124 @@ const SignUpForm = () => {
     const res = await signUpAction(values);
     if (res.success) {
       toast.success(res.data);
-      router.push("/login");
+      router.push("/app");
     } else {
       toast.error(res.error);
     }
   };
  
   return (
-    <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col items-center justify-center"
-      >
-        <FormField
-          name="name"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Username</FormLabel>
-              <FormControl>
-                <Input placeholder="name" {...field} />
-              </FormControl>
-              <FormDescription>
-                This is your public display name.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          name="email"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
-              <FormControl>
-                <Input type="email" placeholder="name@example.com" {...field} />
-              </FormControl>
- 
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          name="password"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Password</FormLabel>
-              <FormControl>
-                <Input type="password" {...field} />
-              </FormControl>
- 
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          name="confirmPassword"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Confirm Password</FormLabel>
-              <FormControl>
-                <Input type="password" {...field} />
-              </FormControl>
- 
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button>Register</Button>
-        <Link className="text-sm mt-5 text-blue-600" href="/login">
-          Already have an account?
-        </Link>
-      </form>
-    </Form>
+    <div className="min-h-screen flex items-center justify-center w-[500px]">
+      <div className="w-full max-w-md space-y-6 p-6 border rounded-lg shadow-sm">
+        <div className="text-center mb-6">
+          <h2 className="text-2xl font-semibold mb-2">Create Your Account</h2>
+          <p className="text-sm text-muted-foreground">
+            Sign up to get started
+          </p>
+        </div>
+        
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-4"
+          >
+            <FormField
+              name="name"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem className="space-y-2">
+                  <FormLabel className="font-medium">Username</FormLabel>
+                  <FormControl>
+                    <Input 
+                      placeholder="name" 
+                      {...field} 
+                      className="w-full transition-all duration-300 focus:ring-2 focus:ring-primary/30"
+                    />
+                  </FormControl>
+                  <FormDescription className="text-xs pl-1 text-muted-foreground">
+                    This is your public display name.
+                  </FormDescription>
+                  <FormMessage className="text-xs pl-1" />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              name="email"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem className="space-y-2">
+                  <FormLabel className="font-medium">Email</FormLabel>
+                  <FormControl>
+                    <Input 
+                      type="email" 
+                      placeholder="name@example.com" 
+                      {...field} 
+                      className="w-full transition-all duration-300 focus:ring-2 focus:ring-primary/30"
+                    />
+                  </FormControl>
+                  <FormMessage className="text-xs pl-1" />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              name="password"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem className="space-y-2">
+                  <FormLabel className="font-medium">Password</FormLabel>
+                  <FormControl>
+                    <Input 
+                      type="password" 
+                      {...field} 
+                      className="w-full transition-all duration-300 focus:ring-2 focus:ring-primary/30"
+                    />
+                  </FormControl>
+                  <FormMessage className="text-xs pl-1" />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              name="confirmPassword"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem className="space-y-2">
+                  <FormLabel className="font-medium">Confirm Password</FormLabel>
+                  <FormControl>
+                    <Input 
+                      type="password" 
+                      {...field} 
+                      className="w-full transition-all duration-300 focus:ring-2 focus:ring-primary/30"
+                    />
+                  </FormControl>
+                  <FormMessage className="text-xs pl-1" />
+                </FormItem>
+              )}
+            />
+
+            <div className="pt-2 space-y-4">
+              <Button 
+                type="submit" 
+                className="w-full transition-transform duration-200 active:scale-95"
+              >
+                Register
+              </Button>
+              
+              <div className="text-center">
+                <Link 
+                  href="/signin" 
+                  className="text-sm text-primary hover:opacity-80 transition-opacity"
+                >
+                  Already have an account?
+                </Link>
+              </div>
+            </div>
+          </form>
+        </Form>
+      </div>
+    </div>
   );
 };
  

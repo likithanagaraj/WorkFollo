@@ -12,12 +12,14 @@ import {
 } from "@/components/ui/sheet";
 
 import {  LogOut, Settings, User } from "lucide-react";
+import { signOut, useSession } from "next-auth/react";
 
 function MainNavbar() {
-  
+    const {data:session} =useSession() ;
+    console.log(session);
   const pathname = usePathname();
   const currentPath = pathname.split("/")[2];
-  
+  const username = session?.user?.email?.slice(0, session?.user?.email?.indexOf("@")) ;
   const label =
     currentPath === "clients"
       ? "Clients"
@@ -30,6 +32,7 @@ function MainNavbar() {
   return (
     <nav className="h-[70px] bg-white border-b border-gray-200 flex items-center justify-between px-6 shadow-sm">
       <div className="flex items-center space-x-4">
+         
         <SidebarTrigger className="text-gray-600 hover:text-primary" />
         <h1 className="text-2xl font-bold text-gray-800">{label}</h1>
       </div>
@@ -50,7 +53,7 @@ function MainNavbar() {
                 <AvatarFallback>LN</AvatarFallback>
               </Avatar>
               <div className="text-left">
-                <p className="text-sm font-semibold text-gray-800">Likitha N</p>
+                <p className="text-sm font-semibold text-gray-800">{username}</p>
                 <p className="text-xs text-gray-500">Admin</p>
               </div>
             </button>
@@ -68,8 +71,8 @@ function MainNavbar() {
               </Avatar>
               
               <div className="text-center">
-                <h2 className="text-2xl font-bold text-gray-800">Likitha Nagaraj</h2>
-                <p className="text-sm text-gray-500">likitha.n@company.com</p>
+                <h2 className="text-2xl font-bold text-gray-800">{username}</h2>
+                <p className="text-sm text-gray-500">{session?.user?.email}</p>
                 <p className="text-sm text-primary mt-1">System Administrator</p>
               </div>
               
@@ -82,7 +85,9 @@ function MainNavbar() {
                   <Settings className="text-gray-600" size={20} />
                   <span>Account Settings</span>
                 </button>
-                <button className="w-full flex items-center space-x-3 p-3 hover:bg-gray-100 rounded-lg text-red-500">
+                <button onClick={(e)=>{
+                  signOut({ callbackUrl: '/' })
+                }} className="w-full flex items-center space-x-3 p-3 hover:bg-gray-100 rounded-lg text-red-500">
                   <LogOut className="" size={20} />
                   <span>Logout</span>
                 </button>
