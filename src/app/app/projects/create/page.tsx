@@ -21,12 +21,9 @@ import React from "react";
 
 function page() {
   return (
-    <div className="flex flex-col justify-center items-center gap-10 bg-white">
-      {/* <CreateNav/> */}
-      <div className="flex flex-col gap-8   p-10  ">
-        <h1 className="text-4xl font-semibold ">What&apos;s your Project?</h1>
-        <ProjectForm />
-      </div>
+    <div className="flex flex-col  gap-4 ">
+      <h2>What&apos;s your Project?</h2>
+      <ProjectForm />
     </div>
   );
 }

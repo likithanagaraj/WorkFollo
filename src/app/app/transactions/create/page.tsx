@@ -23,7 +23,7 @@ import React from 'react'
 function page() {
   
   return (
-    <div className="flex flex-col justify-center items-center gap-10 bg-white" >
+    <div className="flex flex-col justify-center items-center gap-10" >
       {/* <CreateNav/> */}
       <div className="flex flex-col gap-8 p-10   ">
       <h1 className="text-4xl font-semibold "> Transcation</h1>

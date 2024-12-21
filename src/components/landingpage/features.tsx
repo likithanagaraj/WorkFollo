@@ -9,7 +9,7 @@ const featuresData = [
   {
     title: "Clients Management",
     description: "Manage your clients and their projects with ease.",
-    logo: <FaArrowsDownToPeople  size={38} />,
+    logo: <FaArrowsDownToPeople size={38} />,
   },
   {
     title: "Project Management",
@@ -41,22 +41,23 @@ const featuresData = [
 const Features1 = () => {
   return (
     <section className="flex items-center flex-col my-16">
-      <h2 className="font-bold text-3xl leading-[1.1] sm:text-3xl md:text-6xl">
-        Features
-      </h2>
+      <h1>Features</h1>
       <p className="text-center mt-2 mb-5 leading-normal text-muted-foreground sm:text-lg sm:leading-7">
         Taxonomy also includes a blog and a full-featured documentation site
         built.
       </p>
-      <section className="grid grid-cols-1 md:grid-cols-2 gap-2">
+      {/* <section className="grid grid-cols-1 md:grid-cols-2 gap-6"> */}
+      <section className="flex gap-6">
         {featuresData.map((feature) => (
           <Card
-            className="p-7 py-8 w-96 md:w-80 bg-white text-black border-none"
+            className="flex flex-col gap-2 items-start  p-7 py-8 max-w-52  md:w-80 rounded-lg bg-white/10 border text-black border-none"
             key={feature.title}
           >
             <div className={"text-primary"}>{feature.logo}</div>
-            <h3 className="text-xl mt-3 mb-1 font-medium">{feature.title}</h3>
-            <p className="text-xs">{feature.description}</p>
+            <div>
+              <h3  className="text-xl mt-2 mb-1">{feature.title}</h3>
+              <p className="text-xs text-wrap">{feature.description}</p>
+            </div>
           </Card>
         ))}
       </section>

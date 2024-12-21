@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation"; // Import the useRouter hook
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
-
+import { Textarea } from "@/components/ui/textarea";
 import {
   Form,
   FormControl,
@@ -19,8 +19,12 @@ import { Input } from "@/components/ui/input";
 import { PhoneInput } from "./ui/phone-input";
 import { createClient } from "@/actions/client.actions";
 import { addNewClientFormSchema } from "@/types";
+import { LoaderCircleIcon } from "lucide-react";
+import { useState } from "react";
 
 function ClientForm() {
+  const [loading, setLoading] = useState(false);
+
   const router = useRouter(); // Initialize useRouter
   const form = useForm<z.infer<typeof addNewClientFormSchema>>({
     resolver: zodResolver(addNewClientFormSchema),
@@ -35,6 +39,8 @@ function ClientForm() {
   });
 
   async function onSubmit(values: z.infer<typeof addNewClientFormSchema>) {
+    setLoading(true);
+
     const response = await createClient(values);
 
     if (response.success) {
@@ -43,15 +49,13 @@ function ClientForm() {
     } else {
       toast("Error creating client");
     }
+    setLoading(false);
   }
 
   return (
-    <div className="px-8 border w-[600px] shadow">
+    <div className="px-8 max-w-2xl ml-5 md:ml-10">
       <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-5 mx-auto py-10"
-        >
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
           <FormField
             control={form.control}
             name="companyName"
@@ -128,14 +132,14 @@ function ClientForm() {
               <FormItem className="flex flex-col items-start">
                 <FormLabel>Description</FormLabel>
                 <FormControl>
-                  <Input placeholder="" type="" {...field} />
+                  <Textarea {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <Button className="w-full" type="submit">
-            Submit
+          <Button className="w-full" type="submit" disabled={loading}>
+            {loading ? <LoaderCircleIcon className="animate-spin" /> : "Submit"}
           </Button>
         </form>
       </Form>

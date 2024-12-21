@@ -1,11 +1,6 @@
 "use client";
 
-import {
-  LucideUserCircle,
-  FilesIcon,
-  ChartLine,
-  Home,
-} from "lucide-react";
+import { LucideUserCircle, FilesIcon, ChartLine, Home } from "lucide-react";
 
 import {
   Sidebar,
@@ -20,6 +15,7 @@ import {
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import Logo from "./logo";
 
 // Menu items.
 const items = [
@@ -36,7 +32,7 @@ const items = [
   },
   {
     title: "Projects",
-    url: "/app/projects" ,
+    url: "/app/projects",
     // url2: "/app/projects/** " ,
     icon: FilesIcon,
   },
@@ -60,13 +56,21 @@ const items = [
 
 export function AppSidebar() {
   const path = usePathname();
-  // console.log(path)
+
   return (
     <Sidebar collapsible="icon" variant="sidebar" className="">
-      <SidebarContent className="bg-[#FFFFFF] ">
-        <SidebarGroup className=" ">
+      <SidebarContent >
+        <SidebarGroup >
           <SidebarGroupLabel className="text-[20px]  text-black   font-bold mb-5">
-            Freelance Flow
+            <Logo
+              full
+              link
+              width={30}
+              height={30}
+              textClassName="text-lg"
+              className="flex-row text-md items-center gap-1 mt-5"
+            />
+
             {/* <SidebarTrigger /> */}
           </SidebarGroupLabel>
 
@@ -75,10 +79,11 @@ export function AppSidebar() {
               {items.map((item) => (
                 <SidebarMenuItem className="" key={item.title}>
                   <SidebarMenuButton className="" asChild>
-                    <Link className={cn('', path === item.url  && "text-primary")} href={item.url}>
-                      <span className="">
-                        <item.icon size={18} />
-                      </span>
+                    <Link
+                      className={cn("", path === item.url && "text-primary")}
+                      href={item.url}
+                    >
+                      <item.icon size={18} />
                       <span className="">{item.title}</span>
                     </Link>
                   </SidebarMenuButton>

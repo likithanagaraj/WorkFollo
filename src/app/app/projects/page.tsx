@@ -1,19 +1,18 @@
-
 import CreateButton from "@/components/create-button";
 import ProjectDataTable from "@/components/project-table";
+import { auth } from "@/lib/auth";
+import { Plus } from "lucide-react";
 import React from "react";
 
-
-
-function page() {
+async function page() {
   return (
-    <div className="px-10 py-20 flex flex-col gap-8">
-      <CreateButton className="rounded-none p-5" link="/app/projects/create">
-        New Projects
+    <div className="p-8 flex flex-col gap-4">
+      <CreateButton className="" link="/app/projects/create">
+        Create new <Plus />
       </CreateButton>
-  
-  {/* <DataTableTab tabs={tabs} /> */}
-      <ProjectDataTable/>
+
+      {/* <DataTableTab tabs={tabs} /> */}
+      <ProjectDataTable />
     </div>
   );
 }

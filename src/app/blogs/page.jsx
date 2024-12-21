@@ -1,13 +1,13 @@
 import Link from "next/link";
-import { getAllPublished } from "../../lib/notion";
+// import { getAllPublished } from "../../lib/notion";
 
 export default async function Home() {
-  const posts = await getAllPublished();
+  // const posts = await getAllPublished();
 
   return (
     <main>
       <h1>Blog</h1>
-      {posts.map((post) => (
+      {/* {posts.map((post) => (
         <section key={post.id}>
           <div>
             
@@ -20,7 +20,7 @@ export default async function Home() {
           </div>
           <p>{post.description}</p>
         </section>
-      ))}
+      ))} */}
     </main>
   );
 }

@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -19,8 +19,10 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { signInAction } from "@/actions/auth.action";
 import { Input } from "./ui/input";
- 
-const SignInForm = () => {
+import { LoaderCircleIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
+
+const SignInForm = ({ className }: { className?: string }) => {
   const form = useForm<z.infer<typeof signInFormSchema>>({
     resolver: zodResolver(signInFormSchema),
     defaultValues: {
@@ -28,9 +30,12 @@ const SignInForm = () => {
       password: "",
     },
   });
- 
+
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
+
   const onSubmit = async (values: z.infer<typeof signInFormSchema>) => {
+    setLoading(true);
     console.log(values);
     try {
       const result = await signInAction(values);
@@ -45,11 +50,12 @@ const SignInForm = () => {
       console.log(error);
       console.log("Login Failed");
     }
+    setLoading(false);
   };
- 
+
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
-      <div className="w-full max-w-md space-y-6 border p-6">
+    <div className={cn(" flex items-center justify-center p-4", className)}>
+      <div className="w-full max-w-md space-y-6  p-6">
         <div className="text-center">
           <h2 className="text-2xl font-bold mb-2">Sign In</h2>
           <p className="text-sm text-muted-foreground">
@@ -68,10 +74,10 @@ const SignInForm = () => {
                 <FormItem className="space-y-2">
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input 
-                      type="email" 
-                      placeholder="name@example.com" 
-                      {...field} 
+                    <Input
+                      type="email"
+                      placeholder="name@example.com"
+                      {...field}
                       className="w-full"
                     />
                   </FormControl>
@@ -86,10 +92,10 @@ const SignInForm = () => {
                 <FormItem className="space-y-2">
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input 
-                      type="password" 
-                      placeholder="******" 
-                      {...field} 
+                    <Input
+                      type="password"
+                      placeholder="******"
+                      {...field}
                       className="w-full"
                     />
                   </FormControl>
@@ -97,15 +103,19 @@ const SignInForm = () => {
                 </FormItem>
               )}
             />
-            
+
             <div className="flex flex-col space-y-4 pt-2">
-              <Button type="submit" className="w-full">
-                Login
+              <Button type="submit" className="w-full" disabled={loading}>
+                {loading ? (
+                  <LoaderCircleIcon className="animate-spin" />
+                ) : (
+                  "Login"
+                )}
               </Button>
-              
+
               <div className="text-center">
-                <Link 
-                  href="/signup" 
+                <Link
+                  href="/signup"
                   className="underline text-primary text-sm hover:text-primary/80 transition-colors"
                 >
                   Don&apos;t have an account?
@@ -118,5 +128,5 @@ const SignInForm = () => {
     </div>
   );
 };
- 
+
 export default SignInForm;

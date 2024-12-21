@@ -6,20 +6,26 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { auth } from "@/lib/auth";
 import prisma from "@/lib/db";
 import Link from "next/link";
 import React from "react";
 
 async function ProjectDataTable() {
+  const session = await auth();
+  // console.log(session);
+  const userId = Number(session?.user?.id);
   const projects = await prisma.project.findMany({
     include: {
       Client: true, // This will include the full client information
     },
+    where: {
+      userId,
+    },
   });
 
-
   return (
-    <div className="bg-white p-2 shadow-sm border min-h-60">
+    <div className=" p-2 shadow-sm border min-h-60">
       <Table>
         <TableHeader>
           <TableRow>
@@ -55,8 +61,9 @@ async function ProjectDataTable() {
               <TableCell className="font-medium">{project.endDate?.toDateString()}</TableCell> */}
               <TableCell className="font-medium">{project.contract}</TableCell>
               <TableCell className="font-medium">{project.status}</TableCell>
-              <TableCell className="font-medium">{project.totalBudget}</TableCell>
-              
+              <TableCell className="font-medium">
+                {project.totalBudget}
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
