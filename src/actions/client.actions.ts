@@ -1,13 +1,15 @@
-"use server"
+"use server";
 
-import prisma from "@/lib/db"
-import { addNewClientFormSchema } from "@/types"
-import { z } from "zod"
+import { auth } from "@/lib/auth";
+import prisma from "@/lib/db";
+import { addNewClientFormSchema } from "@/types";
+import { z } from "zod";
 
 const createClient = async (values: z.infer<typeof addNewClientFormSchema>) => {
-  console.log("Client creating...")
+  const session = await auth();
+  console.log("Client creating...");
   try {
-    console.log("Client creating...")
+    console.log("Client creating...");
     const client = await prisma.client.create({
       data: {
         companyName: values.companyName,
@@ -15,33 +17,34 @@ const createClient = async (values: z.infer<typeof addNewClientFormSchema>) => {
         contactEmail: values.contactEmail,
         contactPhone: values.phoneNumber,
         description: values.description,
-        userId: 1,
+        userId: Number(session?.user?.id),
+      },
+    });
+    console.log("Client created", client);
 
-      }
-    })
-    console.log("Client created", client)
-
-    return { success: true }
+    return { success: true };
   } catch (error) {
     console.error("Form submission error", error);
-    return { success: false, error }
+    return { success: false, error };
   }
-
-
-}
-
+};
 
 export async function fetchClients() {
   try {
     // Fetch clients from Prisma
+    const session = await auth();
+
     const clients = await prisma.client.findMany({
       select: {
         id: true,
         companyName: true,
       },
       orderBy: {
-        companyName: 'asc'
-      }
+        companyName: "asc",
+      },
+      where: {
+        userId: Number(session?.user?.id),
+      },
     });
 
     return clients;
@@ -51,5 +54,4 @@ export async function fetchClients() {
   }
 }
 
-
-export { createClient }
+export { createClient };

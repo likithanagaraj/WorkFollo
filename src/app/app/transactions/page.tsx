@@ -4,11 +4,8 @@ import React from "react";
 
 async function page() {
   return (
-    <div className="px-10 py-20 flex flex-col gap-8">
-      <CreateButton
-        className="rounded-none p-5"
-        link="/app/transactions/create"
-      >
+    <div className="p-8 flex flex-col gap-4">
+      <CreateButton link="/app/transactions/create">
         New Transcation
       </CreateButton>
 

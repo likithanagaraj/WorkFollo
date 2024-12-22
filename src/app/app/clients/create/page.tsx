@@ -1,5 +1,7 @@
 "use client";
 import ClientForm from "@/components/client-form";
+import { ArrowLeft } from "lucide-react";
+import Link from "next/link";
 
 import React from "react";
 
@@ -25,15 +27,22 @@ import React from "react";
 //   );
 // }
 
-
-
 function page() {
   return (
-    <div className="flex flex-col justify-center items-center gap-10 bg-white" >
+    <div className="">
       {/* <CreateNav/> */}
-      <div className="flex flex-col gap-8 p-10  ">
-        <h1 className="text-4xl font-semibold ">Who&apos;s your Client?</h1>
-        <ClientForm/>
+      <div className="">
+        <section className="flex justify-between mx-10">
+          <Link
+            href={"/app/clients"}
+            className="flex gap-2 text-sm items-center text-primary/60"
+          >
+            <ArrowLeft size={16} />
+            Back
+          </Link>
+          <h3 className="ml-10 font-medium py-2">Add new client</h3>
+        </section>
+        <ClientForm />
       </div>
     </div>
   );

@@ -12,12 +12,13 @@ import {
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import { ArrowRightIcon } from "lucide-react";
 
 const Navbar1 = () => {
   return (
     <header className="py-7 flex justify-between px-5 md:px-16 items-center  z-10">
       <div>
-        <Link href={"#"} className="text-3xl font-semibold flex items-center">
+        <Link href={"#"} className="text-2xl font-semibold flex items-center">
           <Image
             src={"/logo-base-256x256.png"}
             height={50}
@@ -43,8 +44,10 @@ const Navbar1 = () => {
         {/* <Link href={"#"}>
           <Button variant={"secondary"}>Login</Button>
         </Link> */}
-        <Link href={"#"}>
-          <Button variant={"default"}>Join Waitlist</Button>
+        <Link href="/app">
+          <Button className="" variant={"default"}>
+            Get Started <ArrowRightIcon size={16}/>
+          </Button>
         </Link>
       </div>
       <div className="md:hidden">

@@ -33,9 +33,7 @@ export default async function Page(props: {
 
   // Function to calculate the total amounts for each transaction type
   const calculateTypeAmounts = (transactions: Transaction[]) => {
-   
     return {
-      
       expenses: transactions
         .filter((t) => t.type === "Expenses")
         .reduce((sum, t) => sum + (t.amount ? Number(t.amount) : 0), 0),
@@ -46,7 +44,6 @@ export default async function Page(props: {
         .filter((t) => t.type === "Payments")
         .reduce((sum, t) => sum + (t.amount ? Number(t.amount) : 0), 0),
     };
-    
   };
 
   return (
@@ -56,42 +53,47 @@ export default async function Page(props: {
           const typeAmounts = calculateTypeAmounts(client.Transaction);
 
           return (
-            <div key={client.id} className="max-w-[700px] flex flex-col gap-20">
-              <h2 className="text-2xl font-semibold mb-3">
-                {client.companyName}
-              </h2>
-              <div className="absolute right-[50px] top-[20px] z-10">
-                <PieChartGraph
-                  profit={typeAmounts.payments}
-                  expense={typeAmounts.expenses}
-                  cac={typeAmounts.cac}
-                />
-                {/* Type Amount Summary */}
-              <div className="bg-white p-4 rounded shadow">
-                <h3 className="text-xl font-semibold mb-3">
+            <div key={client.id} className=" flex flex-col">
+              <section className="flex justify-between">
+                <div className="">
+                  <h2 className="text-2xl font-semibold mb-3">
+                    {client.companyName}
+                  </h2>
+                  <div className=" p-4 ">
+                    {/* <h3 className="text-xl font-semibold mb-3">
                   Transaction  Summary
-                </h3>
-                <div className="grid grid-cols-3 gap-4">
-                  <div className="text-center">
-                    <p className="font-semibold text-red-500">Expenses</p>
-                    <p>${typeAmounts.expenses.toFixed(2)}</p>
-                  </div>
-                  <div className="text-center">
-                    <p className="font-semibold text-blue-500">CAC</p>
-                    <p>${typeAmounts.cac.toFixed(2)}</p>
-                  </div>
-                  <div className="text-center">
-                    <p className="font-semibold text-green-500">Payments</p>
-                    <p>${typeAmounts.payments.toFixed(2)}</p>
+                </h3> */}
+                    <div className="grid grid-cols-3 gap-4">
+                      <div className="text-center">
+                        <p className="font-semibold text-red-500">Expenses</p>
+                        <p>${typeAmounts.expenses.toFixed(2)}</p>
+                      </div>
+                      <div className="text-center">
+                        <p className="font-semibold text-blue-500">CAC</p>
+                        <p>${typeAmounts.cac.toFixed(2)}</p>
+                      </div>
+                      <div className="text-center">
+                        <p className="font-semibold text-green-500">Payments</p>
+                        <p>${typeAmounts.payments.toFixed(2)}</p>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-              </div>
-              
+                <PieChartGraph
+                  // profit={typeAmounts.payments}
+                  // expense={typeAmounts.expenses}
+                  // cac={typeAmounts.cac}
+                  // data=[{profit:10,}]
+                  profit={10}
+                  expense={10}
+                  cac={10}
+                />
+              </section>
+
               {/* Transactions Section */}
               <div>
                 <h2 className="text-2xl font-semibold mb-3">Transactions</h2>
-                <Table className="bg-white">
+                <Table className="">
                   <TableHeader>
                     <TableRow>
                       <TableHead>Title</TableHead>
@@ -107,7 +109,10 @@ export default async function Page(props: {
                         <TableCell>{transaction.title}</TableCell>
                         <TableCell>{transaction.description}</TableCell>
                         <TableCell>
-                          ${transaction.amount ? transaction.amount.toFixed(2) : "0.00"}
+                          $
+                          {transaction.amount
+                            ? transaction.amount.toFixed(2)
+                            : "0.00"}
                         </TableCell>
                         <TableCell>{transaction.type}</TableCell>
                         <TableCell>

@@ -6,7 +6,6 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-
 } from "@/components/ui/card";
 
 // const chartConfig = {
@@ -57,21 +56,18 @@ export default function DashboardEachChart({ title, amount }: Props) {
   return (
     <Card className="max-w-xs border ">
       <CardHeader className="p-4 pb-0">
-        <CardTitle>{title}</CardTitle>
-        <CardDescription>{amount}</CardDescription>
+        <CardTitle className="font-normal text-muted-foreground">{title}</CardTitle>
+        {/* <CardDescription>{amount}</CardDescription> */}
       </CardHeader>
       <CardContent className="flex flex-row items-baseline gap-4 p-4 pt-2">
-        <div className="flex items-baseline gap-2 text-3xl font-bold tabular-nums leading-none">
-          1,254
-          <span className="text-sm font-normal text-muted-foreground">
+        <h2 className="flex items-baseline gap-2 text-3xl font-semibold tabular-nums leading-none">
+          {amount}
+          {/* <span className="text-sm font-normal text-muted-foreground">
             kcal/day
-          </span>
-        </div>
-        <div>
-        {/* <ProjectTackerGraph /> */}
-        </div>
+          </span> */}
+        </h2>
+        <div>{/* <ProjectTackerGraph /> */}</div>
       </CardContent>
-      
     </Card>
   );
 }

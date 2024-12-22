@@ -18,6 +18,7 @@ model User {
   client         Client[]
   createdAt      DateTime      @default(now())
   transactions   Transaction[]
+  projects       Project[]
 }
 
 model Client {
@@ -54,6 +55,8 @@ model Project {
   totalBudget Float?
   // hourlyRate
   Transaction Transaction[]
+  User        User?         @relation(fields: [userId], references: [id])
+  userId      Int?
 }
 
 model Billing {
@@ -86,12 +89,12 @@ model Transaction {
   type        String //(income, expense)
   category    String //TODO:wt to do with this?
   description String?
-  createdAt DateTime @default(now())
-  User      User     @relation(fields: [userId], references: [id])
-  userId    Int  // fetch all the transcations of a particular user
-  Project   Project? @relation(fields: [projectId], references: [id])
-  projectId Int?  // fetch all the transcations of a particular project
-  Client    Client?  @relation(fields: [clientId], references: [id])
-  clientId  Int? // fetch all the transcations of a client 
+  createdAt   DateTime @default(now())
+  User        User     @relation(fields: [userId], references: [id])
+  userId      Int // fetch all the transcations of a particular user
+  Project     Project? @relation(fields: [projectId], references: [id])
+  projectId   Int? // fetch all the transcations of a particular project
+  Client      Client?  @relation(fields: [clientId], references: [id])
+  clientId    Int? // fetch all the transcations of a client 
   // status String //(pending, paid, overdue)
 }

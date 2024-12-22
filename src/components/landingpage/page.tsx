@@ -20,9 +20,9 @@ const HeroSection1 = async (props: { searchParams: SearchParams }) => {
 
   
   return (
-    <main className="bg-white text-black">
+    <main className=" text-black">
       <section className="min-h-screen">
-        <div className="absolute inset-0 -z-10 h-full w-full bg-white opacity-5 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]"></div>
+        <div className="absolute inset-0 -z-10 h-full w-full opacity-5 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]"></div>
         <Navbar1 />
         <section className="px-5 md:py-16 p-5 pb-30 sm:flex sm:flex-col items-center">
           <Badge>🎉 Something special is waiting!</Badge>

@@ -1,14 +1,15 @@
 import CreateButton from "@/components/create-button";
 import DataTable from "@/components/table";
+import { Plus } from "lucide-react";
 import React from "react";
 
 
 async function page({}) {
   
   return (
-    <div className="px-10 py-20 flex flex-col gap-8">
-      <CreateButton className="rounded-none p-5" link="/app/clients/create">
-        New Clients
+    <div className="p-8 flex flex-col gap-4">
+      <CreateButton className="" link="/app/clients/create">
+      Create new <Plus />
       </CreateButton>
       
       

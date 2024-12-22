@@ -32,7 +32,7 @@ const page = async ({ params }: { params: Params }) => {
             Transaction <ArrowRight className="" size={16} />
           </Link>
         </div>
-        <PieChartGraph />
+        <PieChartGraph  />
       </div>
       <section>
         <div className="flex w-full justify-between">

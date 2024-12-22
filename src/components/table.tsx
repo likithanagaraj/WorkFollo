@@ -19,22 +19,29 @@ import prisma from "@/lib/db";
 import React from "react";
 import { LucideEllipsis } from "lucide-react";
 import Link from "next/link";
+import { auth } from "@/lib/auth";
+import { Badge } from "./ui/badge";
 
 async function DataTable() {
-  const clients = await prisma.client.findMany();
+  const session = await auth();
+  // console.log(session);
+  const userId = Number(session?.user?.id);
+  const clients = await prisma.client.findMany({
+    where: {
+      userId,
+    },
+  });
   return (
-    <div className="bg-white p-2 shadow-sm border min-h-60">
+    <div className=" p-2 shadow-sm border min-h-60">
       <Table>
         {/* <TableCaption>A list of your recent invoices.</TableCaption> */}
         <TableHeader>
           <TableRow>
-            {/* <TableHead className="w-[100px]">Id</TableHead> */}
             <TableHead>Company Name</TableHead>
             <TableHead>Contact Name</TableHead>
             <TableHead className="">Contact Email</TableHead>
             <TableHead className="">Contact Phone</TableHead>
-            <TableHead className="">Description</TableHead>
-            {/* <TableHead className="">Actions</TableHead> */}
+            <TableHead className="">Status</TableHead>
           </TableRow>
         </TableHeader>
         {clients.map((client) => (
@@ -52,7 +59,9 @@ async function DataTable() {
               <TableCell>{client.contactName}</TableCell>
               <TableCell className="">{client.contactEmail}</TableCell>
               <TableCell className="">{client.contactPhone}</TableCell>
-              <TableCell className="">{client.description}</TableCell>
+              <TableCell className="">
+                <Badge variant={"secondary"}>Active</Badge>
+              </TableCell>
             </TableRow>
           </TableBody>
         ))}

@@ -19,7 +19,7 @@ async function ContractDataTable() {
     },
   });
   return (
-    <div className="bg-white p-2 shadow-sm border min-h-60">
+    <div className=" p-2 shadow-sm border min-h-60">
       <Table>
         <TableHeader>
           <TableRow>

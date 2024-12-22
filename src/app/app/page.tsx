@@ -18,6 +18,9 @@ const Page = async () => {
       Client: true,
       Transaction: true,
     },
+    where: {
+      clientId: 2,
+    },
   });
 
   const total = projects.reduce(
@@ -37,15 +40,15 @@ const Page = async () => {
     return acc;
   }, 0);
 
-  const revenue = total-expenses
+  const revenue = total - expenses;
   return (
     <div className="container mx-auto">
       <main className="py-7 px-4 sm:px-10 space-y-8">
         {/* Title Section */}
-        <h1 className="text-3xl font-bold">Your Total Revenue</h1>
+        <h2>Your Total Revenue</h2>
 
         {/* Revenue and Select Dropdown */}
-        <section className="flex flex-col sm:flex-row items-center justify-between gap-4">
+        <section className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-0">
           <h2 className="text-3xl font-medium">${total}</h2>
           <Select>
             <SelectTrigger className="w-full sm:w-[180px] rounded-[4px]">
@@ -64,7 +67,7 @@ const Page = async () => {
         </section>
 
         {/* Dashboard Grid */}
-        <div className="grid grid-cols-1 gap-8">
+        <div className="grid grid-cols-1 gap-3">
           {/* Chart Cards Section */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <DashboardEachChart title="Income" amount={`${total}`} />
@@ -73,7 +76,7 @@ const Page = async () => {
           </div>
 
           {/* Graph Section */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 gap-3">
             <RevenueGraph />
             {/* <ProjectTackerGraph /> */}
           </div>
