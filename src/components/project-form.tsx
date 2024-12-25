@@ -26,31 +26,35 @@ import { SmartDatetimeInput } from "./smart-datetime-input";
 import { fetchClients } from "@/actions/client.actions";
 import { createProject } from "@/actions/project.actions";
 import { useRouter } from "next/navigation";
-import { Trash2 } from "lucide-react";
+import { LoaderCircleIcon, Trash2 } from "lucide-react";
 
 // Update your Zod schema to support multiple services
 const serviceSchema = z.object({
   name: z.string().min(1, "Service name is required"),
   amount: z.number().positive("Amount must be positive"),
   unit: z.string().min(1, "Unit is required"),
-  description: z.string().optional()
+  description: z.string().optional(),
 });
 
-  const addNewProjectFormSchema = z.object({
-    projectName: z.string().min(1, "Project name is required"),
-    client: z.number({ required_error: "Client is required" }),
-    startDate: z.date().optional(),
-    endDate: z.date().optional(),
-    services: z.array(serviceSchema).min(1, "At least one service is required"),
-    billing: z.string().min(1, "Billing frequency is required"),
-    contract: z.string().optional(),
-    description: z.string().optional(),
-    status: z.string().min(1, "Status is required")
-  });
+const addNewProjectFormSchema = z.object({
+  projectName: z.string().min(1, "Project name is required"),
+  client: z.number({ required_error: "Client is required" }),
+  startDate: z.date().optional(),
+  endDate: z.date().optional(),
+  services: z.array(serviceSchema).min(1, "At least one service is required"),
+  billing: z.string().min(1, "Billing frequency is required"),
+  contract: z.string().optional(),
+  description: z.string().optional(),
+  status: z.string().min(1, "Status is required"),
+});
 
 function ProjectForm() {
   const router = useRouter();
-  const [clients, setClients] = useState<{ id: number; companyName: string }[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  const [clients, setClients] = useState<{ id: number; companyName: string }[]>(
+    []
+  );
 
   const form = useForm<z.infer<typeof addNewProjectFormSchema>>({
     resolver: zodResolver(addNewProjectFormSchema),
@@ -87,6 +91,8 @@ function ProjectForm() {
   }, []);
 
   async function onSubmit(values: z.infer<typeof addNewProjectFormSchema>) {
+    setLoading(true);
+    // SFI: this page and the way implement could be better.
     try {
       const response = await createProject({
         ...values,
@@ -105,17 +111,16 @@ function ProjectForm() {
       console.error("Form submission error", error);
       toast.error("Failed to submit the form. Please try again.");
     }
+    setLoading(false);
   }
 
   return (
-    <div className="px-8 border shadow">
+    <div className="px-8 ">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-5 max-w-3xl mx-auto py-10"
+          className="space-y-5 max-w-3xl "
         >
-          {/* Project Details Section */}
-          <h1 className="text-[25px] font-semibold">Project Details</h1>
           <div className="bg-[#FAFAFA] p-7 shadow-sm flex flex-col gap-3">
             {/* Project Name Field */}
             <FormField
@@ -172,7 +177,11 @@ function ProjectForm() {
                 <FormItem>
                   <FormLabel>Contract</FormLabel>
                   <FormControl>
-                    <Input placeholder="Contract Reference" type="text" {...field} />
+                    <Input
+                      placeholder="Contract Reference"
+                      type="text"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -187,7 +196,11 @@ function ProjectForm() {
                 <FormItem>
                   <FormLabel>Description</FormLabel>
                   <FormControl>
-                    <Input placeholder="Project Description" type="text" {...field} />
+                    <Input
+                      placeholder="Project Description"
+                      type="text"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -268,7 +281,10 @@ function ProjectForm() {
           {/* Services Section */}
           <h1 className="text-[25px] font-semibold">Services</h1>
           {fields.map((field, index) => (
-            <div key={field.id} className="grid grid-cols-12 gap-4 bg-[#FAFAFA] p-7 shadow-sm relative">
+            <div
+              key={field.id}
+              className="grid grid-cols-12 gap-4 bg-[#FAFAFA] p-7 shadow-sm relative"
+            >
               <div className="col-span-3">
                 <FormField
                   control={form.control}
@@ -297,11 +313,13 @@ function ProjectForm() {
                     <FormItem>
                       <FormLabel>Amount</FormLabel>
                       <FormControl>
-                        <Input 
-                          placeholder="Amount" 
-                          type="number" 
-                          {...field} 
-                          onChange={(e) => field.onChange(Number(e.target.value))}
+                        <Input
+                          placeholder="Amount"
+                          type="number"
+                          {...field}
+                          onChange={(e) =>
+                            field.onChange(Number(e.target.value))
+                          }
                         />
                       </FormControl>
                       <FormMessage />
@@ -362,10 +380,10 @@ function ProjectForm() {
 
               {fields.length > 1 && (
                 <div className="col-span-1 flex items-end">
-                  <Button 
-                    type="button" 
-                    variant="destructive" 
-                    size="icon" 
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    size="icon"
                     onClick={() => remove(index)}
                     className="mt-6"
                   >
@@ -376,10 +394,12 @@ function ProjectForm() {
             </div>
           ))}
 
-          <Button 
-            type="button" 
-            variant="outline" 
-            onClick={() => append({ name: "", amount: 0, unit: "", description: "" })}
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() =>
+              append({ name: "", amount: 0, unit: "", description: "" })
+            }
             className="w-full"
           >
             Add Service
@@ -416,8 +436,12 @@ function ProjectForm() {
             />
           </div>
 
-          <Button className="w-full" type="submit">
-            Submit Project
+          <Button className="w-full" type="submit" disabled={loading}>
+            {loading ? (
+              <LoaderCircleIcon className="animate-spin" />
+            ) : (
+              "Submit Project"
+            )}
           </Button>
         </form>
       </Form>

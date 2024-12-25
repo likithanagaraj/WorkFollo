@@ -6,19 +6,24 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { auth } from "@/lib/auth";
 import prisma from "@/lib/db";
 import Link from "next/link";
 import React from "react";
 
 async function TranscationTable() {
+  const session = await auth();
   const transaction = await prisma.transaction.findMany({
     include: {
       Client: true,
       Project: true,
     },
+    where: {
+      userId: Number(session?.user?.id),
+    },
   });
   return (
-    <div className="bg-white p-2 shadow-sm border min-h-60">
+    <div className="p-2 shadow-sm border min-h-60">
       <Table>
         <TableHeader>
           <TableRow>
@@ -60,9 +65,7 @@ async function TranscationTable() {
               <TableCell className="font-medium">
                 {transaction.description}
               </TableCell>
-              <TableCell className="font-medium">
-                {transaction.type}
-              </TableCell>
+              <TableCell className="font-medium">{transaction.type}</TableCell>
 
               <TableCell className="font-medium">
                 {transaction.date.toDateString()}

@@ -26,7 +26,7 @@ const signUpAction = async (data: z.infer<typeof signUpFormSchema>) => {
     const newUser = await prisma.user.create({
       data: {
         email: data.email,
-        password: data.password,
+        hashedPassword: data.password,
         name: data.name,
       },
     });
