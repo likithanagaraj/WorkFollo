@@ -14,23 +14,15 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { ArrowRightIcon } from "lucide-react";
 import { NavMenu } from "./nav-menu";
+import Logo from "../logo";
 
 const Navbar1 = () => {
   return (
-    <header className="py-7 flex justify-between px-5 md:px-16 items-center  z-10">
+    <header className="py-3 flex justify-between px-5 md:px-16 items-center  z-50">
       <div>
-        <Link href={"#"} className="text-2xl font-semibold flex items-center">
-          <Image
-            src={"/logo-base-256x256.png"}
-            height={50}
-            width={50}
-            alt="abs img"
-            className="hidden md:block"
-          />{" "}
-          FreelancerFlow
-        </Link>
+        <Logo full className="flex-row"  textClassName="text-lg" width={40} />
       </div>
-      <NavMenu/>
+      <NavMenu className="hidden md:block " />
       {/* <nav className="text-foreground/70 text-sm sm:flex gap-4 hidden">
         <Link href={"#"} className="hover:text-foreground hover:scale-105">
           Features
@@ -46,9 +38,9 @@ const Navbar1 = () => {
         {/* <Link href={"#"}>
           <Button variant={"secondary"}>Login</Button>
         </Link> */}
-        <Link href="/app">
-          <Button className="" variant={"default"}>
-            Get Started <ArrowRightIcon size={16}/>
+        <Link href="/app" className="z-50 ">
+          <Button className="z-40 " variant={"default"}>
+            Get Started <ArrowRightIcon size={16} />
           </Button>
         </Link>
       </div>

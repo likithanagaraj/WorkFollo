@@ -25,10 +25,11 @@ const Logo = ({
         className={cn("flex flex-col items-center justify-center", className)}
       >
         <Image
-          src={"/logo-base-256x256.png"}
+          src={"/assets/logo-base-256x256.png"}
           width={width}
           height={height}
           alt="logo"
+          className="saturate-150"
         />
         {full && (
           <h3 className={cn("font-medium text-2xl", textClassName)}>
@@ -43,7 +44,7 @@ const Logo = ({
         className={cn("flex flex-col items-center justify-center", className)}
       >
         <Image
-          src={"/logo-base-256x256.png"}
+          src={"/assets/logo-base-256x256.png"}
           width={width}
           height={height}
           alt="logo"
