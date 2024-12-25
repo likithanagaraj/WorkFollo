@@ -113,7 +113,7 @@ const SignInForm = ({ className }: { className?: string }) => {
                 )}
               </Button>
 
-              <div className="text-center">
+               <div className="text-center">
                 <Link
                   href="/signup"
                   className="underline text-primary text-sm hover:text-primary/80 transition-colors"
@@ -124,6 +124,7 @@ const SignInForm = ({ className }: { className?: string }) => {
             </div>
           </form>
         </Form>
+        
       </div>
     </div>
   );

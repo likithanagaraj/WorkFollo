@@ -54,13 +54,13 @@ interface Props {
 
 export default function DashboardEachChart({ title, amount }: Props) {
   return (
-    <Card className="max-w-xs border ">
-      <CardHeader className="p-4 pb-0">
+    <Card className="max-w-xs border rounded-lg pl-5 ">
+      <CardHeader className="p-4 pl-2 pb-0">
         <CardTitle className="font-normal text-muted-foreground">{title}</CardTitle>
         {/* <CardDescription>{amount}</CardDescription> */}
       </CardHeader>
-      <CardContent className="flex flex-row items-baseline gap-4 p-4 pt-2">
-        <h2 className="flex items-baseline gap-2 text-3xl font-semibold tabular-nums leading-none">
+      <CardContent className="flex flex-row items-baseline gap-4 p-2 pt-2">
+        <h2 className="flex items-baseline gap-2 text-2xl font-semibold tabular-nums leading-none">$
           {amount}
           {/* <span className="text-sm font-normal text-muted-foreground">
             kcal/day
