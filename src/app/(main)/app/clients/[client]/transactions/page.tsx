@@ -80,6 +80,7 @@ export default async function Page(props: {
                   </div>
                 </div>
                 <PieChartGraph
+                  // data={dataDB}
                   // profit={typeAmounts.payments}
                   // expense={typeAmounts.expenses}
                   // cac={typeAmounts.cac}

@@ -13,6 +13,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { ArrowRightIcon } from "lucide-react";
+import { NavMenu } from "./nav-menu";
 
 const Navbar1 = () => {
   return (
@@ -29,17 +30,18 @@ const Navbar1 = () => {
           FreelancerFlow
         </Link>
       </div>
-      <nav className="text-foreground/70 text-sm sm:flex gap-4 hidden">
+      <NavMenu/>
+      {/* <nav className="text-foreground/70 text-sm sm:flex gap-4 hidden">
         <Link href={"#"} className="hover:text-foreground hover:scale-105">
           Features
         </Link>
         <Link href={"#"} className="hover:text-foreground hover:scale-105">
           Join Waitlist!
         </Link>
-        {/* <Link href={"#"} className="hover:text-foreground hover:scale-105">
+        <Link href={"#"} className="hover:text-foreground hover:scale-105">
           Roadmap
-        </Link> */}
-      </nav>
+        </Link>
+      </nav> */}
       <div className="sm:flex  hidden gap-2">
         {/* <Link href={"#"}>
           <Button variant={"secondary"}>Login</Button>

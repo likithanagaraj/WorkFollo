@@ -2,14 +2,13 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
-import { Input } from "@/components/ui/input";
-import Navbar1 from "@/components/landingpage/navbar";
-import Features1 from "@/components/landingpage/features";
-import Cta2 from "@/components/landingpage/cta";
-import BasicFooter from "@/components/landingpage/footer";
+import Navbar1 from "@/components/marketing/navbar";
+import Features1 from "@/components/marketing/features";
+import Cta2 from "@/components/marketing/cta";
+import BasicFooter from "@/components/marketing/footer";
 import { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRightIcon, BadgeCheck, BadgeCheckIcon } from "lucide-react";
+import { ArrowRightIcon, BadgeCheckIcon } from "lucide-react";
 import BusinessHero from "@/components/business-hero";
 import HowItWorks from "@/components/how-it-works";
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
@@ -36,12 +35,12 @@ const HeroSection1 = async (props: { searchParams: SearchParams }) => {
         <Navbar1 />
         <section className="px-5 md:py-16 p-5 pb-30 sm:flex sm:flex-col items-center">
           <Badge>🎉 We are launching soon!!!</Badge>
-          <h1 className="text-5xl font-normal mt-2 sm:text-6xl sm:w-2/3 sm:text-center">
+          <h1 className="text-5xl font-calsans mt-2 sm:text-6xl sm:w-2/3 sm:text-center">
             Simplify Freelancing & Agency Work with Our{" "}
             <span className="text-primary font-serif">All-in-One Tool</span>
             {/* <span className="text-primary "> effortlessly</span> */}
           </h1>
-          <p className=" sm:text-[18px] opacity-85 font-light mb-6 mt-5 md:max-w-[600px] md:text-center">
+          <p className=" sm:text-[18px] opacity-85 font-light mb-6 mt-5 md:max-w-[600px] md:text-center font-calsans">
             We’ve built a tool specifically for freelancers and agencies to
             manage the unexciting yet essential tasks that come with your
             business—so you can focus on what you do best.

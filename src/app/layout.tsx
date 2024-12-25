@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-// import localFont from "next/font/local";
+import localFont from "next/font/local";
 import "../styles/globals.css";
 import "../styles/typography.css";
 import { Toaster } from "@/components/ui/sonner"
@@ -11,11 +11,11 @@ const inter = Inter({ subsets: ["latin"] });
 //   variable: "--font-geist-sans",
 //   weight: "100 900",
 // });
-// const geistMono = localFont({
-//   src: "./fonts/GeistMonoVF.woff",
-//   variable: "--font-geist-mono",
-//   weight: "100 900",
-// });
+const font1 = localFont({
+  src: "../../public/fonts/CalSans-SemiBold.woff2",
+  variable: "--font1",
+  weight: "100 900",
+});
 
 export const metadata: Metadata = {
   title: "Freelance Flow",

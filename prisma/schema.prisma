@@ -65,7 +65,7 @@ model Billing {
   amount     Float
   percentage Float?
   date       DateTime?
-  Project    Project   @relation(fields: [projectId], references: [id])
+  Project    Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
   projectId  Int
   // status String //(pending, paid, overdue)
 }
@@ -77,9 +77,11 @@ model Service {
   unit        String // (hour, day, per project, etc.)
   description String?
   createdAt   DateTime @default(now())
-  Project     Project  @relation(fields: [projectId], references: [id])
+  Project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
   projectId   Int
 }
+
+// db query -> all transactions of a user, 
 
 model Transaction {
   id          Int      @id @default(autoincrement())

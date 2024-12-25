@@ -9,7 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { RevenueGraph } from "@/components/revenue-graph";
+import RevenueGraph from "@/components/revenue-graph";
 import prisma from "@/lib/db";
 
 const Page = async () => {
@@ -22,6 +22,22 @@ const Page = async () => {
       clientId: 2,
     },
   });
+
+  const chartData = await prisma.transaction.findMany({
+    where: {
+      clientId: 2,
+      date: {
+        gte: new Date(new Date().setMonth(new Date().getMonth() - 1)), // 2023
+        lte: new Date(), // 2024
+      },
+    },
+    select: {
+      date: true,
+      amount: true,
+    },
+  });
+
+  //
 
   const total = projects.reduce(
     (acc, project) => acc + (project.totalBudget ?? 0),
