@@ -24,56 +24,52 @@ import {
 } from "@/components/ui/select";
 import { SmartDatetimeInput } from "./smart-datetime-input";
 import { fetchClients } from "@/actions/client.actions";
-import { createProject } from "@/actions/project.actions";
-import { useRouter } from "next/navigation";
-import { LoaderCircleIcon, Trash2 } from "lucide-react";
-
-// Update your Zod schema to support multiple services
-const serviceSchema = z.object({
-  name: z.string().min(1, "Service name is required"),
-  amount: z.number().positive("Amount must be positive"),
-  unit: z.string().min(1, "Unit is required"),
-  description: z.string().optional(),
-});
-
-const addNewProjectFormSchema = z.object({
-  projectName: z.string().min(1, "Project name is required"),
-  client: z.number({ required_error: "Client is required" }),
-  startDate: z.date().optional(),
-  endDate: z.date().optional(),
-  services: z.array(serviceSchema).min(1, "At least one service is required"),
-  billing: z.string().min(1, "Billing frequency is required"),
-  contract: z.string().optional(),
-  description: z.string().optional(),
-  status: z.string().min(1, "Status is required"),
-});
+import {
+  createProject,
+  getProject,
+  updateProject,
+} from "@/actions/project.actions";
+import { useRouter, useSearchParams } from "next/navigation";
+import { LoaderCircleIcon, Plus, Trash2 } from "lucide-react";
+import { Textarea } from "./ui/textarea";
+import { addNewProjectformSchema } from "@/types";
 
 function ProjectForm() {
-  const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const searchParams = useSearchParams();
 
+  const id = searchParams.get("query");
+  const router = useRouter();
   const [clients, setClients] = useState<{ id: number; companyName: string }[]>(
     []
   );
 
-  const form = useForm<z.infer<typeof addNewProjectFormSchema>>({
-    resolver: zodResolver(addNewProjectFormSchema),
+  const form = useForm<z.infer<typeof addNewProjectformSchema>>({
+    resolver: zodResolver(addNewProjectformSchema),
     defaultValues: {
-      projectName: "",
-      client: undefined,
-      startDate: undefined,
-      endDate: undefined,
-      services: [{ name: "", amount: 0, unit: "", description: "" }],
-      billing: "",
-      contract: "",
-      description: "",
-      status: "",
+      services: [
+        { serviceName: "", serviceAmount: 0, unit: "", servicedescription: "" },
+      ],
+      billings: [{ billingTitle: "", amount: 0 }],
     },
   });
 
-  const { fields, append, remove } = useFieldArray({
+  const {
+    fields: serviceFields,
+    append: appendService,
+    remove: removeService,
+  } = useFieldArray({
     control: form.control,
     name: "services",
+  });
+
+  const {
+    fields: billingFields,
+    append: appendBilling,
+    remove: removeBilling,
+  } = useFieldArray({
+    control: form.control,
+    name: "billings",
   });
 
   useEffect(() => {
@@ -90,47 +86,120 @@ function ProjectForm() {
     loadClients();
   }, []);
 
-  async function onSubmit(values: z.infer<typeof addNewProjectFormSchema>) {
+  useEffect(() => {
+    if (!id) return;
+
+    const fetchProject = async () => {
+      setLoading(true);
+      try {
+        const project = await getProject(id);
+        if (project) {
+          form.reset({
+            projectName: project.name,
+            client: project.Client.id,
+            startDate: project.startDate
+              ? new Date(project.startDate)
+              : new Date(),
+            endDate: project.endDate ? new Date(project.endDate) : new Date(),
+            status: project.status ?? "",
+            services: project.services.map((service: any) => ({
+              serviceName: service.name,
+              serviceAmount: service.amount,
+              unit: service.unit,
+              servicedescription: service.description,
+            })),
+            contract: project.contract || "",
+            description: project.description || "",
+            billings: project.billings.map((billing: any) => ({
+              billingTitle: billing.title,
+              amount: billing.amount,
+            })),
+          });
+        }
+      } catch (error) {
+        toast.error("Failed to load project data");
+        console.error(error);
+      }
+      setLoading(false);
+    };
+
+    fetchProject();
+  }, [id, form]);
+
+  async function onSubmit(values: z.infer<typeof addNewProjectformSchema>) {
+    // console.log("Edit");
     setLoading(true);
-    // SFI: this page and the way implement could be better.
     try {
-      const response = await createProject({
-        ...values,
-        startDate: values.startDate || new Date(),
-        endDate: values.endDate || new Date(),
-        description: values.description || "",
-        contract: values.contract || "",
-      });
-      if (response.success) {
-        toast.success("Project has been created.");
+      if (id) {
+        const transformedData = {
+          name: values.projectName,
+          clientId: values.client,
+          startDate: values.startDate,
+          endDate: values.endDate,
+          contract: values.contract,
+          description: values.description,
+          status: values.status,
+          services: {
+            create: values.services.map((service) => ({
+              name: service.serviceName,
+              amount: service.serviceAmount,
+              unit: service.unit,
+              description: service.servicedescription,
+            })),
+          },
+          billings: {
+            create: values.billings.map((billing) => ({
+              title: billing.billingTitle,
+              amount: billing.amount,
+            })),
+          },
+        };
+        await updateProject(id, transformedData);
+        toast.success("Client updated successfully!");
         router.push("/app/projects");
       } else {
-        toast.error("Error creating project");
+        const createData = {
+          projectName: values.projectName,
+          client: values.client,
+          startDate: values.startDate,
+          endDate: values.endDate,
+          contract: values.contract,
+          description: values.description,
+          status: values.status,
+          services: values.services,
+          billings: values.billings,
+        };
+
+        await createProject(createData);
+        router.push("/app/projects");
+        toast.success("Client created successfully!");
       }
     } catch (error) {
-      console.error("Form submission error", error);
-      toast.error("Failed to submit the form. Please try again.");
+      toast.error("An error occurred!");
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   }
 
   return (
-    <div className="px-8 ">
+    <div className=" ">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-5 max-w-3xl "
         >
+          <h1 className="text-[25px] font-semibold">Project Details </h1>
           <div className="bg-[#FAFAFA] p-7 shadow-sm flex flex-col gap-3">
             {/* Project Name Field */}
+
             <FormField
               control={form.control}
               name="projectName"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Project Name</FormLabel>
+                <FormItem className="flex items-center">
+                  <FormLabel className="w-full">Project Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Project Name" type="text" {...field} />
+                    <Input placeholder="UnicornSpace" type="" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -142,11 +211,11 @@ function ProjectForm() {
               control={form.control}
               name="client"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Client</FormLabel>
+                <FormItem className="flex items-center">
+                  <FormLabel className="w-full">Client</FormLabel>
                   <Select
                     onValueChange={(value) => field.onChange(Number(value))}
-                    defaultValue={field.value?.toString()}
+                    value={field.value?.toString()}
                   >
                     <FormControl>
                       <SelectTrigger>
@@ -196,9 +265,14 @@ function ProjectForm() {
                 <FormItem>
                   <FormLabel>Description</FormLabel>
                   <FormControl>
-                    <Input
+                    {/* <Input
                       placeholder="Project Description"
                       type="text"
+                      {...field}
+                    /> */}
+                    <Textarea
+                      placeholder=""
+                      className="resize-none"
                       {...field}
                     />
                   </FormControl>
@@ -214,10 +288,7 @@ function ProjectForm() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Status</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
+                  <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Select status" />
@@ -279,43 +350,65 @@ function ProjectForm() {
           </div>
 
           {/* Services Section */}
-          <h1 className="text-[25px] font-semibold">Services</h1>
-          {fields.map((field, index) => (
-            <div
-              key={field.id}
-              className="grid grid-cols-12 gap-4 bg-[#FAFAFA] p-7 shadow-sm relative"
-            >
-              <div className="col-span-3">
+
+          <div className="space-y-4">
+            <div className="flex justify-between items-center">
+              <h1 className="text-[25px] font-semibold">Services</h1>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() =>
+                  appendService({
+                    serviceName: "",
+                    serviceAmount: 0,
+                    unit: "",
+                    servicedescription: "",
+                  })
+                }
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                Add Service
+              </Button>
+            </div>
+            {serviceFields.map((field, index) => (
+              <div key={field.id} className="p-4 border rounded-lg space-y-4">
+                <div className="flex justify-between items-center">
+                  <h2 className="text-lg font-medium">Service {index + 1}</h2>
+                  {serviceFields.length > 1 && (
+                    <Button
+                      type="button"
+                      variant="destructive"
+                      size="icon"
+                      onClick={() => removeService(index)}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  )}
+                </div>
                 <FormField
                   control={form.control}
-                  name={`services.${index}.name`}
+                  name={`services.${index}.serviceName`}
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Service Name</FormLabel>
                       <FormControl>
-                        <Input
-                          placeholder="Service Name"
-                          type="text"
-                          {...field}
-                        />
+                        <Input placeholder="Service Name" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-              </div>
-
-              <div className="col-span-3">
                 <FormField
                   control={form.control}
-                  name={`services.${index}.amount`}
+                  name={`services.${index}.serviceAmount`}
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Amount</FormLabel>
                       <FormControl>
                         <Input
-                          placeholder="Amount"
                           type="number"
+                          placeholder="Amount"
                           {...field}
                           onChange={(e) =>
                             field.onChange(Number(e.target.value))
@@ -326,9 +419,6 @@ function ProjectForm() {
                     </FormItem>
                   )}
                 />
-              </div>
-
-              <div className="col-span-3">
                 <FormField
                   control={form.control}
                   name={`services.${index}.unit`}
@@ -337,38 +427,33 @@ function ProjectForm() {
                       <FormLabel>Unit</FormLabel>
                       <Select
                         onValueChange={field.onChange}
-                        defaultValue={field.value}
+                        value={field.value}
                       >
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder="Unit" />
+                            <SelectValue placeholder="Select unit" />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="Flat fee">Flat fee</SelectItem>
-                          <SelectItem value="Per hour">Per hour</SelectItem>
-                          <SelectItem value="Per day">Per day</SelectItem>
-                          <SelectItem value="Per item">Per item</SelectItem>
-                          <SelectItem value="Per word">Per word</SelectItem>
+                          <SelectItem value="per day">per day</SelectItem>
+                          <SelectItem value="per hour">per hour</SelectItem>
+                          <SelectItem value="per item">per item</SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-              </div>
-
-              <div className="col-span-2">
                 <FormField
                   control={form.control}
-                  name={`services.${index}.description`}
+                  name={`services.${index}.servicedescription`}
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Description</FormLabel>
                       <FormControl>
-                        <Input
-                          placeholder="Service Description"
-                          type="text"
+                        <Textarea
+                          placeholder="Description"
+                          className="resize-none"
                           {...field}
                         />
                       </FormControl>
@@ -377,70 +462,91 @@ function ProjectForm() {
                   )}
                 />
               </div>
-
-              {fields.length > 1 && (
-                <div className="col-span-1 flex items-end">
-                  <Button
-                    type="button"
-                    variant="destructive"
-                    size="icon"
-                    onClick={() => remove(index)}
-                    className="mt-6"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </div>
-              )}
-            </div>
-          ))}
-
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() =>
-              append({ name: "", amount: 0, unit: "", description: "" })
-            }
-            className="w-full"
-          >
-            Add Service
-          </Button>
-
+            ))}
+          </div>
           {/* Billing Section */}
-          <h1 className="text-[25px] font-semibold">Billing</h1>
-          <div className="bg-[#FAFAFA] p-7 shadow-sm">
-            <FormField
-              control={form.control}
-              name="billing"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>How are you taking payments</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select billing frequency" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="Once">Once</SelectItem>
-                      <SelectItem value="weekly">Weekly</SelectItem>
-                      <SelectItem value="Monthly">Monthly</SelectItem>
-                      <SelectItem value="On milestone">On milestone</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+          <div className="space-y-4">
+            <div className="flex justify-between items-center">
+              <h1 className="text-[25px] font-semibold">Billing</h1>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => appendBilling({ billingTitle: "", amount: 0 })}
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                Add Billing
+              </Button>
+            </div>
+
+            {billingFields.map((field, index) => (
+              <div key={field.id} className="p-4 border rounded-lg space-y-4">
+                <div className="flex justify-between items-center">
+                  <h2 className="text-lg font-medium">Billing {index + 1}</h2>
+                  {billingFields.length > 1 && (
+                    <Button
+                      type="button"
+                      variant="destructive"
+                      size="icon"
+                      onClick={() => removeBilling(index)}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  )}
+                </div>
+
+                <FormField
+                  control={form.control}
+                  name={`billings.${index}.billingTitle`}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Billing Title</FormLabel>
+                      <Select onValueChange={field.onChange} value={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select billing type" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="Once">Once</SelectItem>
+                          <SelectItem value="weekly">Weekly</SelectItem>
+                          <SelectItem value="monthly">Monthly</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name={`billings.${index}.amount`}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Amount</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          placeholder="Amount"
+                          {...field}
+                          onChange={(e) => field.onChange(Number(e.target.value))}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            ))}
           </div>
 
           <Button className="w-full" type="submit" disabled={loading}>
             {loading ? (
               <LoaderCircleIcon className="animate-spin" />
+            ) : id ? (
+              "Update"
             ) : (
-              "Submit Project"
+              "Submit"
             )}
           </Button>
         </form>

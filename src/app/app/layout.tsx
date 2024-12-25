@@ -1,14 +1,28 @@
 "use client";
 
-import { SessionProvider } from "next-auth/react";
+import { SessionProvider, useSession } from "next-auth/react";
 import { AppSidebar } from "@/components/app-sidebar";
 import MainNavbar from "@/components/main-navbar";
-import { SidebarProvider } from "@/components/ui/sidebar";
-import { Session } from "inspector/promises";
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/ui/sidebar";
+
 import { usePathname } from "next/navigation";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const currentPath = pathname.split("/")[2];
+  const label =
+    currentPath === "clients"
+      ? "Clients"
+      : currentPath === "projects"
+      ? "Projects"
+      : currentPath === "transactions"
+      ? "Transactions"
+      : "Dashboard";
+
   const routesWithoutSidebar = [""];
 
   // Check if the current route should show the sidebar
@@ -20,11 +34,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <SessionProvider>
           <SidebarProvider>
             <AppSidebar />
-            <main className="flex flex-col w-full">
-              <MainNavbar />
-              {/* <SidebarTrigger /> */}
-              <div className=" h-full">{children}</div>
-            </main>
+            <SidebarInset>
+              {/* <header> */}
+                <MainNavbar />
+              {/* </header> */}
+              <div className="">{children}</div>
+            </SidebarInset>
           </SidebarProvider>
         </SessionProvider>
       ) : (

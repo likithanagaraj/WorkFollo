@@ -1,7 +1,9 @@
 import CreateButton from "@/components/create-button";
 import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import prisma from "@/lib/db";
+import { Client } from "@prisma/client";
 import Link from "next/link";
 import React from "react";
 type Params = Promise<{ id: string }>;
@@ -24,6 +26,7 @@ async function page({ params }: { params: Params }) {
 
   return (
     <div className="">
+      {/* <ProjectCard data={projects} /> */}
       {projects.map((project) => {
         return (
           <div key={project.id} className="p-8 gap-10 flex flex-col">
@@ -61,6 +64,23 @@ async function page({ params }: { params: Params }) {
         );
       })}
     </div>
+  );
+}
+
+function ProjectCard({ data }: { data: Client }) {
+  return (
+    <Card key={data.id} className="border rounded-lg w-80">
+      <CardHeader className="pb-2">
+        <CardDescription>{data.status}</CardDescription>
+        <CardTitle className="text-3xl">{data.companyName}</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="text-xs text-muted-foreground">{data.description}</div>
+      </CardContent>
+      <CardFooter>
+        <Progress value={12} aria-label="12% increase" />
+      </CardFooter>
+    </Card>
   );
 }
 

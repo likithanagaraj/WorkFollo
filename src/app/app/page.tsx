@@ -40,7 +40,8 @@ const Page = async () => {
     return acc;
   }, 0);
 
-  const revenue = total - expenses;
+  let revenue = total - expenses;
+ 
   return (
     <div className="container mx-auto">
       <main className="py-7 px-4 sm:px-10 space-y-8">

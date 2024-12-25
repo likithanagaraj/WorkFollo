@@ -30,17 +30,18 @@ import React from "react";
 function page() {
   return (
     <div className="">
-      {/* <CreateNav/> */}
-      <div className="">
-        <section className="flex justify-between mx-10">
+
+      <div className="flex flex-col gap-5">
+        <section className="flex flex-col mx-8 ">
           <Link
             href={"/app/clients"}
-            className="flex gap-2 text-sm items-center text-primary/60"
+            className="flex gap-2 text-[18px] items-center text-primary/60"
           >
             <ArrowLeft size={16} />
             Back
           </Link>
-          <h3 className="ml-10 font-medium py-2">Add new client</h3>
+          <h2>Add the clients</h2>
+          {/* <h3 className="ml-10 font-medium py-2">Add new client</h3> */}
         </section>
         <ClientForm />
       </div>

@@ -21,8 +21,8 @@ import React from "react";
 
 function page() {
   return (
-    <div className="flex flex-col  gap-4 ">
-      <h2>What&apos;s your Project?</h2>
+    <div className="flex flex-col  gap-4 m-8">
+      {/* <h2>What&apos;s your Project?</h2> */}
       <ProjectForm />
     </div>
   );

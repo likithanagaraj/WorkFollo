@@ -32,15 +32,12 @@ const page = async ({ params }: { params: Params }) => {
             Transaction <ArrowRight className="" size={16} />
           </Link>
         </div>
-        <PieChartGraph  />
+        <PieChartGraph />
       </div>
       <section>
         <div className="flex w-full justify-between">
           <h2 className="text-2xl ">Projects</h2>
-          <CreateButton
-            link={`/app/projects/create`}
-            className=""
-          >
+          <CreateButton link={`/app/projects/create`} className="">
             New Project <Plus />
           </CreateButton>
         </div>

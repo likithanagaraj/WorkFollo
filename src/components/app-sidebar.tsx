@@ -1,98 +1,112 @@
-"use client";
+"use client"
 
-import { LucideUserCircle, FilesIcon, ChartLine, Home } from "lucide-react";
+import * as React from "react"
+import {
+  AudioWaveform,
+  BookOpen,
+  Bot,
+  ChartLine,
+  Command,
+  Frame,
+  GalleryVerticalEnd,
+  Home,
+  Map,
+  PieChart,
+  Settings2,
+  SquareTerminal,
+  User,
+} from "lucide-react"
+
 
 import {
   Sidebar,
   SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-} from "@/components/ui/sidebar";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { cn } from "@/lib/utils";
-import Logo from "./logo";
+  SidebarFooter,
+  SidebarHeader,
+  SidebarRail,
+} from "@/components/ui/sidebar"
+import { TeamSwitcher } from "./sidebar/team-switcher"
+import { NavMain } from "./sidebar/nav-main"
+import { NavProjects } from "./sidebar/nav-projects"
+import { NavUser } from "./sidebar/nav-user"
 
-// Menu items.
-const items = [
-  {
-    title: "Dashboard",
-    url: "/app",
-    icon: Home,
-  },
-  {
-    title: "Clients",
-    url: "/app/clients",
-    // url2: "/app/clients/**",
-    icon: LucideUserCircle,
-  },
-  {
-    title: "Projects",
-    url: "/app/projects",
-    // url2: "/app/projects/** " ,
-    icon: FilesIcon,
-  },
-  {
-    title: "Transcations",
-    url: "/app/transactions",
-    // url2: "/app/projects/** " ,
-    icon: ChartLine,
-  },
-  // {
-  //   title: "Contract",
-  //   url: "/app/contracts",
-  //   icon: FilesIcon,
-  // },
-  // {
-  //   title: "Settings",
-  //   url: "#",
-  //   icon: Settings,
-  // },
-];
+// This is sample data.
+const data = {
 
-export function AppSidebar() {
-  const path = usePathname();
+  navMain: [
+    {
+      title: "Dashboard",
+      url: "/app",
+      icon: Home,
+      isActive: true,  
+     
+    },
+    {
+      title: "Clients",
+      url: "/app/clients",
+      icon: User,
+    },
+    {
+      title: "Projects",
+      url: "/app/projects",
+      icon: BookOpen,
+     
+    },
+    {
+      title: "Transcations",
+      url: "/app/transactions",
+      icon: ChartLine,
+      items: [
+        {
+          title: "General",
+          url: "#",
+        },
+        {
+          title: "Team",
+          url: "#",
+        },
+        {
+          title: "Billing",
+          url: "#",
+        },
+        {
+          title: "Limits",
+          url: "#",
+        },
+      ],
+    },
+  ],
+  projects: [
+    {
+      name: "Design Engineering",
+      url: "#",
+      icon: Frame,
+    },
+    {
+      name: "Sales & Marketing",
+      url: "#",
+      icon: PieChart,
+    },
+    {
+      name: "Travel",
+      url: "#",
+      icon: Map,
+    },
+  ],
+}
 
+export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
-    <Sidebar collapsible="icon" variant="sidebar" className="">
-      <SidebarContent >
-        <SidebarGroup >
-          <SidebarGroupLabel className="text-[20px]  text-black   font-bold mb-5">
-            <Logo
-              full
-              link
-              width={30}
-              height={30}
-              textClassName="text-lg"
-              className="flex-row text-md items-center gap-1 mt-5"
-            />
-
-            {/* <SidebarTrigger /> */}
-          </SidebarGroupLabel>
-
-          <SidebarGroupContent className="">
-            <SidebarMenu className=" ">
-              {items.map((item) => (
-                <SidebarMenuItem className="" key={item.title}>
-                  <SidebarMenuButton className="" asChild>
-                    <Link
-                      className={cn("", path === item.url && "text-primary")}
-                      href={item.url}
-                    >
-                      <item.icon size={18} />
-                      <span className="">{item.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
+    <Sidebar collapsible="icon" {...props}>
+      <SidebarHeader>
+        <TeamSwitcher  />
+      </SidebarHeader>
+      <SidebarContent>
+        <NavMain items={data.navMain} />
+        {/* <NavProjects projects={data.projects} /> */}
       </SidebarContent>
+      
+      <SidebarRail />
     </Sidebar>
-  );
+  )
 }
