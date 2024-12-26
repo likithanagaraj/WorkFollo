@@ -102,15 +102,15 @@ function ProjectForm() {
               : new Date(),
             endDate: project.endDate ? new Date(project.endDate) : new Date(),
             status: project.status ?? "",
-            services: project.services.map((service: any) => ({
+            services: project.services.map((service) => ({
               serviceName: service.name,
               serviceAmount: service.amount,
               unit: service.unit,
-              servicedescription: service.description,
+              servicedescription: service.description ?? undefined,
             })),
             contract: project.contract || "",
             description: project.description || "",
-            billings: project.billings.map((billing: any) => ({
+            billings: project.billings.map((billing) => ({
               billingTitle: billing.title,
               amount: billing.amount,
             })),

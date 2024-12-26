@@ -1,12 +1,11 @@
 "use client";
 
-import { SessionProvider, useSession } from "next-auth/react";
+import { SessionProvider} from "next-auth/react";
 import { AppSidebar } from "@/components/app-sidebar";
 import MainNavbar from "@/components/main-navbar";
 import {
   SidebarInset,
   SidebarProvider,
-  SidebarTrigger,
 } from "@/components/ui/sidebar";
 
 import { usePathname } from "next/navigation";

@@ -21,7 +21,9 @@ import { allPosts } from 'contentlayer/generated'
 //   }
 // }
 
-const PostLayout = ({ post }) => {
+import { Post } from 'contentlayer/generated'
+
+const PostLayout = ({ post }: { post: Post }) => {
   return (
     <>
       <Head>
