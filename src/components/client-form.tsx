@@ -86,7 +86,7 @@ function ClientForm() {
   }
 
   return (
-    <div className=" max-w-2xl  md:ml-10  py-5 border px-5   shadow">
+    <div className=" max-w-2xl  md:ml-10  py-5 border px-5   rounded-lg">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
           <FormField

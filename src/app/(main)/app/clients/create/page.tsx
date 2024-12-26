@@ -40,7 +40,7 @@ function page() {
             <ArrowLeft size={16} />
             Back
           </Link>
-          <h2>Add the clients</h2>
+          {/* <h2>Add the clients</h2> */}
           {/* <h3 className="ml-10 font-medium py-2">Add new client</h3> */}
         </section>
         <ClientForm />

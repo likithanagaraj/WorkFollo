@@ -39,10 +39,8 @@ function MainNavbar() {
   // console.log(session);
   const pathname = usePathname();
   const currentPath = pathname.split("/")[2];
-  const username = session?.user?.email?.slice(
-    0,
-    session?.user?.email?.indexOf("@")
-  ) as string;
+  const username = session?.user?.email?.split("@")[0] || "Guest";
+  const initials = username.slice(0, 2).toUpperCase();
   const label =
     currentPath === "clients"
       ? "Clients"
@@ -57,9 +55,6 @@ function MainNavbar() {
       <div className="flex items-center space-x-4">
         <SidebarTrigger className="text-gray-600 hover:text-primary" />
         <h1 className="text-xl font-medium text-gray-800">{label}</h1>
-        <SidebarFooter>
-        {/* <NavUser  /> */}
-      </SidebarFooter>
       </div>
 
       <div className="flex items-center space-x-4">
@@ -75,7 +70,9 @@ function MainNavbar() {
             <Button variant="ghost" className="h-auto p-0 hover:bg-transparent">
               <Avatar>
                 <AvatarImage src="./avatar.jpg" alt="Profile image" />
-                <AvatarFallback className="uppercase">{username}</AvatarFallback>
+                <AvatarFallback className="uppercase font-semibold text-[16px] ">
+                  {initials}
+                </AvatarFallback>
               </Avatar>
               <ChevronDown
                 size={16}
@@ -162,7 +159,6 @@ function MainNavbar() {
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-       
       </div>
     </nav>
   );

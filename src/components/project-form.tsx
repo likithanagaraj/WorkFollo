@@ -189,7 +189,7 @@ function ProjectForm() {
           className="space-y-5 max-w-3xl "
         >
           <h1 className="text-[25px] font-semibold">Project Details </h1>
-          <div className="bg-[#FAFAFA] p-7 shadow-sm flex flex-col gap-3">
+          <div className="border rounded-lg p-7 shadow-sm flex flex-col gap-3">
             {/* Project Name Field */}
 
             <FormField

@@ -1,6 +1,8 @@
 "use client";
 
 import ProjectForm from "@/components/project-form";
+import { ArrowLeft } from "lucide-react";
+import Link from "next/link";
 
 import React from "react";
 
@@ -23,6 +25,13 @@ function page() {
   return (
     <div className="flex flex-col  gap-4 m-8">
       {/* <h2>What&apos;s your Project?</h2> */}
+      <Link
+        href={"/app/projects"}
+        className="flex gap-2 text-[18px] items-center text-primary/60"
+      >
+        <ArrowLeft size={16} />
+        Back
+      </Link>
       <ProjectForm />
     </div>
   );

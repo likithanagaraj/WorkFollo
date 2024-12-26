@@ -36,19 +36,21 @@ const SignInForm = ({ className }: { className?: string }) => {
 
   const onSubmit = async (values: z.infer<typeof signInFormSchema>) => {
     setLoading(true);
-    console.log(values);
+    // console.log(values);
     try {
       const result = await signInAction(values);
       if (result.success) {
         toast.success("Login Success");
         router.push("/app");
       } else {
-        console.log("Login Failed", result.error);
+        // console.log("Login Failed", result.error);
         toast.error(`Login Failed: ${result.error}`);
+        // toast.success("Login Failed");
       }
     } catch (error) {
-      console.log(error);
-      console.log("Login Failed");
+      // console.log(error);
+      // console.log("Login Failed");
+      toast.error("Login Failed");
     }
     setLoading(false);
   };

@@ -35,10 +35,10 @@ const SignUpForm = () => {
   const [loading, setLoading] = useState(false);
   const onSubmit = async (values: z.infer<typeof signUpFormSchema>) => {
     setLoading(true);
-    console.log(values);
+    // console.log(values);
 
     const res = await signUpAction(values);
-    console.log(" 😂😂",res)
+    // console.log(" 😂😂",res)
     if (res.success) {
       toast.success(res.data);
       router.push("/app");

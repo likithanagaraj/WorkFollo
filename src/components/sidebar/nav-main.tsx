@@ -27,28 +27,29 @@ export function NavMain({
     title: string
     url: string
     icon?: LucideIcon
-    isActive?: boolean
-    items?: {
-      title: string
-      url: string
-    }[]
+   
   }[]
 }) 
 
 {
-  const path = usePathname();
+  const pathname = usePathname();
+  const isActive = (itemUrl: string) => {
+    if (itemUrl === '/app') {
+      return pathname === '/app';
+    }
+    return pathname.startsWith(itemUrl + '/') || pathname === itemUrl;
+  };
   return (
     <SidebarGroup>
       {/* <SidebarGroupLabel>Platform</SidebarGroupLabel> */}
-      <SidebarMenu>
+      <SidebarMenu className="mt-3 ml-2">
         {items.map((item) => (
-          
-            <SidebarMenuItem key={item.title}>
+            <SidebarMenuItem className={  isActive(item.url) ? "text-black font-bold  ":"text-red"} key={item.title}>
               
-                <SidebarMenuButton className={item.url === path ?"text-primary":"text-black" } onClick={() => window.location.href = item.url} tooltip={item.title}>
+                <SidebarMenuButton onClick={() => window.location.href = item.url} tooltip={item.title}>
                   {item.icon && <item.icon />}
-                  <span>{item.title}</span>
-                  <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                  <span  className="text-[14px]" >{item.title}</span>
+                  {/* <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" /> */}
                 </SidebarMenuButton>
 
              

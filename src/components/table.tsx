@@ -1,4 +1,3 @@
-
 import {
   Table,
   TableBody,
@@ -7,8 +6,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
-
 
 import prisma from "@/lib/db";
 import React from "react";
@@ -20,16 +17,21 @@ import {
   Ellipsis,
   LucideEllipsis,
   Plus,
-  Trash,
 } from "lucide-react";
 import Link from "next/link";
 import { auth } from "@/lib/auth";
-import { Badge } from "./ui/badge";
 import CreateButton from "./create-button";
-import { Button } from "./ui/button";
-import { deleteClient } from "@/actions/client.actions";
 import Deletebtn from "./delete-btn";
 import SelectDemo from "./status";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
+import { Separator } from "./ui/separator";
 
 async function DataTable() {
   const session = await auth();
@@ -53,7 +55,7 @@ async function DataTable() {
               <TableHead className="">Contact Email</TableHead>
               <TableHead className="">Contact Phone</TableHead>
               {/* <TableHead className="">Status</TableHead> */}
-              {/* <TableHead className="">Actions</TableHead> */}
+              <TableHead className="">Actions</TableHead>
             </TableRow>
           </TableHeader>
           {clients.map((client) => (
@@ -62,28 +64,37 @@ async function DataTable() {
                 {/* <TableCell className="font-medium">{client.id}</TableCell> */}
 
                 <TableCell>
-                  {" "}
                   <Link href={`/app/clients/${client.id}`}>
-                    {client.companyName}{" "}
+                    {client.companyName}
                   </Link>
                 </TableCell>
 
                 <TableCell>{client.contactName}</TableCell>
                 <TableCell className="">{client.contactEmail}</TableCell>
                 <TableCell className="">{client.contactPhone}</TableCell>
-                <TableCell className="">
-                  {/* <SelectDemo/>x */}
-                </TableCell>
                 <TableCell className="flex gap-5 items-center ">
-                  <Link
-                    href={`/app/clients/create?query=${client.id}`}
-                    className=""
-                  >
-                    <Edit size={18} />
-                  </Link>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger className="text-xl">
+                      ...
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                      <DropdownMenuItem>
+                      <p>Edit</p>
+                        <Link
+                          href={`/app/clients/create?query=${client.id}`}
+                          className=""
+                        >
+                          <Edit size={14} />
+                        </Link>
+                      </DropdownMenuItem>
+                      <Separator/>
+                      <DropdownMenuItem  className="">
+                       
+                        <Deletebtn id={client.id} action="client" />
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
 
-                  
-                  <Deletebtn id={client.id} action="client"/>
                   {/* <Button onClick={handleDelete}><Trash size={18}  /></Button>  */}
                 </TableCell>
               </TableRow>

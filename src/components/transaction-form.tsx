@@ -168,7 +168,7 @@ loadTransactionAndProjects()
     }
   }
   return (
-    <div className="px-8 border  shadow">
+    <div className="px-8 border  rounded-lg">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}

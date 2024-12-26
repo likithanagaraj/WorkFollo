@@ -29,6 +29,7 @@ import { TeamSwitcher } from "./sidebar/team-switcher"
 import { NavMain } from "./sidebar/nav-main"
 import { NavProjects } from "./sidebar/nav-projects"
 import { NavUser } from "./sidebar/nav-user"
+import { usePathname } from "next/navigation"
 
 // This is sample data.
 const data = {
@@ -43,7 +44,7 @@ const data = {
     },
     {
       title: "Clients",
-      url: "/app/clients",
+      url: "/app/clients" ,
       icon: User,
     },
     {
@@ -56,46 +57,13 @@ const data = {
       title: "Transcations",
       url: "/app/transactions",
       icon: ChartLine,
-      items: [
-        {
-          title: "General",
-          url: "#",
-        },
-        {
-          title: "Team",
-          url: "#",
-        },
-        {
-          title: "Billing",
-          url: "#",
-        },
-        {
-          title: "Limits",
-          url: "#",
-        },
-      ],
-    },
-  ],
-  projects: [
-    {
-      name: "Design Engineering",
-      url: "#",
-      icon: Frame,
-    },
-    {
-      name: "Sales & Marketing",
-      url: "#",
-      icon: PieChart,
-    },
-    {
-      name: "Travel",
-      url: "#",
-      icon: Map,
+    
     },
   ],
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>

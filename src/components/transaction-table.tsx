@@ -13,6 +13,8 @@ import React from "react";
 import CreateButton from "./create-button";
 import { Edit, Plus } from "lucide-react";
 import Deletebtn from "./delete-btn";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
+import { Separator } from "./ui/separator";
 
 async function TranscationTable() {
   const session = await auth();
@@ -46,19 +48,16 @@ async function TranscationTable() {
             {transaction.map((transaction) => (
               <TableRow key={transaction.id}>
                 <TableCell className="font-medium">
-                  {""}
-                  <Link href={`/app/clients/${transaction?.Client?.id}`}>
-                    {" "}
+                  
+        
                     {transaction?.Client?.companyName}
-                  </Link>
+                  
                 </TableCell>
 
                 <TableCell className="font-medium">
-                  <Link
-                    href={`/app/clients/${transaction.Client?.id}/transactions`}
-                  >
+                  
                     {transaction?.Project?.name}
-                  </Link>
+
                 </TableCell>
                 <TableCell className="font-medium">
                   {transaction?.Client?.contactName}
@@ -80,15 +79,33 @@ async function TranscationTable() {
                   {transaction.date.toDateString()}
                 </TableCell>
                 <TableCell className="flex gap-5 items-center ">
-                <Link
+                
+                  
+                  
+
+                  <DropdownMenu>
+                    <DropdownMenuTrigger className="text-xl">
+                      ...
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                      <DropdownMenuItem>
+                      <p>Edit</p>
+                      <Link
                     href={`/app/transactions/create?query=${transaction.id}`}
                     className=""
                   >
+                    
                     <Edit size={18} />
                   </Link>
 
-                  
-                  <Deletebtn id={transaction.id} action="transaction"/>
+                      </DropdownMenuItem>
+                      <Separator/>
+                      <DropdownMenuItem  className="">
+                        <p>Delete</p>
+                        <Deletebtn id={transaction.id} action="transaction"/>
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </TableCell>
               </TableRow>
             ))}

@@ -3,6 +3,7 @@
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/db";
 import { addNewClientFormSchema } from "@/types";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
 const createClient = async (values: z.infer<typeof addNewClientFormSchema>) => {
@@ -110,12 +111,12 @@ export async function deleteClient(id: number) {
   if (!id) {
     throw new Error("Invalid ID provided for deletion");
   }
-
+console.log("Deleting client...");
   try {
     await prisma.client.delete({
       where: { id },
     });
-
+revalidatePath("/app/clients");
     return { success: true };
   } catch (error) {
     console.error("Error deleting client:", error);

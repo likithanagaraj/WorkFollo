@@ -35,7 +35,7 @@ export function TeamSwitcher() {
             >
               <div className="flex aspect-square size-8 items-center justify-center rounded-lg text-sidebar-primary-foreground">
                 <Image
-                  src={"/logo-base-256x256.png"}
+                  src={"/assets/logo-base-256x256.png"}
                   width={30}
                   height={30}
                   alt="logo"

@@ -23,6 +23,7 @@ const Page = async () => {
     },
   });
 
+
   const chartData = await prisma.transaction.findMany({
     where: {
       clientId: 2,
@@ -39,16 +40,17 @@ const Page = async () => {
 
   //
 
-  const total = projects.reduce(
-    (acc, project) => acc + (project.totalBudget ?? 0),
-    0
-  );
+
   const transaction = await prisma.transaction.findMany({
     include: {
       Client: true,
       Project: true,
     },
   });
+  const total = transaction.reduce(
+    (acc, transaction) => acc + (transaction.type === "Payments" ? transaction.amount : 0),
+    0
+  );
   const expenses = transaction.reduce((acc, transaction) => {
     if (transaction.type === "Expenses") {
       return acc + transaction.amount;

@@ -2,6 +2,8 @@
 "use client"
 
 import TranscationForm from '@/components/transaction-form'
+import { ArrowLeft } from 'lucide-react'
+import Link from 'next/link'
 
 import React from 'react'
 
@@ -26,7 +28,14 @@ function page() {
     <div className="flex flex-col justify-center items-start gap-10" >
       {/* <CreateNav/> */}
       <div className="flex flex-col gap-8 p-10 ">
-      <h1 className="text-4xl font-semibold "> Transcation</h1>
+      <Link
+            href={"/app/transactions"}
+            className="flex gap-2 text-[18px] items-center text-primary/60"
+          >
+            <ArrowLeft size={16} />
+            Back
+          </Link>
+      {/* <h1 className="text-4xl font-semibold "> Transcation</h1> */}
         <TranscationForm/>
         {/* <ProjectForm/> */}
       </div>

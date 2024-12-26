@@ -57,10 +57,18 @@ console.log("Amount 2",chartData)
       color: "green",
     },
   } satisfies ChartConfig;
+
+  const total = data.reduce(
+    (acc, transaction) => acc + (transaction.type === "Payments" ? transaction.amount : 0),
+    0
+  );
   
-  // const totalVisitors = React.useMemo(() => {
-  //   return data.reduce((acc, curr) => acc + curr.amount, 0);
-  // }, []);
+  // const roundedTotal = total.toFixed(2);
+
+  // const formattedTotal = total.toLocaleString(undefined, {
+  //   minimumFractionDigits: 2,
+  //   maximumFractionDigits: 2
+  // });
 
   return (
     <Card className="flex flex-col">
@@ -94,9 +102,9 @@ console.log("Amount 2",chartData)
                         <tspan
                           x={viewBox.cx}
                           y={viewBox.cy}
-                          className="fill-foreground text-3xl font-bold"
+                          className="fill-foreground text-2xl font-bold"
                         >
-                          {/* {data[0].amount} */}
+                          {total.toLocaleString()}
                         </tspan>
                         <tspan
                           x={viewBox.cx}

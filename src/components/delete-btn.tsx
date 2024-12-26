@@ -14,57 +14,72 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Trash } from 'lucide-react';
+import { Button } from "@/components/ui/button";
+import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 
 import { deleteClient } from "@/actions/client.actions";
 import { toast } from "sonner";
 import { deleteProject } from "@/actions/project.actions";
 import { deletetranscation } from "@/actions/transcation.actions";
 
-function DeleteBtn({ id,action }: { id: number,action:"client"|"project"|"transaction" }) {	
+function DeleteMenuItem({ id, action }: { id: number, action: "client" | "project" | "transaction" }) {
   const router = useRouter();
 
   const handleDelete = async () => {
+    console.log("id action",id,action);
     try {
-      if(action === "client"){
+      if (action === "client") {
         await deleteClient(id);
-      }
-      if(action === "project"){
+       
+      } else if (action === "project") {
         await deleteProject(id);
-      }
-      if(action === "transaction"){
+      } else if (action === "transaction") {
         await deletetranscation(id);
       }
-      toast("success");
-      router.refresh(); // Refresh the current route to update the UI
+      
+      toast.success(`${action} deleted successfully`);
+      router.refresh();
     } catch (error) {
-      console.error("Error deleting client:", error);
-      toast("error");
+      console.error(`Error deleting ${action}:`, error);
+      toast.error(`Failed to delete ${action}`);
     }
   };
 
   return (
-    <AlertDialog>
-      <AlertDialogTrigger>
-        <Trash size={18} />
-      </AlertDialogTrigger>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-          <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete the client
-            and remove their data from our servers.
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={handleDelete}>
-            Delete
-          </AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+    <DropdownMenuItem className="gap-2" onClick={(e) => e.preventDefault()}>
+      {/* <p>Delete</p> */}
+      <AlertDialog>
+        <AlertDialogTrigger asChild>
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="h-auto w-auto p-0"
+          >
+            <Trash size={15} />
+          </Button>
+        </AlertDialogTrigger>
+        
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete this {action}
+              and remove the data from our servers.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDelete}
+            >
+              Continue
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </DropdownMenuItem>
   );
 }
 
-export default DeleteBtn;
-
+export default DeleteMenuItem;

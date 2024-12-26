@@ -29,7 +29,7 @@ model Client {
   createdAt    DateTime      @default(now())
   userId       Int
   status       String?
-  User         User          @relation(fields: [userId], references: [id])
+  User         User          @relation(fields: [userId], references: [id],onDelete: Cascade)
   projects     Project[]
   Transaction  Transaction[]
 }
@@ -88,7 +88,7 @@ model Transaction {
   userId      Int
   projectId   Int?
   clientId    Int?
-  Client      Client?  @relation(fields: [clientId], references: [id])
-  Project     Project? @relation(fields: [projectId], references: [id])
-  User        User     @relation(fields: [userId], references: [id])
+  Client      Client?  @relation(fields: [clientId], references: [id],onDelete: Cascade)
+  Project     Project? @relation(fields: [projectId], references: [id],onDelete: Cascade)
+  User        User     @relation(fields: [userId], references: [id],onDelete: Cascade)
 }
