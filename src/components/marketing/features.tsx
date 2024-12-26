@@ -41,13 +41,12 @@ const featuresData = [
 const Features1 = () => {
   return (
     <section className="flex items-center flex-col my-16">
-      <h1>Features</h1>
+      <h1>What can you do?</h1>
       <p className="text-center mt-2 mb-5 leading-normal text-muted-foreground sm:text-lg sm:leading-7">
-        Taxonomy also includes a blog and a full-featured documentation site
-        built.
+
       </p>
       {/* <section className="grid grid-cols-1 md:grid-cols-2 gap-6"> */}
-      <section className="flex gap-6">
+      <section className="flex gap-6 flex-wrap">
         {featuresData.map((feature) => (
           <Card
             className="flex flex-col gap-2 items-start  p-7 py-8 max-w-52  md:w-80 rounded-lg bg-white/10 border text-black border-none"
@@ -55,7 +54,7 @@ const Features1 = () => {
           >
             <div className={"text-primary"}>{feature.logo}</div>
             <div>
-              <h3  className="text-xl mt-2 mb-1">{feature.title}</h3>
+              <h3 className="text-xl mt-2 mb-1">{feature.title}</h3>
               <p className="text-xs text-wrap">{feature.description}</p>
             </div>
           </Card>

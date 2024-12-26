@@ -49,7 +49,7 @@ const SignUpForm = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center w-[500px]">
+    <div className="min-h-screen md:mt-10 flex items-center justify-center w-[500px]">
       <div className="w-full max-w-md space-y-6 p-6 rounded-lg shadow-sm">
         <div className="text-center mb-6">
           <h2 className="text-2xl font-semibold mb-2">Create Your Account</h2>

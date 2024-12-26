@@ -9,7 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { RevenueGraph } from "@/components/revenue-graph";
+import RevenueGraph from "@/components/revenue-graph";
 import prisma from "@/lib/db";
 
 const Page = async () => {
@@ -22,6 +22,22 @@ const Page = async () => {
       clientId: 2,
     },
   });
+
+  const chartData = await prisma.transaction.findMany({
+    where: {
+      clientId: 2,
+      date: {
+        gte: new Date(new Date().setMonth(new Date().getMonth() - 1)), // 2023
+        lte: new Date(), // 2024
+      },
+    },
+    select: {
+      date: true,
+      amount: true,
+    },
+  });
+
+  //
 
   const total = projects.reduce(
     (acc, project) => acc + (project.totalBudget ?? 0),
@@ -46,26 +62,28 @@ const Page = async () => {
     <div className="container mx-auto">
       <main className="py-7 px-4 sm:px-10 space-y-8">
         {/* Title Section */}
-        <h2>Your Total Revenue</h2>
+        <div className="flex justify-between items-center">
+          <h2>Your Total Revenue</h2>
 
-        {/* Revenue and Select Dropdown */}
-        <section className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-0">
-          <h2 className="text-3xl font-medium">${total}</h2>
-          <Select>
-            <SelectTrigger className="w-full sm:w-[180px] rounded-[4px]">
-              <SelectValue placeholder="Select a period" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>Time Periods</SelectLabel>
-                <SelectItem value="week">Last Week</SelectItem>
-                <SelectItem value="month">Last Month</SelectItem>
-                <SelectItem value="quarter">Last Quarter</SelectItem>
-                <SelectItem value="year">Last Year</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-        </section>
+          {/* Revenue and Select Dropdown */}
+          <section className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-0">
+            {/* <h2 className="text-3xl font-medium">${total}</h2> */}
+            <Select>
+              <SelectTrigger className="w-full sm:w-[180px] rounded-[4px]">
+                <SelectValue placeholder="Select a period" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Time Periods</SelectLabel>
+                  <SelectItem value="week">Last Week</SelectItem>
+                  <SelectItem value="month">Last Month</SelectItem>
+                  <SelectItem value="quarter">Last Quarter</SelectItem>
+                  <SelectItem value="year">Last Year</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </section>
+        </div>
 
         {/* Dashboard Grid */}
         <div className="grid grid-cols-1 gap-3">

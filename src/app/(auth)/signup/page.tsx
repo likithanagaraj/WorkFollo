@@ -9,7 +9,7 @@ const page = async () => {
   if (session?.user) redirect("/app");
   return (
     <div className="">
-      <SignUpForm />
+      <SignUpForm  />
     </div>
   );
 };

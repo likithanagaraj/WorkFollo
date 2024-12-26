@@ -1,4 +1,4 @@
-import { PieChartGraph } from "@/components/pi-chart";
+
 import { Progress } from "@/components/ui/progress";
 import Link from "next/link";
 import React from "react";
@@ -14,7 +14,7 @@ const page = async ({ params }: { params: Params }) => {
 
   const client = await prisma.client.findUnique({
     where: { id: Number(clientId) },
-    include: { projects: true },
+    include: { projects: true,Transaction:true },
   });
 
   if (!client) notFound();
@@ -32,7 +32,7 @@ const page = async ({ params }: { params: Params }) => {
             Transaction <ArrowRight className="" size={16} />
           </Link>
         </div>
-        <PieChartGraph />
+        <PieChartGraph data={client.Transaction} />
       </div>
       <section>
         <div className="flex w-full justify-between">
@@ -64,6 +64,7 @@ import {
 } from "@/components/ui/card";
 import { Project } from "@prisma/client";
 import prisma from "@/lib/db";
+import { PieChartGraph } from "@/components/pi-chart";
 
 function ProjectCard({ data }: { data: Project }) {
   return (

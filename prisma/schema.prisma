@@ -74,6 +74,8 @@ model Service {
   Project     Project  @relation(fields: [projectId], references: [id],onDelete: Cascade)
 }
 
+// db query -> all transactions of a user, 
+
 model Transaction {
   id          Int      @id @default(autoincrement())
   title       String

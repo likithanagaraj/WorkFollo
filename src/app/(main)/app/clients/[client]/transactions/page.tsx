@@ -10,7 +10,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-
 type Params = Promise<{ client: string }>;
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 

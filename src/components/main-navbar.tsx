@@ -2,7 +2,9 @@
 import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { usePathname } from "next/navigation";
-import { SidebarFooter, SidebarTrigger } from "./ui/sidebar";
+import { SidebarFooter } from "./ui/sidebar";
+import { redirect } from "next/navigation";
+import { SidebarTrigger } from "./ui/sidebar";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -31,13 +33,16 @@ import { NavUser } from "./sidebar/nav-user";
 
 function MainNavbar() {
   const { data: session } = useSession();
-  console.log(session);
+  // if (!session?.user) {
+  //   return <div>hi</div>
+  // }
+  // console.log(session);
   const pathname = usePathname();
   const currentPath = pathname.split("/")[2];
   const username = session?.user?.email?.slice(
     0,
     session?.user?.email?.indexOf("@")
-  );
+  ) as string;
   const label =
     currentPath === "clients"
       ? "Clients"
@@ -70,7 +75,7 @@ function MainNavbar() {
             <Button variant="ghost" className="h-auto p-0 hover:bg-transparent">
               <Avatar>
                 <AvatarImage src="./avatar.jpg" alt="Profile image" />
-                <AvatarFallback>KK</AvatarFallback>
+                <AvatarFallback className="uppercase">{username}</AvatarFallback>
               </Avatar>
               <ChevronDown
                 size={16}
@@ -86,10 +91,10 @@ function MainNavbar() {
                 {username}
               </span>
               <span className="truncate text-xs font-normal text-muted-foreground">
-                k.kennedy@originui.com
+                {session?.user?.email}
               </span>
             </DropdownMenuLabel>
-            <DropdownMenuSeparator />
+            {/* <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem>
                 <Bolt
@@ -140,9 +145,9 @@ function MainNavbar() {
                 <span>Option 5</span>
               </DropdownMenuItem>
             </DropdownMenuGroup>
-            <DropdownMenuSeparator />
+            <DropdownMenuSeparator /> */}
             <DropdownMenuItem
-              onClick={(e) => {
+              onClick={() => {
                 signOut({ callbackUrl: "/" });
               }}
               className="text-destructive"

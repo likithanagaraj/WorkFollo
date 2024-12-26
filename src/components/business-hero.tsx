@@ -7,12 +7,12 @@ const metrics = [
   {
     label: "Save time & money",
     value: "8h",
-    unit: "/ week",
+    unit: "/ project",
     description:
       "Save up to 8h per week for you or your clients with automated payments & reconciliation.",
   },
   {
-    label: "Broaden your offering",
+    label: "less your headace by",
     value: "50%",
     unit: "",
     description:
@@ -29,10 +29,10 @@ const metrics = [
 
 export default function BusinessHero() {
   return (
-    <section className="py-16 px-4 md:px-6 lg:px-8 bg-[#FFFDF7]">
+    <section className="py-16 px-4 md:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto text-center space-y-12">
         <div className="space-y-4 max-w-3xl mx-auto">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight">
+          <h1 className="text-4xl md:text-5xl lg:text-5xl font-bold tracking-tight">
             Get back to business
             <br />
             with effortless management
@@ -43,7 +43,7 @@ export default function BusinessHero() {
           </p>
         </div>
 
-        <Tabs defaultValue="tab-1 ">
+        {/* <Tabs defaultValue="tab-1 ">
           <TabsList className="h-auto rounded-none border-b border-border bg-transparent p-0 w-52">
             <TabsTrigger
               value="tab-1"
@@ -97,20 +97,20 @@ export default function BusinessHero() {
               Content for Tab 3
             </p>
           </TabsContent>
-        </Tabs>
+        </Tabs> */}
 
-        <div className="grid md:grid-cols-3 gap-8 pt-8">
+        <div className="grid md:grid-cols-3 gap-8 pt-2">
           {metrics.map((metric, index) => (
             <div
               key={index}
-              className="p-6 rounded-lg bg-white/50 backdrop-blur-sm space-y-4"
+              className="p-6 rounded-lg space-y-4"
             >
-              <p className="text-sm font-medium text-muted-foreground">
+              <p className=" font-medium text-muted-foreground">
                 {metric.label}
               </p>
               <div className="flex items-baseline justify-center gap-1">
-                <span className="text-7xl font-bold">{metric.value}</span>
-                <span className="text-muted-foreground">{metric.unit}</span>
+                <span className="text-6xl md:text-7xl font-bold ">{metric.value}</span>
+                <span className="text-primary">{metric.unit}</span>
               </div>
               <p className="text-sm text-muted-foreground leading-relaxed">
                 {metric.description}
