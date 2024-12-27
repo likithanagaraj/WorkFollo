@@ -60,7 +60,7 @@ export default function DashboardEachChart({ title, amount }: Props) {
         {/* <CardDescription>{amount}</CardDescription> */}
       </CardHeader>
       <CardContent className="flex flex-row items-baseline gap-4 p-2 pt-2">
-        <h2 className="flex items-baseline gap-2 text-2xl font-semibold tabular-nums leading-none">$
+        <h2 className="flex items-baseline gap-2 text-2xl font-semibold tabular-nums leading-none">₹
           {amount}
           {/* <span className="text-sm font-normal text-muted-foreground">
             kcal/day

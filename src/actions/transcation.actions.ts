@@ -4,8 +4,6 @@ import prisma from "@/lib/db";
 import { addTransactionformSchema } from "@/types";
 import { z } from "zod";
 
-
-
 export async function fetchProject() {
   try {
     // Fetch clients from Prisma
@@ -25,7 +23,7 @@ export async function fetchProject() {
     throw new Error("Failed to fetch clients");
   }
 }
-export async function fetchProjectBasedonClient(id:number) {
+export async function fetchProjectBasedonClient(id: number) {
   try {
     // Fetch clients from Prisma
     const projectClientLink = await prisma.project.findMany({
@@ -48,27 +46,24 @@ export async function fetchProjectBasedonClient(id:number) {
   }
 }
 
-
-export async function getTranscation(id:string) {
+export async function getTranscation(id: string) {
   const transcation = await prisma.transaction.findUnique({
-    where:{
-      id:parseInt(id)
+    where: {
+      id: Number(id),
     },
-    include:{
-      Client:true,
-      Project:true,
+    include: {
+      Client: true,
+      Project: true,
     },
-    
   });
 
-  
   if (!transcation) throw new Error("Transaction not found");
   return transcation;
-
-
 }
 
-export const createTransaction = async (values: z.infer<typeof addTransactionformSchema>) => {
+export const createTransaction = async (
+  values: z.infer<typeof addTransactionformSchema>
+) => {
   const session = await auth();
 
   if (!session?.user?.id) {
@@ -94,21 +89,21 @@ export const createTransaction = async (values: z.infer<typeof addTransactionfor
   }
 };
 
-
-
 interface UpdateTransactionData {
   title?: string;
   amount?: number;
   description?: string;
   type?: string;
-  date?: Date;  
+  date?: Date;
   category?: string;
   clientId?: number;
   projectId?: number;
-  
 }
 
-export async function updatetranscation(id: string, data: UpdateTransactionData) {
+export async function updatetranscation(
+  id: string,
+  data: UpdateTransactionData
+) {
   try {
     const updatedTransaction = await prisma.transaction.update({
       where: {
@@ -132,7 +127,6 @@ export async function updatetranscation(id: string, data: UpdateTransactionData)
     throw error;
   }
 }
-
 
 export async function deletetranscation(id: number) {
   if (!id) {

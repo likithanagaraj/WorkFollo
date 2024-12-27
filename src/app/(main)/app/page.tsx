@@ -11,33 +11,38 @@ import {
 } from "@/components/ui/select";
 import RevenueGraph from "@/components/revenue-graph";
 import prisma from "@/lib/db";
+import { auth } from "@/lib/auth";
+import { transformChartData } from "@/lib/utils";
 
 const Page = async () => {
-  const projects = await prisma.project.findMany({
-    include: {
-      Client: true,
-      Transaction: true,
-    },
-    where: {
-      clientId: 2,
-    },
-  });
+  // const session = await auth()
+  // const projects = await prisma.project.findMany({
+  //   include: {
+  //     Client: true,
+  //     Transaction: true,
+  //   },
+  //   where: {
+  //     clientId: Number(session?.user?.id),
+  //   },
+  // });
 
 
-  const chartData = await prisma.transaction.findMany({
+  const transactions = await prisma.transaction.findMany({
     where: {
-      clientId: 2,
-      date: {
-        gte: new Date(new Date().setMonth(new Date().getMonth() - 1)), // 2023
-        lte: new Date(), // 2024
-      },
+      // clientId: Number(session?.user?.id),
+      // date: {
+      //   gte: new Date(new Date().setMonth(new Date().getMonth() - 1)), // 2023
+      //   lte: new Date(), // 2024
+      // },
     },
     select: {
       date: true,
       amount: true,
     },
   });
+  const chartData = transformChartData(transactions);
 
+  // console.log("chartData1", chartData);
   //
 
 
@@ -68,8 +73,8 @@ const Page = async () => {
           <h2>Your Total Revenue</h2>
 
           {/* Revenue and Select Dropdown */}
-          <section className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-0">
-            {/* <h2 className="text-3xl font-medium">${total}</h2> */}
+          {/* <section className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-0">
+            <h2 className="text-3xl font-medium">${total}</h2>
             <Select>
               <SelectTrigger className="w-full sm:w-[180px] rounded-[4px]">
                 <SelectValue placeholder="Select a period" />
@@ -84,7 +89,7 @@ const Page = async () => {
                 </SelectGroup>
               </SelectContent>
             </Select>
-          </section>
+          </section> */}
         </div>
 
         {/* Dashboard Grid */}
@@ -98,7 +103,7 @@ const Page = async () => {
 
           {/* Graph Section */}
           <div className="grid grid-cols-1 gap-3">
-            <RevenueGraph />
+            <RevenueGraph  chartData={chartData}/>
             {/* <ProjectTackerGraph /> */}
           </div>
         </div>
