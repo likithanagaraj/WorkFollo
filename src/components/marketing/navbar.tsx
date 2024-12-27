@@ -22,7 +22,7 @@ const Navbar1 = () => {
       <div>
         <Logo full className="flex-row"  textClassName="text-lg" width={40} />
       </div>
-      <NavMenu className="hidden md:block " />
+      <NavMenu className="hidden md:block z-50" />
       {/* <nav className="text-foreground/70 text-sm sm:flex gap-4 hidden">
         <Link href={"#"} className="hover:text-foreground hover:scale-105">
           Features

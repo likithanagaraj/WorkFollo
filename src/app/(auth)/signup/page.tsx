@@ -1,5 +1,4 @@
-import Logo from "@/components/logo";
-import { Shapes } from "@/components/shapes";
+
 import SignUpForm from "@/components/signup-form";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";

@@ -6,9 +6,10 @@ interface props  {
   children: React.ReactNode
   link : string
   className?: string
+  // actionType?: "add" | "edit"
 }
 
-function CreateButton({children,link,className}:props) {
+function CreateButton({children,link,className,}:props) {
   return (
    <Link href={link}>
     <Button   className={className}>

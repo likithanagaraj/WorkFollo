@@ -4,16 +4,14 @@ import { Plus } from "lucide-react";
 import React from "react";
 
 
-async function page({}) {
-  
+async function page() {
   return (
     <div className="p-8 flex flex-col gap-4">
       <CreateButton className="" link="/app/clients/create">
-      Create new <Plus />
+        Create new <Plus />
       </CreateButton>
-      
-      
-      <DataTable/>
+
+      <DataTable />
     </div>
   );
 }

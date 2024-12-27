@@ -1,51 +1,48 @@
-"use client";
 import ClientForm from "@/components/client-form";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
+import { Suspense } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
 
-import React from "react";
+type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 
-// function CreateNav() {
-//   const Pathname = usePathname();
-//   const title =
-//     Pathname.split("/")[2]?.replace(/^\w/, (c) => c.toUpperCase()) || "";
-//   const backPath = Pathname.split("/").slice(0, -1).join("/");
+export default async function CreateClientPage(props: {
+  searchParams: SearchParams;
+}) {
+  const searchParams = await props.searchParams;
 
-//   return (
-//     <nav className="flex justify-between items-center h-12 border-b w-full">
-//       <CreateButton
-//         link={backPath}
-//         className=" rounded-none h-12 px-5 bg-white shadow-none text-gray-600 border"
-//       >
-//         <X />
-//       </CreateButton>
-//       <h1 className="text-[24px] font-semibold ">Create {title}</h1>
-//       <CreateButton link={backPath} className="rounded-none h-12 px-8 ">
-//         CREATE CLIENTS
-//       </CreateButton>
-//     </nav>
-//   );
-// }
+  const id = searchParams.query;
 
-function page() {
   return (
-    <div className="">
-      {/* <CreateNav/> */}
-      <div className="">
-        <section className="flex justify-between mx-10">
+    <div className="container mx-auto px-4 py-8">
+      <div className="flex flex-col gap-5">
+        <section className="flex flex-col">
           <Link
-            href={"/app/clients"}
-            className="flex gap-2 text-sm items-center text-primary/60"
+            href="/app/clients"
+            className="flex gap-2 text-lg items-center text-primary/60 hover:text-primary transition-colors"
           >
             <ArrowLeft size={16} />
             Back
           </Link>
-          <h3 className="ml-10 font-medium py-2">Add new client</h3>
         </section>
-        <ClientForm />
+        <Suspense fallback={<FormSkeleton />}>
+          <ClientForm id={id} />
+        </Suspense>
       </div>
     </div>
   );
 }
 
-export default page;
+function FormSkeleton() {
+  return (
+    <div className="space-y-4">
+      <Skeleton className="h-8 w-32" />
+      <Skeleton className="h-10 w-full" />
+      <Skeleton className="h-10 w-full" />
+      <Skeleton className="h-10 w-full" />
+      <Skeleton className="h-10 w-full" />
+      <Skeleton className="h-20 w-full" />
+      <Skeleton className="h-10 w-full" />
+    </div>
+  );
+}

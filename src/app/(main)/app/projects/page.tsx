@@ -11,7 +11,7 @@ async function page() {
         Create new <Plus />
       </CreateButton>
 
-      {/* <DataTableTab tabs={tabs} /> */}
+
       <ProjectDataTable />
     </div>
   );

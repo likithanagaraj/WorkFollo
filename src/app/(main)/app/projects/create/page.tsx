@@ -1,6 +1,8 @@
-"use client";
+
 
 import ProjectForm from "@/components/project-form";
+import { ArrowLeft } from "lucide-react";
+import Link from "next/link";
 
 import React from "react";
 
@@ -19,13 +21,28 @@ import React from "react";
 //   )
 // }
 
-function page() {
+type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
+
+export default async function CreateClientPage(props: {
+  searchParams: SearchParams;
+}) {
+  const searchParams = await props.searchParams;
+
+  const id = searchParams.query;
+
   return (
-    <div className="flex flex-col  gap-4 ">
-      <h2>What&apos;s your Project?</h2>
-      <ProjectForm />
+    <div className="flex flex-col  gap-4 m-8">
+      {/* <h2>What&apos;s your Project?</h2> */}
+      <Link
+        href={"/app/projects"}
+        className="flex gap-2 text-[18px] items-center text-primary/60"
+      >
+        <ArrowLeft size={16} />
+        Back
+      </Link>
+      <ProjectForm id={id} />
     </div>
   );
 }
 
-export default page;
+
