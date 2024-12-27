@@ -29,16 +29,14 @@ import {
   getProject,
   updateProject,
 } from "@/actions/project.actions";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { LoaderCircleIcon, Plus, Trash2 } from "lucide-react";
 import { Textarea } from "./ui/textarea";
 import { addNewProjectformSchema } from "@/types";
 
-function ProjectForm() {
+function ClientForm({ id }: { id: string | string[] | undefined }) {
   const [loading, setLoading] = useState(false);
-  const searchParams = useSearchParams();
 
-  const id = searchParams.get("query");
   const router = useRouter();
   const [clients, setClients] = useState<{ id: number; companyName: string }[]>(
     []
@@ -88,10 +86,10 @@ function ProjectForm() {
 
   useEffect(() => {
     if (!id) return;
-
     const fetchProject = async () => {
       setLoading(true);
       try {
+        id = id as string;
         const project = await getProject(id);
         if (project) {
           form.reset({
@@ -129,8 +127,10 @@ function ProjectForm() {
   async function onSubmit(values: z.infer<typeof addNewProjectformSchema>) {
     // console.log("Edit");
     setLoading(true);
+
     try {
       if (id) {
+        id = id as string;
         const transformedData = {
           name: values.projectName,
           clientId: values.client,
@@ -189,7 +189,7 @@ function ProjectForm() {
           className="space-y-5 max-w-3xl "
         >
           <h1 className="text-[25px] font-semibold">Project Details </h1>
-          <div className="border rounded-lg p-7 shadow-sm flex flex-col gap-3">
+          <div className=" rounded-lg p-7 shadow-sm flex flex-col gap-3">
             {/* Project Name Field */}
 
             <FormField
@@ -356,7 +356,7 @@ function ProjectForm() {
               <h1 className="text-[25px] font-semibold">Services</h1>
               <Button
                 type="button"
-                variant="outline"
+                variant="secondary"
                 size="sm"
                 onClick={() =>
                   appendService({
@@ -386,64 +386,71 @@ function ProjectForm() {
                     </Button>
                   )}
                 </div>
-                <FormField
-                  control={form.control}
-                  name={`services.${index}.serviceName`}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Service Name</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Service Name" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name={`services.${index}.serviceAmount`}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Amount</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="number"
-                          placeholder="Amount"
-                          {...field}
-                          onChange={(e) =>
-                            field.onChange(Number(e.target.value))
-                          }
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name={`services.${index}.unit`}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Unit</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        value={field.value}
-                      >
+                <div className="flex w-full items-center justify-between">
+                  <FormField
+                    control={form.control}
+                    name={`services.${index}.serviceName`}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Service Name</FormLabel>
                         <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select unit" />
-                          </SelectTrigger>
+                          <Input
+                            placeholder="Service Name"
+                            className="w-full"
+                            {...field}
+                          />
                         </FormControl>
-                        <SelectContent>
-                          <SelectItem value="per day">per day</SelectItem>
-                          <SelectItem value="per hour">per hour</SelectItem>
-                          <SelectItem value="per item">per item</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />{" "}
+                  <FormField
+                    control={form.control}
+                    name={`services.${index}.serviceAmount`}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Amount</FormLabel>
+                        <FormControl>
+                          <Input
+                            type="number"
+                            placeholder="Amount"
+                            {...field}
+                            onChange={(e) =>
+                              field.onChange(Number(e.target.value))
+                            }
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name={`services.${index}.unit`}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Unit</FormLabel>
+                        <Select
+                          onValueChange={field.onChange}
+                          value={field.value}
+                        >
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select unit" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            <SelectItem value="per day">per day</SelectItem>
+                            <SelectItem value="per hour">per hour</SelectItem>
+                            <SelectItem value="per item">per item</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />{" "}
+                </div>
+
                 <FormField
                   control={form.control}
                   name={`services.${index}.servicedescription`}
@@ -501,7 +508,10 @@ function ProjectForm() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Billing Title</FormLabel>
-                      <Select onValueChange={field.onChange} value={field.value}>
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value}
+                      >
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Select billing type" />
@@ -529,7 +539,9 @@ function ProjectForm() {
                           type="number"
                           placeholder="Amount"
                           {...field}
-                          onChange={(e) => field.onChange(Number(e.target.value))}
+                          onChange={(e) =>
+                            field.onChange(Number(e.target.value))
+                          }
                         />
                       </FormControl>
                       <FormMessage />
@@ -555,4 +567,4 @@ function ProjectForm() {
   );
 }
 
-export default ProjectForm;
+export default ClientForm;

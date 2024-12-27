@@ -2,7 +2,7 @@ import { Progress } from "@/components/ui/progress";
 import Link from "next/link";
 import React from "react";
 import CreateButton from "@/components/create-button";
-import { ArrowRight, Plus } from "lucide-react";
+import { ArrowRight, ChartLine, Plus } from "lucide-react";
 import { notFound } from "next/navigation";
 
 type Params = Promise<{ client: string }>;
@@ -22,15 +22,21 @@ const page = async ({ params }: { params: Params }) => {
   return (
     <main key={client.id} className="p-10 relative flex flex-col gap-10">
       <div className="flex justify-between  w-full">
-        <div>
-          <h1 className="text-3xl font-medium ">{client.companyName}</h1>
-          <p className="text-muted-foreground">{client.description}</p>
-          <Link
-            href={`/app/clients/${client.id}/transactions`}
-            className="text-primary flex items-center"
-          >
-            Transaction <ArrowRight className="" size={16} />
-          </Link>
+        <div className="space-y-1 w-full" >
+          <div className="flex items-center justify-between w-full">
+            <h1 className="text-3xl font-medium ">{client.companyName}</h1>
+            <Link
+              href={`/app/clients/${client.id}/transactions`}
+              className="text-sm text-muted-foreground flex items-center mt-1 group hover:opacity-80 transition-all duration-200 ease-in"
+            >
+              <ChartLine size={16} /> Transaction{" "}
+              <ArrowRight
+                className="group-hover:translate-x-2 transition-all duration-200 ease-in"
+                size={16}
+              />
+            </Link>
+          </div>
+          <p className="text-muted-foreground text-sm">{client.description}</p>
         </div>
         {client.Transaction.length > 0 && (
           <PieChartGraph data={client.Transaction} />
@@ -44,11 +50,26 @@ const page = async ({ params }: { params: Params }) => {
           </CreateButton>
         </div>
 
-        <div className="flex  gap-4 flex-wrap">
-          {client.projects.map((project) => {
-            return <ProjectCard key={project.clientId} data={project} />;
-          })}
-        </div>
+        {client.projects.length > 0 ? (
+          <div className="flex  gap-4 flex-wrap">
+            {client.projects.map((project) => {
+              return <ProjectCard key={project.clientId} data={project} />;
+            })}
+          </div>
+        ) : (
+          <div className=" flex  flex-col  items-center justify-center p-14">
+            <h2 className="text-xl font-semibold text-gray-800">
+              No Project found
+            </h2>
+            <p className="text-gray-500 mb-4 text-sm">
+              It looks like you haven’t added any projects yet. Start by adding
+              your first project now!
+            </p>
+            <CreateButton className="" link="/app/projects/create">
+              Create new <Plus />
+            </CreateButton>
+          </div>
+        )}
       </section>
     </main>
   );

@@ -20,6 +20,7 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { Separator } from "./ui/separator";
+import { Badge } from "./ui/badge";
 
 async function ProjectDataTable() {
   const session = await auth();
@@ -70,7 +71,9 @@ async function ProjectDataTable() {
                 {/* <TableCell className="font-medium">{project.startDate.toDateString()}</TableCell>
                 <TableCell className="font-medium">{project.endDate?.toDateString()}</TableCell> */}
                 {/* <TableCell className="font-medium">{project.contract}</TableCell> */}
-                <TableCell className="font-medium">{project.status}</TableCell>
+                <TableCell className="font-medium">
+                  <Badge variant={"secondary"}>{project.status}</Badge>
+                </TableCell>
                 <TableCell className="font-medium"></TableCell>
                 <TableCell className="flex gap-5 items-center ">
                   <DropdownMenu>
@@ -79,17 +82,17 @@ async function ProjectDataTable() {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
                       <DropdownMenuItem>
-                      <p>Edit</p>
                         <Link
                           href={`/app/projects/create?query=${project.id}`}
-                          className=""
+                          className="flex items-center justify-between"
                         >
-                          <Edit size={18} />
+                          <span>Edit</span>
+                          <Edit className="ml-[52]" size={16} />
                         </Link>
                       </DropdownMenuItem>
                       <Separator />
-                      <DropdownMenuItem className="">
-                        <p>Delete</p>
+                      <DropdownMenuItem className="flex items-center text-destructive justify-between">
+                        Delete
                         <Deletebtn id={project.id} action="project" />
                       </DropdownMenuItem>
                     </DropdownMenuContent>

@@ -16,6 +16,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import { TransactionChartRawData, TransactionChartTransformedData, transformChartData } from "@/lib/utils";
 const chartData = [
   { date: "2024-01-01", revenue: 222 },
   { date: "2024-02-02", revenue: 97 },
@@ -31,8 +32,6 @@ const chartData = [
   { date: "2024-12-12", revenue: 292 },
 ];
 
-
-
 const chartConfig = {
   views: {
     label: "Revenue",
@@ -43,9 +42,15 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export default function RevenueGraph() {
+export default function RevenueGraph({
+  chartData,
+}: {
+  chartData: TransactionChartTransformedData[];
+}) {
   const [activeChart, setActiveChart] =
     React.useState<keyof typeof chartConfig>("revenue");
+  // console.log("chartData2", chartData);
+  // chartData = transformChartData(chartData);
 
   return (
     <Card>
