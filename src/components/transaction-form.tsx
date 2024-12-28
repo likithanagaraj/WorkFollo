@@ -78,10 +78,8 @@ export default function TranscationForm({
       type: "",
       description: "",
       date: new Date(),
-      // category: "",
     },
   });
-
   useEffect(() => {
     const loadClients = async () => {
       try {
@@ -151,30 +149,38 @@ export default function TranscationForm({
     setLoading(true);
     try {
       const formattedValues = {
-        ...values,
-        amount: parseFloat(values.amount),
-        clientId: values.clientId || undefined,
-        projectId: values.projectId || undefined,
-        description: values.description || undefined,
+        title: values.title,
+        amount: values.amount, // Keep as string, conversion happens in createTransaction
+        description: values.description || null,
+        type: values.type,
+        date: values.date,
+        clientId: values.clientId,
+        projectId: values.projectId,
       };
-
+  
       if (id) {
-        id = id as string;
-
-        await updatetranscation(id, formattedValues);
+        await updatetranscation(id as string, {
+          ...formattedValues,
+          amount: parseFloat(formattedValues.amount), // Convert to number for update
+        });
         toast.success("Transaction updated successfully");
       } else {
-        await createTransaction(values);
+        await createTransaction(formattedValues);
         toast.success("Transaction created successfully");
       }
       router.push("/app/transactions");
     } catch (error) {
       console.error("Form submission error:", error);
-      toast.error("Failed to submit the form. Please try again.");
+      if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        toast.error("Failed to submit the form. Please try again.");
+      }
     } finally {
       setLoading(false);
     }
   }
+
   return (
     <Form {...form}>
       <form
@@ -343,7 +349,7 @@ export default function TranscationForm({
                   <FormControl>
                     <Input placeholder="category" type="" {...field} />
                   </FormControl>
-                  <FormDescription>category</FormDescription>
+
                   <FormMessage />
                 </FormItem>
               )}

@@ -49,11 +49,9 @@ export const addNewProjectformSchema = z.object({
 export const addTransactionformSchema = z.object({
   clientId: z.number().nullable(),
   projectId: z.number().nullable(),
-  title: z.string(),
-  amount: z.string(), 
+  title: z.string().min(1, "Title is required"),
+  amount: z.string().min(1, "Amount is required"),
   date: z.coerce.date(),
-  type: z.string(),
+  type: z.string().min(1, "Type is required"),
   description: z.string().nullable(),
-  category: z.string(),
 });
-
