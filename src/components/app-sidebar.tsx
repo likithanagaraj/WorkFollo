@@ -40,23 +40,27 @@ const data = {
       url: "/app",
       icon: Home,
       isActive: true,  
+      description: "Overview of your app",
      
     },
     {
       title: "Clients",
       url: "/app/clients" ,
       icon: User,
+      description: "Manage your clients "
     },
     {
       title: "Projects",
       url: "/app/projects",
       icon: BookOpen,
+      description: "Manage your projects"
      
     },
     {
       title: "Transcations",
       url: "/app/transactions",
       icon: ChartLine,
+      description: "View your transcations"
     
     },
   ],
