@@ -11,7 +11,7 @@ import prisma from "@/lib/db";
 import Link from "next/link";
 import React from "react";
 import CreateButton from "./create-button";
-import { Edit, Plus } from "lucide-react";
+import { ChevronRight, Edit, Plus } from "lucide-react";
 import Deletebtn from "./delete-btn";
 import {
   DropdownMenu,
@@ -30,6 +30,12 @@ async function ProjectDataTable() {
     where: { userId },
     include: { Client: true, services: true, billings: true },
   });
+  function getStatusColor(status: string | null) {
+    if (status === "completed") return "bg-green-100 text-green-800";
+    if (status === "on progress") return "bg-yellow-100 text-yellow-800";
+    if (status === "incomplete") return "bg-red-100 text-red-800";
+    return "";
+  }
 
   return (
     <div className=" p-2 shadow-sm border min-h-60">
@@ -52,10 +58,14 @@ async function ProjectDataTable() {
           </TableHeader>
           <TableBody>
             {projects.map((project) => (
-              <TableRow key={project.id}>
+              <TableRow key={project.id} className="group">
                 <TableCell className="font-medium">
                   <Link href={`/app/projects/${project.id}`}>
                     {project.name}
+                    <ChevronRight
+                      size={16}
+                      className="hidden group-hover:inline group-hover:translate-x-2 translate-x-0 group-hover:duration-500 group-hover:delay-200 group-hover:transition-all ease-in"
+                    />
                   </Link>
                 </TableCell>
 
@@ -72,7 +82,12 @@ async function ProjectDataTable() {
                 <TableCell className="font-medium">{project.endDate?.toDateString()}</TableCell> */}
                 {/* <TableCell className="font-medium">{project.contract}</TableCell> */}
                 <TableCell className="font-medium">
-                  <Badge variant={"secondary"}>{project.status}</Badge>
+                  <Badge
+                    variant={"secondary"}
+                    className={getStatusColor(project.status)}
+                  >
+                    {project.status}
+                  </Badge>
                 </TableCell>
                 <TableCell className="font-medium"></TableCell>
                 <TableCell className="flex gap-5 items-center ">
