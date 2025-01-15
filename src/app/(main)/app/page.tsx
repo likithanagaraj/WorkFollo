@@ -13,8 +13,13 @@ import RevenueGraph from "@/components/revenue-graph";
 import prisma from "@/lib/db";
 import { auth } from "@/lib/auth";
 import { transformChartData } from "@/lib/utils";
+import OnboardingDialog from "@/components/onboarding-dialog";
+import { SearchParams } from "@/types";
 
-const Page = async () => {
+const Page = async (props: { searchParams: SearchParams }) => {
+  const searchParams = await props.searchParams;
+  const onboarding = searchParams.onboarding;
+
   // const session = await auth()
   // const projects = await prisma.project.findMany({
   //   include: {
@@ -25,7 +30,6 @@ const Page = async () => {
   //     clientId: Number(session?.user?.id),
   //   },
   // });
-
 
   const transactions = await prisma.transaction.findMany({
     where: {
@@ -45,7 +49,6 @@ const Page = async () => {
   // console.log("chartData1", chartData);
   //
 
-
   const transaction = await prisma.transaction.findMany({
     include: {
       Client: true,
@@ -53,7 +56,8 @@ const Page = async () => {
     },
   });
   const total = transaction.reduce(
-    (acc, transaction) => acc + (transaction.type === "Payments" ? transaction.amount : 0),
+    (acc, transaction) =>
+      acc + (transaction.type === "Payments" ? transaction.amount : 0),
     0
   );
   const expenses = transaction.reduce((acc, transaction) => {
@@ -64,13 +68,14 @@ const Page = async () => {
   }, 0);
 
   const revenue = total - expenses;
- 
+
   return (
     <div className="container mx-auto">
-      <main className="py-7 px-4 sm:px-10 space-y-8">
+      {onboarding == "true" && <OnboardingDialog />}
+      <main className="py-7 px-4 sm:px-10 space-y-4">
         {/* Title Section */}
         <div className="flex justify-between items-center">
-          <h2>Your Total Revenue</h2>
+          <h2 className="my-first-step">Your Total Revenue</h2>
 
           {/* Revenue and Select Dropdown */}
           {/* <section className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-0">
@@ -96,14 +101,27 @@ const Page = async () => {
         <div className="grid grid-cols-1 gap-3">
           {/* Chart Cards Section */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <DashboardEachChart title="Income" amount={`${total}`} />
-            <DashboardEachChart title="Expenses" amount={`${expenses}`} />
-            <DashboardEachChart title="Monthly Revenue" amount={`${revenue}`} />
+            <DashboardEachChart
+              className="first-feature"
+              title="Income"
+              amount={`${total.toFixed(0)}`}
+              tooltip="Total income from all projects"
+            />
+            <DashboardEachChart
+              className="second-feature"
+              title="Expenses"
+              amount={`${expenses.toFixed(0)}`}
+            />
+            <DashboardEachChart
+              className="third-feature"
+              title="Monthly Revenue"
+              amount={`${revenue.toFixed(0)}`}
+            />
           </div>
 
           {/* Graph Section */}
-          <div className="grid grid-cols-1 gap-3">
-            <RevenueGraph  chartData={chartData}/>
+          <div className="grid grid-cols-1 gap-3 fourth-feature">
+            <RevenueGraph chartData={chartData} />
             {/* <ProjectTackerGraph /> */}
           </div>
         </div>

@@ -8,14 +8,15 @@ datasource db {
 }
 
 model User {
-  id             Int           @id @default(autoincrement())
-  email          String        @unique
-  hashedPassword String
-  name           String?
-  createdAt      DateTime      @default(now())
-  client         Client[]
-  projects       Project[]
-  transactions   Transaction[]
+  id                Int           @id @default(autoincrement())
+  email             String        @unique
+  hashedPassword    String
+  name              String?
+  createdAt         DateTime      @default(now())
+  client            Client[]
+  projects          Project[]
+  transactions      Transaction[]
+  prefferedCurrency String?
 }
 
 model Client {
@@ -29,7 +30,7 @@ model Client {
   createdAt    DateTime      @default(now())
   userId       Int
   status       String?
-  User         User          @relation(fields: [userId], references: [id],onDelete: Cascade)
+  User         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   projects     Project[]
   Transaction  Transaction[]
 }
@@ -60,7 +61,7 @@ model Billing {
   percentage Float?
   date       DateTime?
   projectId  Int
-  Project    Project   @relation(fields: [projectId], references: [id],onDelete: Cascade)
+  Project    Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
 }
 
 model Service {
@@ -71,7 +72,7 @@ model Service {
   description String?
   createdAt   DateTime @default(now())
   projectId   Int
-  Project     Project  @relation(fields: [projectId], references: [id],onDelete: Cascade)
+  Project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
 }
 
 // db query -> all transactions of a user, 
@@ -88,7 +89,7 @@ model Transaction {
   userId      Int
   projectId   Int?
   clientId    Int?
-  Client      Client?  @relation(fields: [clientId], references: [id],onDelete: Cascade)
-  Project     Project? @relation(fields: [projectId], references: [id],onDelete: Cascade)
-  User        User     @relation(fields: [userId], references: [id],onDelete: Cascade)
+  Client      Client?  @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  Project     Project? @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  User        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

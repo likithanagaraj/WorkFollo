@@ -40,9 +40,9 @@ async function TranscationTable() {
           <TableHeader>
             <TableRow>
               <TableHead className="">Company Name</TableHead>
+              <TableHead>Title</TableHead>
               <TableHead className="">Project Name</TableHead>
               <TableHead className=""> Contact Name</TableHead>
-              <TableHead>Title</TableHead>
               <TableHead>Amount</TableHead>
               {/* <TableHead className="">Note</TableHead> */}
               <TableHead className="">Type</TableHead>
@@ -55,6 +55,9 @@ async function TranscationTable() {
                 <TableCell className="group-hover:font-medium transition-all duration-150">
                   {transaction?.Client?.companyName}
                 </TableCell>
+                <TableCell className="group-hover:font-medium transition-all duration-150">
+                  {transaction.title}
+                </TableCell>
 
                 <TableCell className="group-hover:font-medium transition-all duration-150">
                   {transaction?.Project?.name}
@@ -62,9 +65,7 @@ async function TranscationTable() {
                 <TableCell className="group-hover:font-medium transition-all duration-150">
                   {transaction?.Client?.contactName}
                 </TableCell>
-                <TableCell className="group-hover:font-medium transition-all duration-150">
-                  {transaction.title}
-                </TableCell>
+
                 <TableCell className="group-hover:font-medium transition-all duration-150">
                   {transaction.amount}
                 </TableCell>

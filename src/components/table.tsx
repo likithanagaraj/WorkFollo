@@ -10,12 +10,14 @@ import {
 import prisma from "@/lib/db";
 import React from "react";
 import {
+  ChevronRight,
   Delete,
   DeleteIcon,
   Dot,
   Edit,
   Ellipsis,
   LucideEllipsis,
+  MoveRight,
   Plus,
 } from "lucide-react";
 import Link from "next/link";
@@ -60,12 +62,16 @@ async function DataTable() {
           </TableHeader>
           {clients.map((client) => (
             <TableBody key={client.id}>
-              <TableRow>
+              <TableRow className="group">
                 {/* <TableCell className="font-medium">{client.id}</TableCell> */}
 
                 <TableCell>
                   <Link href={`/app/clients/${client.id}`}>
-                    {client.companyName}
+                    {client.companyName}{" "}
+                    <ChevronRight
+                      size={16}
+                      className="hidden group-hover:inline group-hover:translate-x-2 translate-x-0 group-hover:duration-500 group-hover:delay-200 group-hover:transition-all ease-in"
+                    />
                   </Link>
                 </TableCell>
 
@@ -79,7 +85,7 @@ async function DataTable() {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
                       <DropdownMenuItem>
-                      <p>Edit</p>
+                        <p>Edit</p>
                         <Link
                           href={`/app/clients/create?query=${client.id}`}
                           className=""
@@ -87,9 +93,8 @@ async function DataTable() {
                           <Edit size={14} />
                         </Link>
                       </DropdownMenuItem>
-                      <Separator/>
-                      <DropdownMenuItem  className="">
-                       
+                      <Separator />
+                      <DropdownMenuItem className="">
                         <Deletebtn id={client.id} action="client" />
                       </DropdownMenuItem>
                     </DropdownMenuContent>

@@ -27,6 +27,7 @@ import {
   LogOut,
   Settings,
   User,
+  Sparkles,
 } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import { NavUser } from "./sidebar/nav-user";
@@ -132,17 +133,18 @@ function MainNavbar() {
                 />
                 <span>Option 4</span>
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <UserPen
-                  size={16}
-                  strokeWidth={2}
-                  className="opacity-60"
-                  aria-hidden="true"
-                />
-                <span>Option 5</span>
-              </DropdownMenuItem>
+              
             </DropdownMenuGroup>
             <DropdownMenuSeparator /> */}
+            <DropdownMenuItem>
+              <Sparkles
+                size={16}
+                strokeWidth={2}
+                className="opacity-60"
+                aria-hidden="true"
+              />
+              <span>Upgrade to pro</span>
+            </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => {
                 signOut({ callbackUrl: "/" });
