@@ -11,7 +11,7 @@ import prisma from "@/lib/db";
 import Link from "next/link";
 import React from "react";
 import CreateButton from "./create-button";
-import { Edit, Plus } from "lucide-react";
+import { ChevronRight, Edit, Plus } from "lucide-react";
 import Deletebtn from "./delete-btn";
 import {
   DropdownMenu,
@@ -52,10 +52,15 @@ async function ProjectDataTable() {
           </TableHeader>
           <TableBody>
             {projects.map((project) => (
-              <TableRow key={project.id}>
+              <TableRow className="group" key={project.id}>
                 <TableCell className="font-medium">
-                  <Link href={`/app/projects/${project.id}`}>
-                    {project.name}
+                <Link href={`/app/projects/${project.id}`}>
+                {project.name}{" "}
+                    <ChevronRight
+                      size={16}
+                      className="hidden group-hover:inline group-hover:translate-x-2 translate-x-0 group-hover:duration-500 group-hover:delay-200 group-hover:transition-all ease-in"
+                    />
+                    
                   </Link>
                 </TableCell>
 

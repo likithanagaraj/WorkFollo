@@ -61,16 +61,17 @@ export function NavMain({
                 tooltip={item.title}
               >
                 {item.icon && <item.icon />}
-                <span className="text-[14px] ">{item.title} </span>
-                <Tooltip >
+
+                <Tooltip>
                   <TooltipTrigger asChild>
-                    <Button
+                    {/* <Button
                       variant={"ghost"}
                       size={"icon"}
                       className="ml-auto scale-90 inline"
                     >
                       <CircleHelp  className="inline"/>
-                    </Button>
+                    </Button> */}
+                    <span className="text-[14px] ">{item.title} </span>
                   </TooltipTrigger>
                   <TooltipContent
                     side="right"

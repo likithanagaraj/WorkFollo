@@ -8,13 +8,29 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { Progress } from "@/components/ui/progress";
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/db";
 import { Client, Project } from "@prisma/client";
-import { ArrowRight, ChartLine, Plus } from "lucide-react";
+import { ArrowRight, ChartLine, Edit, Plus } from "lucide-react";
 import Link from "next/link";
 import React from "react";
+import Deletebtn from "@/components/delete-btn";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Separator } from "@/components/ui/separator";
 type Params = Promise<{ id: string }>;
 async function page({ params }: { params: Params }) {
   const sesion = await auth();
@@ -32,6 +48,7 @@ async function page({ params }: { params: Params }) {
     },
     include: {
       Client: true,
+      Transaction: true,
     },
   });
 
@@ -62,24 +79,63 @@ async function page({ params }: { params: Params }) {
             </div>
             <section>
               <h3>Transactions</h3>
-              <p >Add transactions here... of this project</p>
-              <p className="border-b mt-2">-</p>
-              <p className="border-b mt-2">-</p>
-              <p className="border-b mt-2">-</p>
+              <Table className="">
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Title</TableHead>
+                    <TableHead>Description</TableHead>
+                    <TableHead>Amount</TableHead>
+                    <TableHead>Type</TableHead>
+                    <TableHead>Date</TableHead>
+                    <TableHead>Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {project.Transaction.map((transaction) => (
+                    <TableRow key={transaction.id}>
+                      <TableCell>{transaction.title}</TableCell>
+                      <TableCell>{transaction.description}</TableCell>
+                      <TableCell>
+                        $
+                        {transaction.amount
+                          ? transaction.amount.toFixed(2)
+                          : "0.00"}
+                      </TableCell>
+                      <TableCell>{transaction.type}</TableCell>
+                      <TableCell>
+                        {new Date(transaction.date).toLocaleDateString()}
+                      </TableCell>
+                      <TableCell className="flex gap-5 items-center ">
+                        <DropdownMenu>
+                          <DropdownMenuTrigger className="text-xl">
+                            ...
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent>
+                            <DropdownMenuItem>
+                              <p>Edit</p>
+                              <Link
+                                href={`/app/transactions/create?query=${transaction.id}`}
+                                className=""
+                              >
+                                <Edit size={18} />
+                              </Link>
+                            </DropdownMenuItem>
+                            <Separator />
+                            <DropdownMenuItem className="">
+                              <p>Delete</p>
+                              <Deletebtn
+                                id={transaction.id}
+                                action="transaction"
+                              />
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
             </section>
-            <section className="flex gap-4">
-              <p className="min-w-80 h-52 flex flex-col items-center  justify-center border">show some charts</p>
-              <p className="min-w-80 h-52 flex flex-col items-center  justify-center border">show some charts</p>
-            </section>
-            {/* <CreateButton link={`/app/projects/create`}>
-              Create New <Plus />
-            </CreateButton> */}
-            {/* 
-            <div className="flex flex-row gap-10 ">
-              TODO: I just don't understand why do we need a card and why should we make a custom component for showing this. 
-              <ProjectCard data={project} />
-            </div>
-              */}
           </div>
         );
       })}

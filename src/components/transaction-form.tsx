@@ -157,7 +157,7 @@ export default function TranscationForm({
         clientId: values.clientId,
         projectId: values.projectId,
       };
-  
+
       if (id) {
         await updatetranscation(id as string, {
           ...formattedValues,
@@ -185,71 +185,76 @@ export default function TranscationForm({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-8 mx-auto max-w-3xl py-10"
+        className="max-w-3xl  p-8 rounded-lg space-y-4 border"
       >
-        <FormField
-          control={form.control}
-          name="clientId"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Client </FormLabel>
-              <Select
-                onValueChange={(value) => {
-                  field.onChange(value ? Number(value) : null);
-                  handleClient(value);
-                }}
-                value={field.value?.toString() || ""}
-                disabled={loading}
-              >
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a client" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  {clients.map((client) => (
-                    <SelectItem key={client.id} value={client.id.toString()}>
-                      {client.companyName}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              {/* <FormDescription>Client List</FormDescription> */}
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="projectId"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Project </FormLabel>
-              <Select
-                onValueChange={(value) =>
-                  field.onChange(value ? Number(value) : null)
-                }
-                value={field.value?.toString() || ""}
-                disabled={loading || !form.watch("clientId")}
-              >
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a project" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  {projects.map((project) => (
-                    <SelectItem key={project.id} value={project.id.toString()}>
-                      {project.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              {/* <FormDescription>Client List</FormDescription> */}
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="space-y-4">
+          <FormField
+            control={form.control}
+            name="clientId"
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormLabel>Client </FormLabel>
+                <Select
+                  onValueChange={(value) => {
+                    field.onChange(value ? Number(value) : null);
+                    handleClient(value);
+                  }}
+                  value={field.value?.toString() || ""}
+                  disabled={loading}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a client" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {clients.map((client) => (
+                      <SelectItem key={client.id} value={client.id.toString()}>
+                        {client.companyName}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                {/* <FormDescription>Client List</FormDescription> */}
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="projectId"
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormLabel>Project </FormLabel>
+                <Select
+                  onValueChange={(value) =>
+                    field.onChange(value ? Number(value) : null)
+                  }
+                  value={field.value?.toString() || ""}
+                  disabled={loading || !form.watch("clientId")}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a project" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {projects.map((project) => (
+                      <SelectItem
+                        key={project.id}
+                        value={project.id.toString()}
+                      >
+                        {project.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                {/* <FormDescription>Client List</FormDescription> */}
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
 
         <div className="grid grid-cols-12 gap-4 items-center ">
           <div className="col-span-6">
@@ -257,7 +262,7 @@ export default function TranscationForm({
               control={form.control}
               name="title"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="w-full">
                   <FormLabel>Title</FormLabel>
                   <FormControl>
                     <Input placeholder="title" type="text" {...field} />
@@ -274,7 +279,7 @@ export default function TranscationForm({
               control={form.control}
               name="amount"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="w-full">
                   <FormLabel>Amount</FormLabel>
                   <FormControl>
                     <Input
@@ -298,7 +303,7 @@ export default function TranscationForm({
               control={form.control}
               name="date"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="w-full">
                   <FormLabel>Date</FormLabel>
                   <FormControl>
                     <SmartDatetimeInput
@@ -319,7 +324,7 @@ export default function TranscationForm({
               control={form.control}
               name="type"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="w-full">
                   <FormLabel>Type</FormLabel>
                   <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
@@ -361,7 +366,7 @@ export default function TranscationForm({
           control={form.control}
           name="description"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="w-full">
               <FormLabel>Description</FormLabel>
               <FormControl>
                 <Textarea

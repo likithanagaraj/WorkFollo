@@ -69,13 +69,13 @@ const data = {
       title: "Contracts",
       url: "/app/contract",
       icon: File,
-    
+    description: "View your Contracts"
     },
     {
       title: "Invoice",
       url: "/app/invoice",
       icon: FileBadge,
-    
+    description: "View your Invoices"
     },
   ],
 }

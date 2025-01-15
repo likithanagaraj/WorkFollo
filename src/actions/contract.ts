@@ -6,7 +6,8 @@ interface contractSchema{
   id : number;
   contractName : string;
   clientId : number;
-  userId:number
+  userId:number,
+  content:string
 }
 
 export async function addNewContract(data:contractSchema){
@@ -14,7 +15,8 @@ const createContract = await prisma.contract.create({
   data:{
     contractName:data.contractName,
     clientId:data.clientId,
-    userId:data.userId
+    userId:data.userId,
+    content:data.content
   }
 })
 }
@@ -43,7 +45,8 @@ export async function updateContract(data:contractSchema){
     data:{
       contractName:data.contractName,
       clientId:data.clientId,
-      userId:data.userId
+      userId:data.userId,
+      content:data.content
     }
   })
   return updatecontract

@@ -2,6 +2,20 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import {
+  FileInput,
+  FileUploader,
+  FileUploaderContent,
+  FileUploaderItem
+} from "@/components/file-uploader";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
   EditorCommand,
   EditorCommandEmpty,
   EditorCommandItem,
@@ -33,7 +47,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
-import { Download, LoaderCircleIcon, PenTool } from "lucide-react";
+import { CloudUpload, Download, LoaderCircleIcon, Paperclip, PenTool } from "lucide-react";
 import generatePDF, { usePDF } from "react-to-pdf";
 
 import { toast } from "sonner";
@@ -60,13 +74,18 @@ import {
 import { fetchClients } from "@/actions/client.actions";
 import { auth } from "@/lib/auth";
 import { Contract } from "@prisma/client";
+import { useRouter } from "next/navigation";
+import SignatureInput from "./ui/signature-input";
 
 const formSchema = z.object({
   Name: z.string(),
   companyName: z.string().optional(),
+  content: z.string().optional(),
+  Signature: z.string().optional(),
+  Signature_image: z.string().optional()
 });
 
-const hljs = require("highlight.js");
+// const hljs = require("highlight.js");
 const extensions = [...defaultExtensions, slashCommand];
 
 const createTemplateContent = (text: string): JSONContent => {
@@ -84,6 +103,73 @@ const createTemplateContent = (text: string): JSONContent => {
 };
 
 const initialTemplates = [
+  `Freelance Contract Template
+  Created by freelancermap.com
+  
+  
+  [Your Name/Business name] <> [Client Company]
+  Contractor Agreement
+   
+  [Freelancer Name] (herein known as “Contractor”) will provide [Client/Brand Name] (herein known as “Client”) with [Insert an overview of work deliverables] as outlined in the specifications listed in the Terms and Conditions below.
+  
+  Description of the Services
+  Freelancer will [insert services provided]
+  
+  Pricing/Rates
+  [Insert prices discussed – include rates for changes and revision work]
+  
+  Payment Terms/Schedule
+  30% up front, the rest upon completion of the project. 
+  Payable by check, bank transfer or PayPal. 
+  
+  Contract in effect beginning:  [Insert Start date]
+  
+  Terms and Conditions
+  
+  The following rates and terms apply:
+  
+  Client will pay the sum of [$X,XXX – mention if it’s per hour, per month or for the entire contract] to Contractor via [Payment method agreed upon] as agreed to by both parties, no later than the [insert final payment date] of the agreed-upon payment schedule, for work delivered and accepted by the Client. 
+  
+  Contractor will provide the following as per deliverable dates mutually agreed upon:
+  
+  •	[Insert Deliverable 1 - specifications, and due date] 
+  •	[Insert Deliverable 2 - specifications, and due date] 
+  •	[Insert Deliverable 3 - specifications, and due date] 
+  •	[Insert Deliverable 4 - specifications, and due date] 
+  
+  
+  Scope of Project
+  Contractor agrees to perform services until the engagement has ended on the agreed-upon. 
+  
+  Legal
+  
+  Contractor declares that they cannot guarantee completed work will be completely error-free, as such they can’t be liable to the Client or any third-party for damages, including lost profits, lost savings or other incidental, consequential or special damages, even with prior advisory. If any provision of this contract shall be unlawful, void, or for any reason is unenforceable, then that provision shall be deemed severable from this contract and shall not affect the validity and enforceability of any remaining provisions.
+  
+  Copyright
+  
+  Client will own the copyright for all material created under this agreement, and contractor can showcase sample works from this project as portfolio pieces only with consent and approval from client.
+  
+  Termination
+  This agreement may be terminated with [XX days] written notice by either party. Initial deposit of 30% is non-refundable.
+  
+  
+  
+  Client agrees to terms and policies specified above:
+   
+  Signature: ____________________________
+  
+  Name & Title: _________________________
+  
+  Date: _________________________________	
+  Accepted by the Contractor:
+  
+  [Signature Goes Here]
+  
+  Your Name
+  
+  Date
+  
+  `,
   `EMPLOYMENT AGREEMENT
 
 This Employment Agreement ("Agreement") is made on [Date] by and between:
@@ -102,8 +188,57 @@ Address: [Employee's Address]
 [Employer's Signature]  
 [Employee's Signature]  
 `,
-  `SERVICE AGREEMENT...`, // Your second template
-  `RENTAL AGREEMENT...`, // Your third template
+  // Your second template
+  `SERVICE AGREEMENT
+This Service Agreement ("Agreement") is made on [Date] by and between:
+
+Client:
+[Client's Name]
+[Client's Address]
+
+Service Provider:
+[Service Provider's Name]
+[Service Provider's Address]
+
+Services Provided: The Service Provider agrees to provide the following services to the Client:
+[Service 1]
+[Service 2]
+[Service 3]
+Payment Terms: The Client agrees to pay the Service Provider $[Amount] for the services provided. Payment will be made on the following schedule:
+[Payment Schedule]
+Term: This Agreement will begin on [Start Date] and end on [End Date] unless terminated earlier as provided in this Agreement.
+Confidentiality: Both parties agree to keep any confidential information exchanged during the term of this Agreement confidential.
+Service Provider's Signature:
+
+[Service Provider's Name]
+
+Client's Signature:
+
+[Client's Name]
+
+RENTAL AGREEMENT
+This Rental Agreement ("Agreement") is made on [Date] by and between:
+
+Lessor (Landlord):
+[Lessor's Name]
+[Lessor's Address]
+
+Lessee (Tenant):
+[Lessee's Name]
+[Lessee's Address]
+
+Premises: The Lessor agrees to lease to the Lessee the property located at [Property Address] ("Premises").
+Term: The rental term shall begin on [Start Date] and end on [End Date].
+Rent: The Lessee agrees to pay the Lessor a rent of $[Amount] per [Month/Year], payable on the [Day of the Month].
+Security Deposit: A security deposit of $[Amount] is due at the time of signing this Agreement.
+Maintenance: The Lessee agrees to maintain the Premises in good condition and to promptly report any damage or need for repairs to the Lessor.
+Lessor's Signature:
+
+[Lessor's Name]
+
+Lessee's Signature:
+
+`, // Your third template
 ].map(createTemplateContent);
 
 export default function Editor({
@@ -126,12 +261,23 @@ export default function Editor({
   const [editorContent, setEditorContent] = useState<JSONContent>(
     initialTemplates[0]
   );
+  const [hasLoadedInitialContent, setHasLoadedInitialContent] = useState(false);
   interface Contract {
     id: number;
     contractName: string;
     clientId: number;
+    content: string;
   }
+
   const [contract, setcontract] = useState<Contract[]>([]);
+  const [files, setFiles] = useState < File[] | null > (null);
+
+  const dropZoneConfig = {
+    maxFiles: 5,
+    maxSize: 1024 * 1024 * 4,
+    multiple: true,
+  };
+
   useEffect(() => {
     const loadClients = async () => {
       try {
@@ -149,12 +295,13 @@ export default function Editor({
     defaultValues: {
       Name: "",
       companyName: "",
+      content: "",
     },
   });
 
   useEffect(() => {
     const loadExistingContract = async () => {
-      if (!editId) {
+      if (!editId || hasLoadedInitialContent) {
         setIsLoading(false);
         return;
       }
@@ -168,7 +315,19 @@ export default function Editor({
           form.reset({
             Name: contract.contractName,
             companyName: contract.clientId?.toString() || "",
+            content: contract.content || "",
           });
+          if (contract.content) {
+            try {
+              const parsedContent = JSON.parse(contract.content);
+              setEditorContent(parsedContent);
+              setHasLoadedInitialContent(true);
+            } catch (error) {
+              console.error("Error parsing stored content:", error);
+              toast.error("Error loading saved content");
+              setEditorContent(initialTemplates[0]);
+            }
+          }
         }
       } catch (error) {
         console.error("Error loading contract:", error);
@@ -180,29 +339,27 @@ export default function Editor({
 
     loadExistingContract();
   }, [editId, form]);
-
+  const router = useRouter();
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log(typeof values.Signature);
     try {
       const Contractvalues = {
         id: editId ? parseInt(editId as string) : 0,
         contractName: values.Name,
         clientId: values.companyName ? parseInt(values.companyName) : 0,
         userId: userId,
+        content: JSON.stringify(editorContent),
       };
       if (editId) {
         await updateContract(Contractvalues);
+        router.push("/app/contract");
         toast.success("Contract updated successfully");
       } else {
         await addNewContract(Contractvalues);
         toast.success("Contract created successfully");
+        router.push("/app/contract");
       }
       // console.log(values,session?.user?.id);
-
-      toast(
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(values, null, 2)}</code>
-        </pre>
-      );
     } catch (error) {
       console.error("Form submission error", error);
       toast.error("Failed to submit the form. Please try again.");
@@ -224,10 +381,15 @@ export default function Editor({
   };
 
   const handleTemplateChange = (value: string) => {
-    const templateIndex = Number(value) - 1;
-    if (templateIndex >= 0 && templateIndex < initialTemplates.length) {
-      setSelectedTemplateNo(templateIndex);
-      setEditorContent(initialTemplates[templateIndex]);
+    if (!editId) {
+      // Only allow template changes for new contracts
+      const templateIndex = Number(value) - 1;
+      if (templateIndex >= 0 && templateIndex < initialTemplates.length) {
+        setSelectedTemplateNo(templateIndex);
+        setEditorContent(initialTemplates[templateIndex]);
+      }
+    } else {
+      toast.info("Template cannot be changed while editing");
     }
   };
 
@@ -330,13 +492,14 @@ export default function Editor({
             >
               <EditorRoot>
                 <EditorContent
-                  key={selectedTemplateNo}
+                  key={`${selectedTemplateNo}-${editId}-${hasLoadedInitialContent}`}
                   initialContent={editorContent}
                   extensions={extensions}
                   onUpdate={({ editor }) => {
                     // Preserve formatting when updating content
                     const json = editor.getJSON();
                     setEditorContent(json);
+                    form.setValue("content", JSON.stringify(json));
                   }}
                   className="min-h-96 rounded-xl border p-4"
                   editorProps={{
@@ -402,10 +565,86 @@ export default function Editor({
               </EditorRoot>
             </div>
             <div className="flex items-center gap-4">
-              <button className="flex items-center gap-2 px-4 py-2 border rounded-md hover:bg-gray-50">
-                <PenTool size={16} />
-                Sign
-              </button>
+              <Dialog>
+                <DialogTrigger className="flex items-center justify-center border px-4 py-2 rounded-md gap-2">
+                  <PenTool size={16} />
+                  Sign
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Signature</DialogTitle>
+                    <div>
+                      <FormField
+                        control={form.control}
+                        name="Signature"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Signature</FormLabel>
+                            <FormControl>
+                              <SignatureInput
+                                canvasRef={canvasRef}
+                                onSignatureChange={field.onChange}
+                              />
+                            </FormControl>
+                            <FormDescription>Signature</FormDescription>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                    <div>
+                      <FormField
+                        control={form.control}
+                        name="Signature_image"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Signature_image</FormLabel>
+                            <FormControl>
+                              <FileUploader
+                                value={files}
+                                onValueChange={setFiles}
+                                dropzoneOptions={dropZoneConfig}
+                                className="relative bg-background rounded-lg p-2"
+                              >
+                                <FileInput
+                                  id="fileInput"
+                                  className="outline-dashed outline-1 outline-slate-500"
+                                >
+                                  <div className="flex items-center justify-center flex-col p-8 w-full ">
+                                    <CloudUpload className="text-gray-500 w-10 h-10" />
+                                    <p className="mb-1 text-sm text-gray-500 dark:text-gray-400">
+                                      <span className="font-semibold">
+                                        Click to upload
+                                      </span>
+                                      &nbsp; or drag and drop
+                                    </p>
+                                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                                      SVG, PNG, JPG or GIF
+                                    </p>
+                                  </div>
+                                </FileInput>
+                                <FileUploaderContent>
+                                  {files &&
+                                    files.length > 0 &&
+                                    files.map((file, i) => (
+                                      <FileUploaderItem key={i} index={i}>
+                                        <Paperclip className="h-4 w-4 stroke-current" />
+                                        <span>{file.name}</span>
+                                      </FileUploaderItem>
+                                    ))}
+                                </FileUploaderContent>
+                              </FileUploader>
+                            </FormControl>
+                            <FormDescription>Signature_image</FormDescription>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                  </DialogHeader>
+                </DialogContent>
+              </Dialog>
+
               <button
                 onClick={handleDownloadPDF}
                 className="flex items-center gap-2 px-4 py-2 border rounded-md hover:bg-gray-50"

@@ -31,13 +31,13 @@ export default async function CreateClientPage(props: {
   const id = searchParams.query;
 
   return (
-    <div className="flex flex-col  gap-4 m-8">
+    <div className="flex flex-col  gap-4 px-14 py-8">
       {/* <h2>What&apos;s your Project?</h2> */}
       <Link
         href={"/app/projects"}
-        className="flex gap-2 text-[18px] items-center text-primary/60"
+        className="flex gap-1 text-sm items-center text-primary/60"
       >
-        <ArrowLeft size={16} />
+        <ArrowLeft size={14} />
         Back
       </Link>
       <ProjectForm id={id} />

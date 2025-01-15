@@ -36,7 +36,7 @@ const InvoicePDFTemplate = React.forwardRef<HTMLDivElement, InvoicePDFTemplatePr
     const total = subtotal + tax;
 
     return (
-      <div ref={ref} className="p-8 max-w-4xl mx-auto bg-white">
+      <div ref={ref} className="p-8 max-w-4xl mx-auto bg-white ">
         {/* Header */}
         <div className="flex justify-between items-start mb-8">
           <div>

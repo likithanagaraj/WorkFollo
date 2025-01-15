@@ -14,7 +14,7 @@ export default async function CreateClientPage(props: {
   const id = searchParams.query;
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-14 py-8">
       <div className="flex flex-col gap-5">
         <section className="flex flex-col">
           <Link

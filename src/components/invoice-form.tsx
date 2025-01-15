@@ -36,6 +36,7 @@ import {
   updateInvoice,
 } from "@/actions/invoice.action";
 import InvoicePDFTemplate from "./invoice-pdf-template";
+import { useRouter } from "next/navigation";
 
 const serviceSchema = z.object({
   ServiceName: z.string().min(1, "Service name is required"),
@@ -65,9 +66,10 @@ export default function InvoiceForm({
   userId: number;
   editId?: string;
 }) {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
   const [file, setFile] = useState<File | null>(null);
-  const { toPDF, targetRef } = usePDF({ filename: "invoice.pdf" });
+  // const [isLoading, setIsLoading] = useState(true);
   const dropZoneConfig = {
     maxFiles: 1,
     maxSize: 1024 * 1024 * 4,
@@ -81,7 +83,8 @@ export default function InvoiceForm({
       Services: [{ ServiceName: "", UnitPrice: 0, Quantity: 1, Discount: 0 }],
     },
   });
-
+  const { toPDF, targetRef } = usePDF({ filename: "invoice.pdf" });
+  const pdfRef = React.useRef<HTMLDivElement>(null);
   useEffect(() => {
     const loadExistingInvoice = async () => {
       if (!editId) {
@@ -124,7 +127,7 @@ export default function InvoiceForm({
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       setIsLoading(true);
-      let logoUrl = undefined;
+      const logoUrl = undefined;
       const formData = new FormData();
       Object.entries(values).forEach(([key, value]) => {
         if (key === "Logo" && value instanceof File) {
@@ -146,16 +149,13 @@ export default function InvoiceForm({
       if (editId) {
         await updateInvoice(Number(editId), formDataObj);
         toast.success("Invoice updated successfully!");
+        router.push("/app/invoice");
       } else {
         await addInvoice(formDataObj);
         toast.success("Invoice created successfully!");
+        router.push("/app/invoice");
       }
       setTimeout(() => {
-        const pdfContent = (
-          <div ref={targetRef} className="">
-            <InvoicePDFTemplate data={values} />
-          </div>
-        );
         toPDF();
       }, 100);
     } catch (error) {
@@ -165,18 +165,6 @@ export default function InvoiceForm({
       setIsLoading(false);
     }
   }
-const data = form.getValues()
-const calculateSubtotal = (services: typeof data.Services) => {
-  return services.reduce((acc, service) => {
-    const amount = service.UnitPrice * service.Quantity;
-    const discount = (amount * service.Discount) / 100;
-    return acc + (amount - discount);
-  }, 0);
-};
-
-const subtotal = calculateSubtotal(data.Services);
-const tax = subtotal * 0.1; // 10% tax
-const total = subtotal + tax;
 
   return (
     <Form {...form}>
@@ -285,7 +273,7 @@ const total = subtotal + tax;
                     name="BankDetails"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Bank Details</FormLabel>
+                        <FormLabel>Payment Details</FormLabel>
                         <FormControl>
                           <Textarea
                             placeholder="Account Number, IFSC Code, Account Name, Branch Name"
@@ -527,12 +515,7 @@ const total = subtotal + tax;
               </Button>
             </div>
 
-            <Button
-             
-              className="w-full"
-              type="submit"
-              disabled={isLoading}
-            >
+            <Button className="w-full" type="submit" disabled={isLoading}>
               {isLoading ? (
                 <LoaderCircleIcon className="animate-spin" />
               ) : editId ? (
@@ -543,109 +526,8 @@ const total = subtotal + tax;
             </Button>
           </div>
         </div>
-        {/* Invoice */}
-        <div ref={targetRef} className=" p-8 max-w-4xl mx-auto bg-white">
-          {/* Header */}
-          <div  className="flex justify-between items-start mb-8">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-800">INVOICE</h1>
-              <p className="text-gray-600">Invoice #{data.InvoiceNumber}</p>
-              <p className="text-gray-600">
-                Date: {new Date(data.Date).toLocaleDateString()}
-              </p>
-            </div>
-            {data.Logo && (
-              <div className="w-32">
-                <img
-                  src={URL.createObjectURL(data.Logo)}
-                  alt="Company Logo"
-                  className="w-full h-auto"
-                />
-              </div>
-            )}
-          </div>
-
-          {/* Bill From/To Section */}
-          <div className="flex justify-between mb-8">
-            <div className="w-1/2">
-              <h2 className="text-lg font-semibold mb-2">Bill From:</h2>
-              <div className="text-gray-700">
-                <p className="font-semibold">{data.FromName}</p>
-                <p>{data.FromCompanyName}</p>
-                <p className="whitespace-pre-line">{data.FromCompanyAddress}</p>
-              </div>
-            </div>
-            <div className="w-1/2">
-              <h2 className="text-lg font-semibold mb-2">Bill To:</h2>
-              <div className="text-gray-700">
-                <p className="font-semibold">{data.ToName}</p>
-                <p>{data.ToCompanyName}</p>
-                <p className="whitespace-pre-line">{data.ToAddress}</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Services Table */}
-          <table className="w-full mb-8">
-            <thead>
-              <tr className="bg-gray-100">
-                <th className="py-2 px-4 text-left">Service</th>
-                <th className="py-2 px-4 text-right">Unit Price</th>
-                <th className="py-2 px-4 text-right">Quantity</th>
-                <th className="py-2 px-4 text-right">Discount</th>
-                <th className="py-2 px-4 text-right">Amount</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.Services.map((service, index) => {
-                const amount = service.UnitPrice * service.Quantity;
-                const discount = (amount * service.Discount) / 100;
-                const final = amount - discount;
-
-                return (
-                  <tr key={index} className="border-b">
-                    <td className="py-2 px-4">{service.ServiceName}</td>
-                    <td className="py-2 px-4 text-right">
-                      ${service.UnitPrice.toFixed(2)}
-                    </td>
-                    <td className="py-2 px-4 text-right">{service.Quantity}</td>
-                    <td className="py-2 px-4 text-right">
-                      {service.Discount}%
-                    </td>
-                    <td className="py-2 px-4 text-right">
-                      ${final.toFixed(2)}
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-
-          {/* Totals */}
-          <div className="flex justify-end mb-8">
-            <div className="w-64">
-              <div className="flex justify-between mb-2">
-                <span>Subtotal:</span>
-                <span>${subtotal.toFixed(2)}</span>
-              </div>
-              <div className="flex justify-between mb-2">
-                <span>Tax (10%):</span>
-                <span>${tax.toFixed(2)}</span>
-              </div>
-              <div className="flex justify-between font-bold text-lg">
-                <span>Total:</span>
-                <span>${total.toFixed(2)}</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Bank Details */}
-          <div className="mt-8 pt-8 border-t">
-            <h2 className="text-lg font-semibold mb-2">Bank Details:</h2>
-            <p className="whitespace-pre-line text-gray-700">
-              {data.BankDetails}
-            </p>
-          </div>
+        <div ref={targetRef} className="">
+          <InvoicePDFTemplate data={form.getValues()} />
         </div>
         {/* Services */}
       </form>

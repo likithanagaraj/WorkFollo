@@ -95,6 +95,7 @@ async function DataTable() {
                       </DropdownMenuItem>
                       <Separator />
                       <DropdownMenuItem className="">
+                        Delete
                         <Deletebtn id={client.id} action="client" />
                       </DropdownMenuItem>
                     </DropdownMenuContent>

@@ -88,7 +88,7 @@ function ClientForm({ id }: { id: string | string[] | undefined }) {
   }
 
   return (
-    <div className="max-w-3xl py-5 px-5 rounded-lg">
+    <div className="max-w-3xl py-5 rounded-lg">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
           <div className="flex gap-3">
