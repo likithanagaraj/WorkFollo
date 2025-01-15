@@ -39,6 +39,8 @@ const SignInForm = ({ className }: { className?: string }) => {
     // console.log(values);
     try {
       const result = await signInAction(values);
+      console.log("result")
+      console.log(result)
       if (result.success) {
         toast.success("Login Success");
         router.push("/app");

@@ -16,9 +16,9 @@ import { Shapes } from "@/components/shapes";
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 
 export const metadata: Metadata = {
-  title: "Freelance Flow",
+  title: "Work Follo",
   description: "Simplify Freelancing & Agency Work with Our All-in-One Tool",
-  keywords: "freelance, agency, management, tool",
+  keywords: "freelance, agency, management, tool,work",
 };
 
 const HeroSection1 = async (props: { searchParams: SearchParams }) => {
@@ -120,7 +120,7 @@ const HeroSection1 = async (props: { searchParams: SearchParams }) => {
           <Shapes.Quote className="fill-muted-foreground" />
           <p className="text-lg font-light">
             I was able to add 1+ more client in just a week by using
-            FreelanceFlow.
+            WorkFollo.
           </p>
         </div>
       </section>

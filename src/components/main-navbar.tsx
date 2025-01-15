@@ -48,6 +48,10 @@ function MainNavbar() {
       ? "Projects"
       : currentPath === "transactions"
       ? "Transactions"
+      : currentPath === "contract"
+      ? "Contract"
+      : currentPath === "invoice"
+      ? "Invoice"
       : "Dashboard";
 
   return (

@@ -16,20 +16,25 @@ import { transformChartData } from "@/lib/utils";
 
 const Page = async () => {
   const session = await auth()
+  console.log(session?.user?.id)
+  console.log(session?.user?.email)
   // const projects = await prisma.project.findMany({
+  //   where: {
+  //     userId: Number(session?.user?.id),
+  //   },
   //   include: {
   //     Client: true,
   //     Transaction: true,
   //   },
-  //   where: {
-  //     clientId: Number(session?.user?.id),
-  //   },
+    
   // });
+
+  // console.log(projects)
 
 
   const transactions = await prisma.transaction.findMany({
     where: {
-      clientId: Number(session?.user?.id),
+      userId: Number(session?.user?.id),
       // date: {
       //   gte: new Date(new Date().setMonth(new Date().getMonth() - 1)), // 2023
       //   lte: new Date(), // 2024
@@ -52,13 +57,14 @@ const Page = async () => {
       Project: true,
     },
     where:{
-      id:Number(session?.user?.id),
+      userId:Number(session?.user?.id),
     }
   });
   const total = transaction.reduce(
     (acc, transaction) => acc + (transaction.type === "Payments" ? transaction.amount : 0),
     0
   );
+  console.log(total)
   const expenses = transaction.reduce((acc, transaction) => {
     if (transaction.type === "Expenses") {
       return acc + transaction.amount;

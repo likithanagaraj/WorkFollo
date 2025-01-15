@@ -42,7 +42,7 @@ export function TeamSwitcher() {
                 />
               </div>
               <div className="grid flex-1 text-left text-[16px] leading-tight">
-                <span className="truncate font-semibold ">FreelanceFlow</span>
+                <span className="truncate font-semibold ">WorkFollo</span>
               </div>
             </SidebarMenuButton>
           </DropdownMenuTrigger>

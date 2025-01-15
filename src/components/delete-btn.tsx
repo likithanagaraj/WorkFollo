@@ -21,8 +21,10 @@ import { deleteClient } from "@/actions/client.actions";
 import { toast } from "sonner";
 import { deleteProject } from "@/actions/project.actions";
 import { deletetranscation } from "@/actions/transcation.actions";
+import { deleteContract } from "@/actions/contract";
+import { deleteInvoice } from "@/actions/invoice.action";
 
-function DeleteMenuItem({ id, action }: { id: number, action: "client" | "project" | "transaction" }) {
+function DeleteMenuItem({ id, action }: { id: number, action: "client" | "project" | "transaction" |"contract"|"invoice" }) {
   const router = useRouter();
 
   const handleDelete = async () => {
@@ -36,6 +38,13 @@ function DeleteMenuItem({ id, action }: { id: number, action: "client" | "projec
       } else if (action === "transaction") {
         await deletetranscation(id);
       }
+      else if (action === "contract") {
+        await deleteContract(id);
+      }
+      else if (action === "invoice") {
+        await deleteInvoice(id);
+      }
+
       
       toast.success(`${action} deleted successfully`);
       router.refresh();

@@ -35,6 +35,7 @@ import { Textarea } from "./ui/textarea";
 import { addNewProjectformSchema } from "@/types";
 
 function ClientForm({ id }: { id: string | string[] | undefined }) {
+  
   const [loading, setLoading] = useState(false);
 
   const router = useRouter();
@@ -180,7 +181,7 @@ function ClientForm({ id }: { id: string | string[] | undefined }) {
       setLoading(false);
     }
   }
-
+ 
   return (
     <div className=" ">
       <Form {...form}>

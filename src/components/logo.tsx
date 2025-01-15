@@ -33,7 +33,7 @@ const Logo = ({
         />
         {full && (
           <h3 className={cn("font-medium text-2xl", textClassName)}>
-            FreelanceFlow
+            WorkFollo
           </h3>
         )}
       </Link>
@@ -49,7 +49,7 @@ const Logo = ({
           height={height}
           alt="logo"
         />
-        {full && <h2 className="font-medium text-2xl">FreelanceFlow</h2>}
+        {full && <h2 className="font-medium text-2xl">WorkFollo</h2>}
       </div>
     );
 };
