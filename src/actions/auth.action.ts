@@ -58,8 +58,9 @@ const signInAction = async (data: z.infer<typeof signInFormSchema>) => {
       data: req,
     };
   } catch (error) {
+    console.log("⭐⭐error", error);
     if (error instanceof AuthError) {
-      console.log("error", error);
+      // console.log("error", error);
       switch (error.type) {
         case "CredentialsSignin": {
           return {

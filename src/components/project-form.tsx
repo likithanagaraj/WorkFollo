@@ -35,6 +35,7 @@ import { Textarea } from "./ui/textarea";
 import { addNewProjectformSchema } from "@/types";
 
 function ClientForm({ id }: { id: string | string[] | undefined }) {
+  
   const [loading, setLoading] = useState(false);
 
   const router = useRouter();
@@ -155,7 +156,7 @@ function ClientForm({ id }: { id: string | string[] | undefined }) {
           },
         };
         await updateProject(id, transformedData);
-        toast.success("Client updated successfully!");
+        toast.success("Project updated successfully!");
         router.push("/app/projects");
       } else {
         const createData = {
@@ -172,7 +173,7 @@ function ClientForm({ id }: { id: string | string[] | undefined }) {
 
         await createProject(createData);
         router.push("/app/projects");
-        toast.success("Client created successfully!");
+        toast.success("Project created successfully!");
       }
     } catch (error) {
       toast.error("An error occurred!");
@@ -180,7 +181,7 @@ function ClientForm({ id }: { id: string | string[] | undefined }) {
       setLoading(false);
     }
   }
-
+ 
   return (
     <div className=" ">
       <Form {...form}>

@@ -7,6 +7,8 @@ import {
   Bot,
   ChartLine,
   Command,
+  File,
+  FileBadge,
   Frame,
   GalleryVerticalEnd,
   Home,
@@ -61,6 +63,18 @@ const data = {
       url: "/app/transactions",
       icon: ChartLine,
       description: "View your transcations"
+    
+    },
+    {
+      title: "Contracts",
+      url: "/app/contract",
+      icon: File,
+    
+    },
+    {
+      title: "Invoice",
+      url: "/app/invoice",
+      icon: FileBadge,
     
     },
   ],

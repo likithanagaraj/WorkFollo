@@ -18,8 +18,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       ? "Clients"
       : currentPath === "projects"
       ? "Projects"
+      : currentPath === "contract"
+      ? "Contract"
       : currentPath === "transactions"
       ? "Transactions"
+      : currentPath === "invoice"
+      ? "Invoice"
       : "Dashboard";
 
   const routesWithoutSidebar = [""];

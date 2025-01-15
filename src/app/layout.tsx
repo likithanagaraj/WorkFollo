@@ -18,7 +18,7 @@ const font1 = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Freelance Flow",
+  title: "Work Follo",
   description: "Simplify Freelancing & Agency Work with Our All-in-One Tool",
 };
 

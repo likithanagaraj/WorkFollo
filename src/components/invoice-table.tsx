@@ -13,34 +13,31 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Edit } from "lucide-react";
 import { Separator } from "@radix-ui/react-separator";
 import Deletebtn from "./delete-btn";
-async function ContractDataTable() {
-  const contract = await prisma.contract.findMany({
-    include: {
-      Client: true, // This will include the full client information
-    },
-  });
+async function InvoiceDataTable() {
+  const invoice = await prisma.invoice.findMany();
   return (
     <div className=" p-2 shadow-sm border min-h-60">
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="">Contract Name</TableHead>
+            <TableHead className="">Invoice Number</TableHead>
             <TableHead>Client Name</TableHead>
-            <TableHead>Contact Number</TableHead>
-            <TableHead className="">Status</TableHead>
+            <TableHead>Client Compancy Name</TableHead>
+            <TableHead className="">Client Address</TableHead>
             <TableHead className="">Date</TableHead>
             <TableHead className="">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {contract.map((contract) => {
+          {invoice.map((invoice) => {
             return (
-              <TableRow key={contract.id}>
-                <TableCell>{contract.contractName}</TableCell>
-                <TableCell>{contract.Client.contactName}</TableCell>
-                <TableCell>{contract.Client.contactPhone}</TableCell>
-                <TableCell>{contract.Client.status}</TableCell>
-                <TableCell>{contract.Client.address}</TableCell>
+              <TableRow key={invoice.id}>
+                <TableCell>{invoice.invoiceNumber}</TableCell>
+                <TableCell>{invoice.toName}</TableCell>
+                <TableCell>{invoice.toCompanyName}</TableCell>
+                <TableCell>{invoice.toAddress}</TableCell>
+                <TableCell>{invoice.date.toLocaleDateString()}</TableCell>
+                
                 <TableCell className="flex gap-5 items-center ">
                   <DropdownMenu>
                     <DropdownMenuTrigger className="text-xl">
@@ -49,7 +46,7 @@ async function ContractDataTable() {
                     <DropdownMenuContent>
                       <DropdownMenuItem>
                         <Link
-                          href={`/app/contract/create?query=${contract.id}`}
+                          href={`/app/invoice/create?query=${invoice.id}`}
                           className="flex items-center justify-between"
                         >
                           <span>Edit</span>
@@ -59,7 +56,7 @@ async function ContractDataTable() {
                       <Separator />
                       <DropdownMenuItem className="flex items-center text-destructive justify-between">
                         Delete
-                        <Deletebtn id={contract.id} action="contract" />
+                        <Deletebtn id={invoice.id} action="invoice" />
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
@@ -73,4 +70,4 @@ async function ContractDataTable() {
   );
 }
 
-export default ContractDataTable;
+export default InvoiceDataTable;

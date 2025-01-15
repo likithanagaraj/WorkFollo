@@ -2,38 +2,35 @@
 .tiptap {
   :first-child {
     margin-top: 0;
+
+
   }
 
   /* List styles */
-  ul, 
-  ol {
+  ul, ol {
     padding: 0 1rem;
     margin: 1.25rem 1rem 1.25rem 0.4rem;
-    
+
     li p {
-      margin-top: 0.25em;
-      margin-bottom: 0.25em;
+      /* margin-top: 0.25em; */
+      /* margin-bottom: 0.25em; */
+
     }
   }
 
   /* Heading styles */
-  h1, 
-  h2, 
-  h3, 
-  h4, 
-  h5, 
-  h6 {
-    line-height: 1.1;
-    margin-top: 2.5rem;
-    text-wrap: pretty;
+  h1, h2, h3, h4, h5, h6 {
+    /* line-height: 1.1; */
+    margin-top: 2rem;
+    text-wrap: balance;  /* For better text wrapping in headings */
   }
 
-  h1, 
-  h2 {
-    margin-top: 3.5rem;
-    margin-bottom: 1.5rem;
+  h1, h2 {
+    /* margin-top: 1rem; */
+    /* margin-bottom: 1.5rem; */
   }
 
+  /* Heading font sizes */
   h1 { 
     font-size: 1.4rem; 
   }
@@ -46,9 +43,7 @@
     font-size: 1.1rem; 
   }
 
-  h4, 
-  h5, 
-  h6 { 
+  h4, h5, h6 { 
     font-size: 1rem; 
   }
 
@@ -77,15 +72,61 @@
     }
   }
 
+  /* Blockquote styles */
   blockquote {
     border-left: 3px solid var(--gray-3);
     margin: 1.5rem 0;
     padding-left: 1rem;
   }
 
+  /* Horizontal rule */
   hr {
     border: none;
     border-top: 1px solid var(--gray-2);
     margin: 2rem 0;
   }
+}
+
+
+
+/* Editor container focus styles */
+.tiptap:focus {
+  /* height: 300px; */
+  /* border: 1px solid #E4E4E7;  */
+}
+.tiptap{
+  /* border: 1px solid #E4E4E7; */
+  border-radius: 4px;
+  padding: 1rem;
+  margin: 1rem 0;
+  min-height: 300px;
+  overflow-y: auto;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+/* Button styles */
+.btn-editor {
+
+  padding: 8px 16px;
+  background-color: black; /* Green background */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-editor:hover {
+  background-color: rgb(30, 30, 30); /* Darker green on hover */
+  transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
+.btn-editor:disabled {
+  background-color: gray; /* Light gray for disabled state */
+  cursor: not-allowed;
+}
+
+/* Active button state */
+.btn-editor.is-active {
+  background-color: black; /* Darker green when active */
 }

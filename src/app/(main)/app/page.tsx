@@ -19,21 +19,24 @@ import { SearchParams } from "@/types";
 const Page = async (props: { searchParams: SearchParams }) => {
   const searchParams = await props.searchParams;
   const onboarding = searchParams.onboarding;
-
-  // const session = await auth()
+  const session = await auth()
   // const projects = await prisma.project.findMany({
+  //   where: {
+  //     userId: Number(session?.user?.id),
+  //   },
   //   include: {
   //     Client: true,
   //     Transaction: true,
   //   },
-  //   where: {
-  //     clientId: Number(session?.user?.id),
-  //   },
+    
   // });
+
+  // console.log(projects)
+
 
   const transactions = await prisma.transaction.findMany({
     where: {
-      // clientId: Number(session?.user?.id),
+      userId: Number(session?.user?.id),
       // date: {
       //   gte: new Date(new Date().setMonth(new Date().getMonth() - 1)), // 2023
       //   lte: new Date(), // 2024
@@ -54,12 +57,16 @@ const Page = async (props: { searchParams: SearchParams }) => {
       Client: true,
       Project: true,
     },
+    where:{
+      userId:Number(session?.user?.id),
+    }
   });
   const total = transaction.reduce(
     (acc, transaction) =>
       acc + (transaction.type === "Payments" ? transaction.amount : 0),
     0
   );
+  console.log(total)
   const expenses = transaction.reduce((acc, transaction) => {
     if (transaction.type === "Expenses") {
       return acc + transaction.amount;
