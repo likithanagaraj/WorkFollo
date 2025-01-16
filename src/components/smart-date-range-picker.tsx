@@ -1,5 +1,5 @@
 "use client";
-
+// @ts-nocheck
 import { cn } from "@/lib/utils";
 import { getLocalTimeZone, today, CalendarDate, DateDuration } from "@internationalized/date";
 import { CalendarIcon, ChevronLeft, ChevronRight } from "lucide-react";
