@@ -6,12 +6,13 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
 interface PageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 async function InvoicePage({ params }: PageProps) {
+  const { id } = await params;
   const session = await auth();
   
   if (!session) {
@@ -20,7 +21,7 @@ async function InvoicePage({ params }: PageProps) {
 
   const invoiceData = await prisma.invoice.findUnique({
     where: {
-      invoiceNumber: parseInt(params.id)
+      invoiceNumber: parseInt(id) 
     },
     include: {
       services: true

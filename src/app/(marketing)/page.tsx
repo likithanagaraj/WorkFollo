@@ -7,12 +7,13 @@ import Features1 from "@/components/marketing/features";
 import Cta2 from "@/components/marketing/cta";
 import BasicFooter from "@/components/marketing/footer";
 import { Metadata } from "next";
-import Link from "next/link";
 import { ArrowRightIcon, BadgeCheckIcon, Zap } from "lucide-react";
 import BusinessHero from "@/components/business-hero";
 import HowItWorks from "@/components/how-it-works";
 import AvatarList from "@/components/avatars-list";
 import { Shapes } from "@/components/shapes";
+import Link from "next/link";
+
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 
 export const metadata: Metadata = {

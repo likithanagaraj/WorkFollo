@@ -22,6 +22,20 @@ import {
 import { Separator } from "./ui/separator";
 import { Badge } from "./ui/badge";
 
+const chartConfig = {
+  revenue: {
+    label: "Revenue",
+    color: "hsl(var(--chart-1))"
+  },
+  expenses: {
+    label: "Expenses",
+    color: "hsl(var(--chart-2))"
+  }
+} satisfies {
+  revenue: { label: string; color: string };
+  expenses: { label: string; color: string };
+};
+
 async function ProjectDataTable() {
   const session = await auth();
   // console.log(session);
@@ -30,6 +44,12 @@ async function ProjectDataTable() {
     where: { userId },
     include: { Client: true, services: true, billings: true },
   });
+  function getStatusColor(status: string | null) {
+    if (status === "completed") return "bg-green-100 text-green-800";
+    if (status === "on progress") return "bg-yellow-100 text-yellow-800";
+    if (status === "incomplete") return "bg-red-100 text-red-800";
+    return "";
+  }
 
   return (
     <div className=" p-2 shadow-sm border min-h-60">
@@ -52,15 +72,14 @@ async function ProjectDataTable() {
           </TableHeader>
           <TableBody>
             {projects.map((project) => (
-              <TableRow className="group" key={project.id}>
+              <TableRow key={project.id} className="group">
                 <TableCell className="font-medium">
-                <Link href={`/app/projects/${project.id}`}>
-                {project.name}{" "}
+                  <Link href={`/app/projects/${project.id}`}>
+                    {project.name}
                     <ChevronRight
                       size={16}
                       className="hidden group-hover:inline group-hover:translate-x-2 translate-x-0 group-hover:duration-500 group-hover:delay-200 group-hover:transition-all ease-in"
                     />
-                    
                   </Link>
                 </TableCell>
 
@@ -77,7 +96,12 @@ async function ProjectDataTable() {
                 <TableCell className="font-medium">{project.endDate?.toDateString()}</TableCell> */}
                 {/* <TableCell className="font-medium">{project.contract}</TableCell> */}
                 <TableCell className="font-medium">
-                  <Badge variant={"secondary"}>{project.status}</Badge>
+                  <Badge
+                    variant={"secondary"}
+                    className={getStatusColor(project.status)}
+                  >
+                    {project.status}
+                  </Badge>
                 </TableCell>
                 <TableCell className="font-medium"></TableCell>
                 <TableCell className="flex gap-5 items-center ">
