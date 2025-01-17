@@ -69,7 +69,7 @@ export function NavMenu({ className }: { className?: string }) {
                   >
                     <Logo className="h-6 w-6" />
                     <div className="mb-2 mt-4 text-lg font-medium">
-                      FreelanceFlow
+                      Work Follo
                     </div>
                     <p className="text-sm leading-tight text-muted-foreground">
                       Beautifully designed components built with Radix UI and

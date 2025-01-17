@@ -16,6 +16,8 @@ model User {
   client         Client[]
   projects       Project[]
   transactions   Transaction[]
+  contracts      Contract[]
+  invoices       Invoice[]
 }
 
 model Client {
@@ -29,9 +31,10 @@ model Client {
   createdAt    DateTime      @default(now())
   userId       Int
   status       String?
-  User         User          @relation(fields: [userId], references: [id],onDelete: Cascade)
+  User         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   projects     Project[]
   Transaction  Transaction[]
+  contracts    Contract[]
 }
 
 model Project {
@@ -47,8 +50,8 @@ model Project {
   totalBudget Float?
   userId      Int?
   billings    Billing[]
-  Client      Client        @relation(fields: [clientId], references: [id])
-  User        User?         @relation(fields: [userId], references: [id])
+  Client      Client        @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  User        User?         @relation(fields: [userId], references: [id],onDelete: Cascade)
   services    Service[]
   Transaction Transaction[]
 }
@@ -60,7 +63,7 @@ model Billing {
   percentage Float?
   date       DateTime?
   projectId  Int
-  Project    Project   @relation(fields: [projectId], references: [id],onDelete: Cascade)
+  Project    Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
 }
 
 model Service {
@@ -71,7 +74,7 @@ model Service {
   description String?
   createdAt   DateTime @default(now())
   projectId   Int
-  Project     Project  @relation(fields: [projectId], references: [id],onDelete: Cascade)
+  Project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
 }
 
 // db query -> all transactions of a user, 
@@ -88,7 +91,49 @@ model Transaction {
   userId      Int
   projectId   Int?
   clientId    Int?
-  Client      Client?  @relation(fields: [clientId], references: [id],onDelete: Cascade)
-  Project     Project? @relation(fields: [projectId], references: [id],onDelete: Cascade)
-  User        User     @relation(fields: [userId], references: [id],onDelete: Cascade)
+  Client      Client?  @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  Project     Project? @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  User        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Contract{
+  date        DateTime?
+  id          Int      @id @default(autoincrement())
+  contractName String
+  clientId    Int
+  content     String?
+  // signature   String?
+  // imageSignature String?
+  Client      Client   @relation(fields: [clientId], references: [id],onDelete: Cascade)
+  userId      Int
+  User       User     @relation(fields: [userId], references: [id],onDelete: Cascade)
+}
+
+model Invoice {
+  id                 Int    @id @default(autoincrement())
+  invoiceNumber      Int @unique
+  date               DateTime
+  fromName           String
+  fromCompanyName    String
+  fromCompanyAddress String
+  bankDetails        String
+  logo               String?
+  toName             String
+  toAddress          String
+  toCompanyName      String
+  services           InvoiceService[]
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime?  @updatedAt
+  User               User      @relation(fields: [userId], references: [id],onDelete: Cascade)
+  userId             Int
+}
+
+model InvoiceService {
+  id          Int  @id @default(autoincrement())
+  serviceName String
+  unitPrice   Float
+  quantity    Int
+  discount    Float
+  invoice     Invoice @relation(fields: [invoiceId], references: [id],onDelete: Cascade)
+  invoiceId   Int
 }

@@ -9,7 +9,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import Link from "next/link";
+import { Edit } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
+import Deletebtn from "@/components/delete-btn";
 type Params = Promise<{ client: string }>;
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 
@@ -42,7 +46,7 @@ export default async function Page(props: {
                   </h2>
                   <div className=" p-4 "></div>
                 </div>
-                <PieChartGraph data = {client.Transaction} />
+                <PieChartGraph data={client.Transaction} />
               </section>
 
               {/* Transactions Section */}
@@ -56,6 +60,7 @@ export default async function Page(props: {
                       <TableHead>Amount</TableHead>
                       <TableHead>Type</TableHead>
                       <TableHead>Date</TableHead>
+                      <TableHead>Actions</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -72,6 +77,32 @@ export default async function Page(props: {
                         <TableCell>{transaction.type}</TableCell>
                         <TableCell>
                           {new Date(transaction.date).toLocaleDateString()}
+                        </TableCell>
+                        <TableCell className="flex gap-5 items-center ">
+                          <DropdownMenu>
+                            <DropdownMenuTrigger className="text-xl">
+                              ...
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent>
+                              <DropdownMenuItem>
+                                <p>Edit</p>
+                                <Link
+                                  href={`/app/transactions/create?query=${transaction.id}`}
+                                  className=""
+                                >
+                                  <Edit size={18} />
+                                </Link>
+                              </DropdownMenuItem>
+                              <Separator />
+                              <DropdownMenuItem className="">
+                                <p>Delete</p>
+                                <Deletebtn
+                                  id={transaction.id}
+                                  action="transaction"
+                                />
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
                         </TableCell>
                       </TableRow>
                     ))}

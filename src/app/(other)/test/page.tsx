@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { CartesianGrid, Line, LineChart, XAxis } from "recharts";
+import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
 
 import {
   Card,
@@ -13,106 +13,117 @@ import {
 import {
   ChartConfig,
   ChartContainer,
+  ChartLegend,
+  ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-const chartData = [
-  { date: "2024-04-01", desktop: 222, mobile: 150 },
-  { date: "2024-04-02", desktop: 97, mobile: 180 },
-  { date: "2024-04-03", desktop: 167, mobile: 120 },
-  { date: "2024-04-04", desktop: 242, mobile: 260 },
-  { date: "2024-04-05", desktop: 373, mobile: 290 },
-  { date: "2024-04-06", desktop: 301, mobile: 340 },
-  { date: "2024-04-07", desktop: 245, mobile: 180 },
-  { date: "2024-04-08", desktop: 409, mobile: 320 },
-  { date: "2024-04-09", desktop: 59, mobile: 110 },
-  { date: "2024-04-10", desktop: 261, mobile: 190 },
-  { date: "2024-04-11", desktop: 327, mobile: 350 },
-  { date: "2024-04-12", desktop: 292, mobile: 210 },
-  { date: "2024-04-13", desktop: 342, mobile: 380 },
-  { date: "2024-04-14", desktop: 137, mobile: 220 },
-  { date: "2024-04-15", desktop: 120, mobile: 170 },
-  { date: "2024-04-16", desktop: 138, mobile: 190 },
-  { date: "2024-04-17", desktop: 446, mobile: 360 },
-  { date: "2024-04-18", desktop: 364, mobile: 410 },
-  { date: "2024-04-19", desktop: 243, mobile: 180 },
-  { date: "2024-04-20", desktop: 89, mobile: 150 },
-  { date: "2024-04-21", desktop: 137, mobile: 200 },
-  { date: "2024-04-22", desktop: 224, mobile: 170 },
-  { date: "2024-04-23", desktop: 138, mobile: 230 },
-  { date: "2024-04-24", desktop: 387, mobile: 290 },
-  { date: "2024-04-25", desktop: 215, mobile: 250 },
-  { date: "2024-04-26", desktop: 75, mobile: 130 },
-  { date: "2024-04-27", desktop: 383, mobile: 420 },
-  { date: "2024-04-28", desktop: 122, mobile: 180 },
-  { date: "2024-04-29", desktop: 315, mobile: 240 },
-  { date: "2024-04-30", desktop: 454, mobile: 380 },
-  { date: "2024-05-01", desktop: 165, mobile: 220 },
-  { date: "2024-05-02", desktop: 293, mobile: 310 },
-  { date: "2024-05-03", desktop: 247, mobile: 190 },
-  { date: "2024-05-04", desktop: 385, mobile: 420 },
-  { date: "2024-05-05", desktop: 481, mobile: 390 },
-  { date: "2024-05-06", desktop: 498, mobile: 520 },
-  { date: "2024-05-07", desktop: 388, mobile: 300 },
-  { date: "2024-05-08", desktop: 149, mobile: 210 },
-  { date: "2024-05-09", desktop: 227, mobile: 180 },
-  { date: "2024-05-10", desktop: 293, mobile: 330 },
-  { date: "2024-05-11", desktop: 335, mobile: 270 },
-  { date: "2024-05-12", desktop: 197, mobile: 240 },
-  { date: "2024-05-13", desktop: 197, mobile: 160 },
-  { date: "2024-05-14", desktop: 448, mobile: 490 },
-  { date: "2024-05-15", desktop: 473, mobile: 380 },
-  { date: "2024-05-16", desktop: 338, mobile: 400 },
-  { date: "2024-05-17", desktop: 499, mobile: 420 },
-  { date: "2024-05-18", desktop: 315, mobile: 350 },
-  { date: "2024-05-19", desktop: 235, mobile: 180 },
-  { date: "2024-05-20", desktop: 177, mobile: 230 },
-  { date: "2024-05-21", desktop: 82, mobile: 140 },
-  { date: "2024-05-22", desktop: 81, mobile: 120 },
-  { date: "2024-05-23", desktop: 252, mobile: 290 },
-  { date: "2024-05-24", desktop: 294, mobile: 220 },
-  { date: "2024-05-25", desktop: 201, mobile: 250 },
-  { date: "2024-05-26", desktop: 213, mobile: 170 },
-  { date: "2024-05-27", desktop: 420, mobile: 460 },
-  { date: "2024-05-28", desktop: 233, mobile: 190 },
-  { date: "2024-05-29", desktop: 78, mobile: 130 },
-  { date: "2024-05-30", desktop: 340, mobile: 280 },
-  { date: "2024-05-31", desktop: 178, mobile: 230 },
-  { date: "2024-06-01", desktop: 178, mobile: 200 },
-  { date: "2024-06-02", desktop: 470, mobile: 410 },
-  { date: "2024-06-03", desktop: 103, mobile: 160 },
-  { date: "2024-06-04", desktop: 439, mobile: 380 },
-  { date: "2024-06-05", desktop: 88, mobile: 140 },
-  { date: "2024-06-06", desktop: 294, mobile: 250 },
-  { date: "2024-06-07", desktop: 323, mobile: 370 },
-  { date: "2024-06-08", desktop: 385, mobile: 320 },
-  { date: "2024-06-09", desktop: 438, mobile: 480 },
-  { date: "2024-06-10", desktop: 155, mobile: 200 },
-  { date: "2024-06-11", desktop: 92, mobile: 150 },
-  { date: "2024-06-12", desktop: 492, mobile: 420 },
-  { date: "2024-06-13", desktop: 81, mobile: 130 },
-  { date: "2024-06-14", desktop: 426, mobile: 380 },
-  { date: "2024-06-15", desktop: 307, mobile: 350 },
-  { date: "2024-06-16", desktop: 371, mobile: 310 },
-  { date: "2024-06-17", desktop: 475, mobile: 520 },
-  { date: "2024-06-18", desktop: 107, mobile: 170 },
-  { date: "2024-06-19", desktop: 341, mobile: 290 },
-  { date: "2024-06-20", desktop: 408, mobile: 450 },
-  { date: "2024-06-21", desktop: 169, mobile: 210 },
-  { date: "2024-06-22", desktop: 317, mobile: 270 },
-  { date: "2024-06-23", desktop: 480, mobile: 530 },
-  { date: "2024-06-24", desktop: 132, mobile: 180 },
-  { date: "2024-06-25", desktop: 141, mobile: 190 },
-  { date: "2024-06-26", desktop: 434, mobile: 380 },
-  { date: "2024-06-27", desktop: 448, mobile: 490 },
-  { date: "2024-06-28", desktop: 149, mobile: 200 },
-  { date: "2024-06-29", desktop: 103, mobile: 160 },
-  { date: "2024-06-30", desktop: 446, mobile: 400 },
-];
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
+import SmartDateRangePicker from "@/components/smart-date-range-picker";
 
+const chartData = [
+  { date: "2024-04-01", revenue: 222, expenses: 150 },
+  { date: "2024-04-02", revenue: 97, expenses: 180 },
+  { date: "2024-04-03", revenue: 167, expenses: 120 },
+  { date: "2024-04-04", revenue: 242, expenses: 260 },
+  { date: "2024-04-05", revenue: 373, expenses: 290 },
+  { date: "2024-04-06", revenue: 301, expenses: 340 },
+  { date: "2024-04-07", revenue: 245, expenses: 180 },
+  { date: "2024-04-08", revenue: 409, expenses: 320 },
+  { date: "2024-04-09", revenue: 59, expenses: 110 },
+  { date: "2024-04-10", revenue: 261, expenses: 190 },
+  { date: "2024-04-11", revenue: 327, expenses: 350 },
+  { date: "2024-04-12", revenue: 292, expenses: 210 },
+  { date: "2024-04-13", revenue: 342, expenses: 380 },
+  { date: "2024-04-14", revenue: 137, expenses: 220 },
+  { date: "2024-04-15", revenue: 120, expenses: 170 },
+  { date: "2024-04-16", revenue: 138, expenses: 190 },
+  { date: "2024-04-17", revenue: 446, expenses: 360 },
+  { date: "2024-04-18", revenue: 364, expenses: 410 },
+  { date: "2024-04-19", revenue: 243, expenses: 180 },
+  { date: "2024-04-20", revenue: 89, expenses: 150 },
+  { date: "2024-04-21", revenue: 137, expenses: 200 },
+  { date: "2024-04-22", revenue: 224, expenses: 170 },
+  { date: "2024-04-23", revenue: 138, expenses: 230 },
+  { date: "2024-04-24", revenue: 387, expenses: 290 },
+  { date: "2024-04-25", revenue: 215, expenses: 250 },
+  { date: "2024-04-26", revenue: 75, expenses: 130 },
+  { date: "2024-04-27", revenue: 383, expenses: 420 },
+  { date: "2024-04-28", revenue: 122, expenses: 180 },
+  { date: "2024-04-29", revenue: 315, expenses: 240 },
+  { date: "2024-04-30", revenue: 454, expenses: 380 },
+  { date: "2024-05-01", revenue: 165, expenses: 220 },
+  { date: "2024-05-02", revenue: 293, expenses: 310 },
+  { date: "2024-05-03", revenue: 247, expenses: 190 },
+  { date: "2024-05-04", revenue: 385, expenses: 420 },
+  { date: "2024-05-05", revenue: 481, expenses: 390 },
+  { date: "2024-05-06", revenue: 498, expenses: 520 },
+  { date: "2024-05-07", revenue: 388, expenses: 300 },
+  { date: "2024-05-08", revenue: 149, expenses: 210 },
+  { date: "2024-05-09", revenue: 227, expenses: 180 },
+  { date: "2024-05-10", revenue: 293, expenses: 330 },
+  { date: "2024-05-11", revenue: 335, expenses: 270 },
+  { date: "2024-05-12", revenue: 197, expenses: 240 },
+  { date: "2024-05-13", revenue: 197, expenses: 160 },
+  { date: "2024-05-14", revenue: 448, expenses: 490 },
+  { date: "2024-05-15", revenue: 473, expenses: 380 },
+  { date: "2024-05-16", revenue: 338, expenses: 400 },
+  { date: "2024-05-17", revenue: 499, expenses: 420 },
+  { date: "2024-05-18", revenue: 315, expenses: 350 },
+  { date: "2024-05-19", revenue: 235, expenses: 180 },
+  { date: "2024-05-20", revenue: 177, expenses: 230 },
+  { date: "2024-05-21", revenue: 82, expenses: 140 },
+  { date: "2024-05-22", revenue: 81, expenses: 120 },
+  { date: "2024-05-23", revenue: 252, expenses: 290 },
+  { date: "2024-05-24", revenue: 294, expenses: 220 },
+  { date: "2024-05-25", revenue: 201, expenses: 250 },
+  { date: "2024-05-26", revenue: 213, expenses: 170 },
+  { date: "2024-05-27", revenue: 420, expenses: 460 },
+  { date: "2024-05-28", revenue: 233, expenses: 190 },
+  { date: "2024-05-29", revenue: 78, expenses: 130 },
+  { date: "2024-05-30", revenue: 340, expenses: 280 },
+  { date: "2024-05-31", revenue: 178, expenses: 230 },
+  { date: "2024-06-01", revenue: 178, expenses: 200 },
+  { date: "2024-06-02", revenue: 470, expenses: 410 },
+  { date: "2024-06-03", revenue: 103, expenses: 160 },
+  { date: "2024-06-04", revenue: 439, expenses: 380 },
+  { date: "2024-06-05", revenue: 88, expenses: 140 },
+  { date: "2024-06-06", revenue: 294, expenses: 250 },
+  { date: "2024-06-07", revenue: 323, expenses: 370 },
+  { date: "2024-06-08", revenue: 385, expenses: 320 },
+  { date: "2024-06-09", revenue: 438, expenses: 480 },
+  { date: "2024-06-10", revenue: 155, expenses: 200 },
+  { date: "2024-06-11", revenue: 92, expenses: 150 },
+  { date: "2024-06-12", revenue: 492, expenses: 420 },
+  { date: "2024-06-13", revenue: 81, expenses: 130 },
+  { date: "2024-06-14", revenue: 426, expenses: 380 },
+  { date: "2024-06-15", revenue: 307, expenses: 350 },
+  { date: "2024-06-16", revenue: 371, expenses: 310 },
+  { date: "2024-06-17", revenue: 475, expenses: 520 },
+  { date: "2024-06-18", revenue: 107, expenses: 170 },
+  { date: "2024-06-19", revenue: 341, expenses: 290 },
+  { date: "2024-06-20", revenue: 408, expenses: 450 },
+  { date: "2024-06-21", revenue: 169, expenses: 210 },
+  { date: "2024-06-22", revenue: 317, expenses: 270 },
+  { date: "2024-06-23", revenue: 480, expenses: 530 },
+  { date: "2024-06-24", revenue: 4599, expenses: 180 },
+  { date: "2024-06-25", revenue: 141, expenses: 190 },
+  { date: "2024-06-26", revenue: 434, expenses: 380 },
+  { date: "2024-06-27", revenue: 448, expenses: 490 },
+  { date: "2024-06-28", revenue: 149, expenses: 200 },
+  { date: "2024-06-29", revenue: 103, expenses: 160 },
+  { date: "2024-06-30", revenue: 446, expenses: 400 },
+];
 const chartConfig = {
-  views: {
-    label: "Page Views",
+  visitors: {
+    label: "Visitors",
   },
   desktop: {
     label: "Desktop",
@@ -125,60 +136,97 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 export default function Component() {
-  const [activeChart, setActiveChart] =
-    React.useState<keyof typeof chartConfig>("desktop");
+  const [timeRange, setTimeRange] = React.useState("90d");
+    // const [dateRange, setDateRange] = React.useState<{ start: CalendarDate; end: CalendarDate } | null>(null);
 
-  const total = React.useMemo(
-    () => ({
-      desktop: chartData.reduce((acc, curr) => acc + curr.desktop, 0),
-      mobile: chartData.reduce((acc, curr) => acc + curr.mobile, 0),
-    }),
-    []
-  );
+  const [showExpenses, setShowExpenses] = React.useState(true);
+
+  const filteredData = chartData.filter((item) => {
+    const date = new Date(item.date);
+    const referenceDate = new Date("2024-06-30");
+    let daysToSubtract = 90;
+    if (timeRange === "30d") {
+      daysToSubtract = 30;
+    } else if (timeRange === "7d") {
+      daysToSubtract = 7;
+    }
+    const startDate = new Date(referenceDate);
+    startDate.setDate(startDate.getDate() - daysToSubtract);
+    return date >= startDate;
+  });
 
   return (
-    <Card>
-      <CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row">
-        <div className="flex flex-1 flex-col justify-center gap-1 px-6 py-5 sm:py-6">
-          <CardTitle>Line Chart - Interactive</CardTitle>
+    <Card className="max-w-3xl mx-auto mt-20">
+      <CardHeader className="flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row">
+        <div className="grid flex-1 gap-1 text-center sm:text-left">
+          <CardTitle>Area Chart - Interactive</CardTitle>
           <CardDescription>
-            Showing total visitors for the last 3 months
+            Showing total visitors for the last timeRange months
           </CardDescription>
         </div>
-        <div className="flex">
-          {["desktop", "mobile"].map((key) => {
-            const chart = key as keyof typeof chartConfig;
-            return (
-              <button
-                key={chart}
-                data-active={activeChart === chart}
-                className="flex flex-1 flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l data-[active=true]:bg-muted/50 sm:border-l sm:border-t-0 sm:px-8 sm:py-6"
-                onClick={() => setActiveChart(chart)}
-              >
-                <span className="text-xs text-muted-foreground">
-                  {chartConfig[chart].label}
-                </span>
-                <span className="text-lg font-bold leading-none sm:text-3xl">
-                  {total[key as keyof typeof total].toLocaleString()}
-                </span>
-              </button>
-            );
-          })}
+        <div>
+          <SmartDateRangePicker />
+          <Select value={timeRange} onValueChange={setTimeRange}>
+            <SelectTrigger
+              className="w-[160px] rounded-lg sm:ml-auto"
+              aria-label="Select a value"
+            >
+              <SelectValue placeholder="Last 3 months" />
+            </SelectTrigger>
+            <SelectContent className="rounded-xl">
+              <SelectItem value="90d" className="rounded-lg">
+                Last 3 months
+              </SelectItem>
+              <SelectItem value="30d" className="rounded-lg">
+                Last 30 days
+              </SelectItem>
+              <SelectItem value="7d" className="rounded-lg">
+                Last 7 days
+              </SelectItem>
+            </SelectContent>
+          </Select>
+          <Switch
+            defaultChecked={showExpenses}
+            onCheckedChange={(value) => {
+              console.log(value);
+
+              setShowExpenses(value);
+            }}
+          />
         </div>
       </CardHeader>
-      <CardContent className="px-2 sm:p-6">
+      <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
         <ChartContainer
           config={chartConfig}
           className="aspect-auto h-[250px] w-full"
         >
-          <LineChart
-            accessibilityLayer
-            data={chartData}
-            margin={{
-              left: 12,
-              right: 12,
-            }}
-          >
+          <AreaChart data={filteredData}>
+            <defs>
+              <linearGradient id="fillDesktop" x1="0" y1="0" x2="0" y2="1">
+                <stop
+                  offset="5%"
+                  stopColor="var(--color-desktop)"
+                  stopOpacity={0.8}
+                />
+                <stop
+                  offset="95%"
+                  stopColor="var(--color-desktop)"
+                  stopOpacity={0.1}
+                />
+              </linearGradient>
+              <linearGradient id="fillMobile" x1="0" y1="0" x2="0" y2="1">
+                <stop
+                  offset="5%"
+                  stopColor="var(--color-mobile)"
+                  stopOpacity={0.8}
+                />
+                <stop
+                  offset="95%"
+                  stopColor="var(--color-mobile)"
+                  stopOpacity={0.1}
+                />
+              </linearGradient>
+            </defs>
             <CartesianGrid vertical={false} />
             <XAxis
               dataKey="date"
@@ -194,29 +242,44 @@ export default function Component() {
                 });
               }}
             />
+            <YAxis
+              tickLine={false}
+              axisLine={false}
+              tickMargin={8}
+              // minTickGap={32}
+            />
             <ChartTooltip
+              cursor={false}
               content={
                 <ChartTooltipContent
-                  className="w-[150px]"
-                  nameKey="views"
                   labelFormatter={(value) => {
                     return new Date(value).toLocaleDateString("en-US", {
                       month: "short",
                       day: "numeric",
-                      year: "numeric",
                     });
                   }}
+                  indicator="dot"
                 />
               }
             />
-            <Line
-              dataKey={activeChart}
-              type="monotone"
-              stroke={`var(--color-${activeChart})`}
-              strokeWidth={2}
-              dot={false}
+            <Area
+              dataKey="revenue"
+              type="natural"
+              fill="url(#fillMobile)"
+              stroke="var(--color-mobile)"
+              stackId="a"
             />
-          </LineChart>
+            {showExpenses && (
+              <Area
+                dataKey="expenses"
+                type="natural"
+                fill="url(#fillDesktop)"
+                stroke="var(--color-desktop)"
+                stackId="a"
+              />
+            )}
+            <ChartLegend content={<ChartLegendContent />} />
+          </AreaChart>
         </ChartContainer>
       </CardContent>
     </Card>

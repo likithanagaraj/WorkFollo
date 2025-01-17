@@ -14,14 +14,14 @@ export default async function CreateClientPage(props: {
   const id = searchParams.query;
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-14 py-8">
       <div className="flex flex-col gap-5">
         <section className="flex flex-col">
           <Link
             href="/app/clients"
-            className="flex gap-2 text-lg items-center text-primary/60 hover:text-primary transition-colors"
+            className="flex gap-1 text-sm items-center text-primary/60 hover:text-primary transition-colors"
           >
-            <ArrowLeft size={16} />
+            <ArrowLeft size={14} />
             Back
           </Link>
         </section>

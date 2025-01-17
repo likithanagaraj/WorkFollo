@@ -7,7 +7,15 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { CircleHelp } from "lucide-react";
 // const chartConfig = {
 //   visitors: {
 //     label: "Visitors",
@@ -50,18 +58,49 @@ import {
 interface Props {
   title: string;
   amount: string;
+  className?: string;
+  tooltip?: string;
 }
 
-export default function DashboardEachChart({ title, amount }: Props) {
+export default function DashboardEachChart({
+  title,
+  amount,
+  className,
+  tooltip,
+}: Props) {
   return (
-    <Card className="max-w-xs border rounded-lg pl-5 ">
+    <Card className={cn("max-w-xs border rounded-lg pl-5 ", className)}>
       <CardHeader className="p-4 pl-2 pb-0">
-        <CardTitle className="font-normal text-muted-foreground">{title}</CardTitle>
+        <CardTitle className="font-normal text-muted-foreground">
+          {title}
+          {tooltip && (
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant={"ghost"}
+                    size={"icon"}
+                    className="ml-auto scale-90 inline"
+                  >
+                    <CircleHelp className="inline" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent
+                  side="right"
+                  className=" px-2 py-1 text-xs"
+                  // showArrow={true}
+                >
+                  {tooltip}
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          )}
+        </CardTitle>
         {/* <CardDescription>{amount}</CardDescription> */}
       </CardHeader>
       <CardContent className="flex flex-row items-baseline gap-4 p-2 pt-2">
-        <h2 className="flex items-baseline gap-2 text-2xl font-semibold tabular-nums leading-none">₹
-          {amount}
+        <h2 className="flex items-baseline gap-2 text-2xl font-semibold tabular-nums leading-none">
+          ₹{amount}
           {/* <span className="text-sm font-normal text-muted-foreground">
             kcal/day
           </span> */}

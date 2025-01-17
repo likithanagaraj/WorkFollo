@@ -14,13 +14,13 @@ export default async function CreateClientPage(props: {
   return (
     <div
       className="flex flex-col justify-center items-start 
-     p-8"
+     px-14 py-8 gap-6"
     >
       <Link
         href={"/app/transactions"}
-        className="flex gap-2 items-center text-primary/60"
+        className="flex gap-1 items-center text-primary/60"
       >
-        <ArrowLeft size={16} />
+        <ArrowLeft size={14} />
         Back
       </Link>
       <TranscationForm id={id} />

@@ -31,27 +31,41 @@ export const addNewProjectformSchema = z.object({
   client: z.number(),
   startDate: z.coerce.date(),
   endDate: z.coerce.date(),
-  services: z.array(z.object({
-    serviceName: z.string().min(1, "Service name is required"),
-    serviceAmount: z.number().positive("Amount must be positive"),
-    unit: z.string().min(1, "Unit is required"),
-    servicedescription: z.string(),
-  })),
+  services: z.array(
+    z.object({
+      serviceName: z.string().min(1, "Service name is required"),
+      serviceAmount: z.number().positive("Amount must be positive"),
+      unit: z.string().min(1, "Unit is required"),
+      servicedescription: z.string(),
+    })
+  ),
   contract: z.string(),
   description: z.string(),
   status: z.string(),
-  billings: z.array(z.object({
-    billingTitle: z.string(),
-    amount: z.number().positive("Amount must be positive"),
-  })),
+  billings: z.array(
+    z.object({
+      billingTitle: z.string(),
+      amount: z.number().positive("Amount must be positive"),
+    })
+  ),
 });
 
 export const addTransactionformSchema = z.object({
   clientId: z.number().nullable(),
   projectId: z.number().nullable(),
+
   title: z.string().min(1, "Title is required"),
   amount: z.string().min(1, "Amount is required"),
+
   date: z.coerce.date(),
   type: z.string().min(1, "Type is required"),
   description: z.string().nullable(),
 });
+
+export type Params = Promise<{ slug: string }>
+
+
+export type SearchParams = Promise<{
+  [key: string]: string | string[] | undefined;
+}>;
+

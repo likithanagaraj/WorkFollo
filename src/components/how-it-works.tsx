@@ -4,7 +4,7 @@ import Image from "next/image";
 const steps = [
   {
     number: "01",
-    title: "Create a free FreelanceFlow account",
+    title: "Create a free Work Follo account",
     description:
       "Fill out an application for yourself, or your clients. Submit business details in 2 minutes.",
   },

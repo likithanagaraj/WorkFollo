@@ -35,6 +35,7 @@ import { Textarea } from "./ui/textarea";
 import { addNewProjectformSchema } from "@/types";
 
 function ClientForm({ id }: { id: string | string[] | undefined }) {
+  
   const [loading, setLoading] = useState(false);
 
   const router = useRouter();
@@ -180,16 +181,16 @@ function ClientForm({ id }: { id: string | string[] | undefined }) {
       setLoading(false);
     }
   }
-
+ 
   return (
-    <div className=" ">
+    <div className="max-w-3xl py-5 rounded-lg ">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-5 max-w-3xl "
         >
           <h1 className="text-[25px] font-semibold">Project Details </h1>
-          <div className=" rounded-lg p-7 shadow-sm flex flex-col gap-3">
+          <div className=" rounded-lg p-7 border flex flex-col gap-3">
             {/* Project Name Field */}
 
             <FormField
