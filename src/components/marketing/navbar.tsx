@@ -20,7 +20,7 @@ const Navbar1 = () => {
   return (
     <header className="py-3 flex justify-between px-5 md:px-16 items-center  z-50">
       <div>
-        <Logo full className="flex-row"  textClassName="text-lg" width={40} />
+        <Logo full className="flex-row"  textClassName="text-lg" width={35} />
       </div>
       <NavMenu className="hidden md:block z-50" />
       {/* <nav className="text-foreground/70 text-sm sm:flex gap-4 hidden">

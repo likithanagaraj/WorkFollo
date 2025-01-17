@@ -1,8 +1,8 @@
 "use client";
-// @ts-nocheck
+
 import { cn } from "@/lib/utils";
 import { getLocalTimeZone, today, CalendarDate, DateDuration } from "@internationalized/date";
-import { CalendarIcon, ChevronLeft, ChevronRight } from "lucide-react";
+import { CalendarIcon, ChevronLeft, ChevronRight } from 'lucide-react';
 import {
   Button,
   CalendarCell,
@@ -32,9 +32,7 @@ export default function SmartDateRangePicker() {
   const now = today(getLocalTimeZone());
   const tz = getLocalTimeZone();
   
-  // Add state for the date range
   const [dateRange, setDateRange] = useState<DateRange | null>(null);
-  // State for controlling the popover
   const [isOpen, setIsOpen] = useState(false);
 
   const getDateRange = (range: string): DateRange => {
@@ -44,12 +42,12 @@ export default function SmartDateRangePicker() {
 
     switch (range) {
       case 'this-week': {
-        start = currentDate.subtract({ days: currentDate.dayOfWeek });
+        start = currentDate.subtract({ days: currentDate.toDate(tz).getDay() });
         end = start.add({ days: 6 });
         break;
       }
       case 'last-week': {
-        start = currentDate.subtract({ days: currentDate.dayOfWeek + 7 });
+        start = currentDate.subtract({ days: currentDate.toDate(tz).getDay() + 7 });
         end = start.add({ days: 6 });
         break;
       }
@@ -84,8 +82,7 @@ export default function SmartDateRangePicker() {
   const handleRangeSelect = (range: string) => {
     const newRange = getDateRange(range);
     setDateRange(newRange);
-    // Optionally close the popover after selection
-    // setIsOpen(false);
+    setIsOpen(false);
   };
 
   return (
@@ -177,37 +174,37 @@ export default function SmartDateRangePicker() {
           <div className="flex flex-col gap-1 mt-5 ml-2">
             <Button2 
               onClick={() => handleRangeSelect('this-week')} 
-              variant={"secondary"}
+              variant="secondary"
             >
               This Week
             </Button2>
             <Button2 
               onClick={() => handleRangeSelect('last-week')} 
-              variant={"secondary"}
+              variant="secondary"
             >
               Last Week
             </Button2>
             <Button2 
               onClick={() => handleRangeSelect('this-month')} 
-              variant={"secondary"}
+              variant="secondary"
             >
               This Month
             </Button2>
             <Button2 
               onClick={() => handleRangeSelect('last-month')} 
-              variant={"secondary"}
+              variant="secondary"
             >
               Last Month
             </Button2>
             <Button2 
               onClick={() => handleRangeSelect('this-year')} 
-              variant={"secondary"}
+              variant="secondary"
             >
               This Year
             </Button2>
             <Button2 
               onClick={() => handleRangeSelect('last-year')} 
-              variant={"secondary"}
+              variant="secondary"
             >
               Last Year
             </Button2>
@@ -217,3 +214,4 @@ export default function SmartDateRangePicker() {
     </DateRangePicker>
   );
 }
+

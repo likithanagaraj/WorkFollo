@@ -4,12 +4,8 @@ import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { notFound, redirect } from 'next/navigation';
 import React from 'react'
-interface PageProps {
-  params: {
-    id: string;
-  };
-}
-async function page({ params }: PageProps) {
+type Params = Promise<{ id: string }>;
+async function page({ params }: {params:Params}) {
   const session = await auth();
     
     if (!session) {
@@ -17,7 +13,7 @@ async function page({ params }: PageProps) {
     }
     const invoiceData = await prisma.contract.findUnique({
       where: {
-        id: parseInt(params.id)
+        id: parseInt((await params).id)
       },
       include: {
        Client: true
