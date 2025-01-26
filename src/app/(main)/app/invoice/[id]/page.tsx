@@ -19,9 +19,12 @@ async function InvoicePage({ params }: PageProps) {
     return redirect("/login");
   }
 
+  
+
   const invoiceData = await prisma.invoice.findUnique({
     where: {
-      invoiceNumber: parseInt(id) 
+      invoiceNumber: parseInt(id),
+      userId: Number(session?.user?.id)
     },
     include: {
       services: true
@@ -54,6 +57,7 @@ async function InvoicePage({ params }: PageProps) {
 
   return (
     <div className="container mx-auto px-14 py-8 space-y-6 ">
+     
       <Link
         href="/app/invoice"
         className="flex gap-1 text-sm items-center text-primary/60 hover:text-primary transition-colors"

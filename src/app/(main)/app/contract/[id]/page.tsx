@@ -13,7 +13,7 @@ async function page({ params }: {params:Params}) {
     }
     const invoiceData = await prisma.contract.findUnique({
       where: {
-        id: parseInt((await params).id)
+        id: parseInt((await params).id) && Number(session?.user?.id),
       },
       include: {
        Client: true

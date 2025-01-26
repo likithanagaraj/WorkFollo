@@ -31,9 +31,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Separator } from "@/components/ui/separator";
+
 type Params = Promise<{ id: string }>;
+
 async function page({ params }: { params: Params }) {
-  const sesion = await auth();
+  const session = await auth();
   const { id } = await params;
   // const client = await prisma.client.findMany({
   //   where:{
@@ -44,7 +46,7 @@ async function page({ params }: { params: Params }) {
   const projects = await prisma.project.findMany({
     where: {
       id: Number(id),
-      userId: Number(sesion?.user?.id),
+      userId: Number(session?.user?.id),
     },
     include: {
       Client: true,

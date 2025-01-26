@@ -19,8 +19,17 @@ import { ChevronRight, Edit, Plus } from "lucide-react";
 import { Separator } from "@radix-ui/react-separator";
 import Deletebtn from "./delete-btn";
 import CreateButton from "./create-button";
+import { auth } from "@/lib/auth";
+
 async function InvoiceDataTable() {
-  const invoice = await prisma.invoice.findMany();
+  const session = await auth();
+  const invoice = await prisma.invoice.findMany(
+    {
+      where: {
+        userId: Number(session?.user?.id),
+      },
+    }
+  );
   return (
     <div className=" p-2 shadow-sm border min-h-60">
       {

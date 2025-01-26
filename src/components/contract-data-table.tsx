@@ -14,8 +14,13 @@ import { ChevronRight, Edit, Plus } from "lucide-react";
 import { Separator } from "@radix-ui/react-separator";
 import Deletebtn from "./delete-btn";
 import CreateButton from "./create-button";
+import { auth } from "@/lib/auth";
 async function ContractDataTable() {
+  const session = await auth();
   const contract = await prisma.contract.findMany({
+    where: {
+      userId: Number(session?.user?.id),
+    },
     include: {
       Client: true, // This will include the full client information
     },
