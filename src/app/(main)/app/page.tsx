@@ -20,18 +20,7 @@ const Page = async (props: { searchParams: SearchParams }) => {
   const searchParams = await props.searchParams;
   const onboarding = searchParams.onboarding;
   const session = await auth()
-  // const projects = await prisma.project.findMany({
-  //   where: {
-  //     userId: Number(session?.user?.id),
-  //   },
-  //   include: {
-  //     Client: true,
-  //     Transaction: true,
-  //   },
-    
-  // });
 
-  // console.log(projects)
 
 
   const transactions = await prisma.transaction.findMany({
@@ -49,16 +38,13 @@ const Page = async (props: { searchParams: SearchParams }) => {
   });
   const chartData = transformChartData(transactions);
 
-  // console.log("chartData1", chartData);
-  //
-
   const transaction = await prisma.transaction.findMany({
     include: {
       Client: true,
       Project: true,
     },
-    where:{
-      userId:Number(session?.user?.id),
+    where: {
+      userId: Number(session?.user?.id),
     }
   });
   const total = transaction.reduce(
@@ -107,7 +93,7 @@ const Page = async (props: { searchParams: SearchParams }) => {
         {/* Dashboard Grid */}
         <div className="grid grid-cols-1 gap-3">
           {/* Chart Cards Section */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl">
             <DashboardEachChart
               className="first-feature"
               title="Income"
@@ -128,8 +114,8 @@ const Page = async (props: { searchParams: SearchParams }) => {
 
           {/* Graph Section */}
           <div className="grid grid-cols-1 gap-3 fourth-feature">
-            <RevenueGraph chartData={chartData} />
-            {/* <ProjectTackerGraph /> */}
+            {/* @ts-ignore */}
+            <RevenueGraph transactions={transactions} />            {/* <ProjectTackerGraph /> */}
           </div>
         </div>
       </main>

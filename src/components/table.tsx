@@ -56,7 +56,6 @@ async function DataTable() {
               <TableHead>Contact Name</TableHead>
               <TableHead className="">Contact Email</TableHead>
               <TableHead className="">Contact Phone</TableHead>
-              {/* <TableHead className="">Status</TableHead> */}
               <TableHead className="">Actions</TableHead>
             </TableRow>
           </TableHeader>

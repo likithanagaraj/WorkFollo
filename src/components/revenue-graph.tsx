@@ -1,117 +1,115 @@
-"use client";
+"use client"
 
-import * as React from "react";
-import {
-  Area,
-  AreaChart,
-  CartesianGrid,
-  Line,
-  LineChart,
-  XAxis,
-  YAxis,
-} from "recharts";
+import * as React from "react"
+import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts"
 
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  ChartConfig,
+  type ChartConfig,
   ChartContainer,
   ChartLegend,
   ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart";
-import {
-  TransactionChartRawData,
-  TransactionChartTransformedData,
-  transformChartData,
-} from "@/lib/utils";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Switch } from "@/components/ui/switch";
+} from "@/components/ui/chart"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Switch } from "@/components/ui/switch"
+import { Transaction } from "@prisma/client"
 
-const chartData = [
-  { date: "2024-01-01", revenue: 222 },
-  { date: "2024-02-02", revenue: 97 },
-  { date: "2024-03-03", revenue: 167 },
-  { date: "2024-04-04", revenue: 242 },
-  { date: "2024-05-05", revenue: 373 },
-  { date: "2024-06-06", revenue: 301 },
-  { date: "2024-07-07", revenue: 245 },
-  { date: "2024-08-08", revenue: 409 },
-  { date: "2024-09-09", revenue: 59 },
-  { date: "2024-10-10", revenue: 261 },
-  { date: "2024-11-11", revenue: 327 },
-  { date: "2024-12-12", revenue: 292 },
-];
+// Define the Transaction type based on your Prisma model
 
+
+// Define the chart data structure
+interface ChartDataPoint {
+  date: string
+  revenue: number
+  expenses: number
+}
+
+// Chart configuration
 const chartConfig = {
-  visitors: {
-    label: "Visitors",
-  },
-  desktop: {
-    label: "Desktop",
-    color: "hsl(var(--chart-1))",
-  },
-  mobile: {
-    label: "Mobile",
+  revenue: {
+    label: "Revenue",
     color: "hsl(var(--chart-2))",
   },
-} satisfies ChartConfig;
+  expenses: {
+    label: "Expenses",
+    color: "hsl(var(--chart-1))",
+  },
+} satisfies ChartConfig
+
+// Function to transform transactions into chart data
+function transformTransactionsToChartData(transactions: Transaction[]): ChartDataPoint[] {
+  // Group transactions by date
+  const groupedByDate = transactions.reduce(
+    (acc, transaction) => {
+      const dateStr = transaction.date.toISOString().split("T")[0]
+
+      if (!acc[dateStr]) {
+        acc[dateStr] = {
+          revenue: 0,
+          expenses: 0,
+        }
+      }
+
+      if (transaction.type === "income") {
+        acc[dateStr].revenue += transaction.amount
+      } else if (transaction.type === "expense") {
+        acc[dateStr].expenses += transaction.amount
+      }
+
+      return acc
+    },
+    {} as Record<string, { revenue: number; expenses: number }>,
+  )
+
+  // Convert to array format needed for the chart
+  return Object.entries(groupedByDate)
+    .map(([date, values]) => ({
+      date,
+      revenue: values.revenue,
+      expenses: values.expenses,
+    }))
+    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+}
 
 export default function RevenueGraph({
-  chartData,
+  transactions,
 }: {
-  chartData: TransactionChartTransformedData[];
+  transactions: Transaction[]
 }) {
-  const [timeRange, setTimeRange] = React.useState("90d");
-  // const [dateRange, setDateRange] = React.useState<{ start: CalendarDate; end: CalendarDate } | null>(null);
+  const [timeRange, setTimeRange] = React.useState("90d")
+  const [showExpenses, setShowExpenses] = React.useState(true)
 
-  const [showExpenses, setShowExpenses] = React.useState(true);
+  // Transform transactions to chart data
+  const chartData = React.useMemo(() => transformTransactionsToChartData(transactions), [transactions])
 
-  const filteredData = chartData.filter((item) => {
-    const date = new Date(item.date);
-    const referenceDate = new Date("2024-06-30");
-    let daysToSubtract = 90;
-    if (timeRange === "360d") {
-      daysToSubtract = 360;
-    } else if (timeRange === "180d") {
-      daysToSubtract = 180;
-    } else if (timeRange === "30d") {
-      daysToSubtract = 30;
-    } else if (timeRange === "7d") {
-      daysToSubtract = 7;
-    }
-    const startDate = new Date(referenceDate);
-    startDate.setDate(startDate.getDate() - daysToSubtract);
-    return date >= startDate;
-  });
+  // Filter data based on selected time range
+  const filteredData = React.useMemo(() => {
+    const now = new Date()
+    let daysToSubtract = 90
+
+    if (timeRange === "360d") daysToSubtract = 360
+    else if (timeRange === "180d") daysToSubtract = 180
+    else if (timeRange === "30d") daysToSubtract = 30
+    else if (timeRange === "7d") daysToSubtract = 7
+
+    const startDate = new Date(now)
+    startDate.setDate(startDate.getDate() - daysToSubtract)
+
+    return chartData.filter((item) => new Date(item.date) >= startDate)
+  }, [chartData, timeRange])
 
   return (
-    <Card className="">
+    <Card className="p-0">
       <CardHeader className="flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row">
         <div className="grid flex-1 gap-1 text-center sm:text-left">
           <CardTitle>Revenue</CardTitle>
-          <CardDescription>
-            The total money earned from your projects
-          </CardDescription>
+          <CardDescription>The total money earned vs expenses</CardDescription>
         </div>
         <div className="flex items-center gap-2 sm:gap-4">
           <Select value={timeRange} onValueChange={setTimeRange}>
-            <SelectTrigger
-              className="w-[160px] rounded-lg sm:ml-auto"
-              aria-label="Select a value"
-            >
+            <SelectTrigger className="w-[160px] rounded-lg sm:ml-auto" aria-label="Select time range">
               <SelectValue placeholder="Last 3 months" />
             </SelectTrigger>
             <SelectContent className="rounded-xl">
@@ -132,47 +130,25 @@ export default function RevenueGraph({
               </SelectItem>
             </SelectContent>
           </Select>
-          {/* <Switch
-            defaultChecked={showExpenses}
-            onCheckedChange={(value) => {
-              console.log(value);
-
-              setShowExpenses(value);
-            }}
-          />
-          <span className="text-sm">Show Expenses</span> */}
+          <div className="flex items-center gap-2">
+            <Switch checked={showExpenses} onCheckedChange={setShowExpenses} id="show-expenses" />
+            <label htmlFor="show-expenses" className="text-sm">
+              Show Expenses
+            </label>
+          </div>
         </div>
       </CardHeader>
-      <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
-        <ChartContainer
-          config={chartConfig}
-          className="aspect-auto h-[250px] w-full"
-        >
+      <CardContent className="px-2 pt-4 sm:pt-6">
+        <ChartContainer config={chartConfig} className="aspect-auto h-[250px] w-full">
           <AreaChart data={filteredData}>
             <defs>
-              <linearGradient id="fillDesktop" x1="0" y1="0" x2="0" y2="1">
-                <stop
-                  offset="5%"
-                  stopColor="var(--color-desktop)"
-                  stopOpacity={0.8}
-                />
-                <stop
-                  offset="95%"
-                  stopColor="var(--color-desktop)"
-                  stopOpacity={0.1}
-                />
+              <linearGradient id="fillRevenue" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="var(--color-revenue)" stopOpacity={0.8} />
+                <stop offset="95%" stopColor="var(--color-revenue)" stopOpacity={0.1} />
               </linearGradient>
-              <linearGradient id="fillMobile" x1="0" y1="0" x2="0" y2="1">
-                <stop
-                  offset="5%"
-                  stopColor="var(--color-mobile)"
-                  stopOpacity={0.8}
-                />
-                <stop
-                  offset="95%"
-                  stopColor="var(--color-mobile)"
-                  stopOpacity={0.1}
-                />
+              <linearGradient id="fillExpenses" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="var(--color-expenses)" stopOpacity={0.8} />
+                <stop offset="95%" stopColor="var(--color-expenses)" stopOpacity={0.1} />
               </linearGradient>
             </defs>
             <CartesianGrid vertical={false} />
@@ -183,19 +159,14 @@ export default function RevenueGraph({
               tickMargin={8}
               minTickGap={32}
               tickFormatter={(value) => {
-                const date = new Date(value);
+                const date = new Date(value)
                 return date.toLocaleDateString("en-US", {
                   month: "short",
                   day: "numeric",
-                });
+                })
               }}
             />
-            <YAxis
-              tickLine={false}
-              axisLine={false}
-              tickMargin={8}
-              // minTickGap={32}
-            />
+            <YAxis tickLine={false} axisLine={false} tickMargin={8} tickFormatter={(value) => `$${value}`} />
             <ChartTooltip
               cursor={false}
               content={
@@ -204,25 +175,23 @@ export default function RevenueGraph({
                     return new Date(value).toLocaleDateString("en-US", {
                       month: "short",
                       day: "numeric",
-                    });
+                      year: "numeric",
+                    })
+                  }}
+                  formatter={(value, name) => {
+                    return [`$${value}`, chartConfig[name as keyof typeof chartConfig]?.label || name]
                   }}
                   indicator="dot"
                 />
               }
             />
-            <Area
-              dataKey="revenue"
-              type="natural"
-              fill="url(#fillMobile)"
-              stroke="var(--color-mobile)"
-              stackId="a"
-            />
+            <Area dataKey="revenue" type="natural" fill="url(#fillRevenue)" stroke="var(--color-revenue)" stackId="a" />
             {showExpenses && (
               <Area
                 dataKey="expenses"
                 type="natural"
-                fill="url(#fillDesktop)"
-                stroke="var(--color-desktop)"
+                fill="url(#fillExpenses)"
+                stroke="var(--color-expenses)"
                 stackId="a"
               />
             )}
@@ -231,5 +200,6 @@ export default function RevenueGraph({
         </ChartContainer>
       </CardContent>
     </Card>
-  );
+  )
 }
+

@@ -240,7 +240,7 @@ function ClientForm({ id }: { id: string | string[] | undefined }) {
             />
 
             {/* Contract Field */}
-            <FormField
+            {/* <FormField
               control={form.control}
               name="contract"
               render={({ field }) => (
@@ -256,7 +256,7 @@ function ClientForm({ id }: { id: string | string[] | undefined }) {
                   <FormMessage />
                 </FormItem>
               )}
-            />
+            /> */}
 
             {/* Description Field */}
             <FormField
