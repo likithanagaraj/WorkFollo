@@ -3,6 +3,7 @@
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/db";
 import { addNewClientFormSchema } from "@/types";
+import { Client } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
@@ -58,13 +59,13 @@ export async function fetchClients() {
 export { createClient };
 
 
-export async function getClient(id: string) {
+export async function getClient(id: Client['id']) {
   if (!id) throw new Error("Client ID is required");
 
   // Fetch client data from the database
   const client = await prisma.client.findUnique({
     where: {
-      id: Number(id), 
+      id,
     },
   });
 
@@ -111,12 +112,12 @@ export async function deleteClient(id: number) {
   if (!id) {
     throw new Error("Invalid ID provided for deletion");
   }
-console.log("Deleting client...");
+  console.log("Deleting client...");
   try {
     await prisma.client.delete({
       where: { id },
     });
-revalidatePath("/app/clients");
+    revalidatePath("/app/clients");
     return { success: true };
   } catch (error) {
     console.error("Error deleting client:", error);

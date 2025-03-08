@@ -232,15 +232,35 @@ function ClientForm({ id }: { id: string | string[] | undefined }) {
                           {client.companyName}
                         </SelectItem>
                       ))}
+                      {/* not working */}
+                      {/* <SelectItem value="add_new_client" onClick={
+                        (e)=> {
+                          e.preventDefault()
+                          router.push("/app/clients/create")
+                        }
+                      }>
+                        Add new client
+                      </SelectItem> */}
                     </SelectContent>
                   </Select>
+                  <Button
+                    type="button"
+                    variant={"secondary"}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      router.push("/app/clients/create");
+                    }}
+                    className="mt-2 text-xs ml-2"
+                  >
+                    Add new client
+                  </Button>
                   <FormMessage />
                 </FormItem>
               )}
             />
 
             {/* Contract Field */}
-            <FormField
+            {/* <FormField
               control={form.control}
               name="contract"
               render={({ field }) => (
@@ -256,7 +276,7 @@ function ClientForm({ id }: { id: string | string[] | undefined }) {
                   <FormMessage />
                 </FormItem>
               )}
-            />
+            /> */}
 
             {/* Description Field */}
             <FormField
@@ -297,7 +317,7 @@ function ClientForm({ id }: { id: string | string[] | undefined }) {
                     </FormControl>
                     <SelectContent>
                       <SelectItem value="incomplete">Incomplete</SelectItem>
-                      <SelectItem value="on progress">In Progress</SelectItem>
+                      <SelectItem value="in progress">In Progress</SelectItem>
                       <SelectItem value="done">Done</SelectItem>
                     </SelectContent>
                   </Select>

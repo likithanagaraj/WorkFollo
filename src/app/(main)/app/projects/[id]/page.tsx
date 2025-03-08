@@ -98,7 +98,7 @@ async function page({ params }: { params: Params }) {
                       <TableCell>{transaction.title}</TableCell>
                       <TableCell>{transaction.description}</TableCell>
                       <TableCell>
-                        $
+                      ₹
                         {transaction.amount
                           ? transaction.amount.toFixed(2)
                           : "0.00"}
@@ -114,17 +114,17 @@ async function page({ params }: { params: Params }) {
                           </DropdownMenuTrigger>
                           <DropdownMenuContent>
                             <DropdownMenuItem>
-                              <p>Edit</p>
                               <Link
                                 href={`/app/transactions/create?query=${transaction.id}`}
-                                className=""
-                              >
-                                <Edit size={18} />
+                                className="flex items-center justify-between gap-6"
+                                >
+                                <p>Edit</p>
+                                <Edit size={15} />
                               </Link>
                             </DropdownMenuItem>
                             <Separator />
                             <DropdownMenuItem className="">
-                              <p>Delete</p>
+                              {/* <p>Delete</p> */}
                               <Deletebtn
                                 id={transaction.id}
                                 action="transaction"

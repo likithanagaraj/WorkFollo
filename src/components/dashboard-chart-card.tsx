@@ -60,19 +60,30 @@ interface Props {
   amount: string;
   className?: string;
   tooltip?: string;
+  icon?: ElementType
 }
+import { FaMoneyBillTrendUp, } from "react-icons/fa6";
+import { IconType } from "react-icons/lib";
+import { ElementType } from "react";
+import { IoMdTrendingDown } from "react-icons/io";
+import { GiMoneyStack } from "react-icons/gi";
 
 export default function DashboardEachChart({
   title,
   amount,
   className,
   tooltip,
+  icon
 }: Props) {
   return (
     <Card className={cn("max-w-xs border rounded-lg pl-5 ", className)}>
       <CardHeader className="p-4 pl-2 pb-0">
-        <CardTitle className="font-normal text-muted-foreground">
+        <CardTitle className="font-normal flex gap-2 text-muted-foreground">
+
+          {/* {icon && icon} */}
           {title}
+          {title == "Expenses" ? <IoMdTrendingDown /> : title == "Monthly Revenue" ? <GiMoneyStack />
+            : title == "Income" ? <FaMoneyBillTrendUp /> : ''}
           {tooltip && (
             <TooltipProvider>
               <Tooltip>
@@ -88,7 +99,7 @@ export default function DashboardEachChart({
                 <TooltipContent
                   side="right"
                   className=" px-2 py-1 text-xs"
-                  // showArrow={true}
+                // showArrow={true}
                 >
                   {tooltip}
                 </TooltipContent>

@@ -19,7 +19,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { signInAction } from "@/actions/auth.action";
 import { Input } from "./ui/input";
-import { LoaderCircleIcon } from "lucide-react";
+import { EyeIcon, EyeOffIcon, LoaderCircleIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const SignInForm = ({ className }: { className?: string }) => {
@@ -56,6 +56,10 @@ const SignInForm = ({ className }: { className?: string }) => {
     }
     setLoading(false);
   };
+
+  const [isVisible, setIsVisible] = useState<boolean>(false);
+
+  const toggleVisibility = () => setIsVisible((prevState) => !prevState);
 
   return (
     <div className={cn(" flex items-center justify-center p-4", className)}>
@@ -96,12 +100,30 @@ const SignInForm = ({ className }: { className?: string }) => {
                 <FormItem className="space-y-2">
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input
-                      type="password"
-                      placeholder="******"
-                      {...field}
-                      className="w-full"
-                    />
+                    <div className="relative">
+
+                      <Input
+                        type={isVisible ? "text" : "password"}
+                        placeholder="******"
+                        {...field}
+                        className="w-full"
+                      />
+                      <Button
+                      variant={"secondary"}
+                        className="text-muted-foreground/80 hover:text-foreground focus-visible:border-ring focus-visible:ring-ring/50 absolute inset-y-0 end-0 flex h-full w-9 items-center justify-center rounded-e-md transition-[color,box-shadow] outline-none focus:z-10 focus-visible:ring-[3px] disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
+                        type="button"
+                        onClick={toggleVisibility}
+                        aria-label={isVisible ? "Hide password" : "Show password"}
+                        aria-pressed={isVisible}
+                        aria-controls="password"
+                      >
+                        {isVisible ? (
+                          <EyeOffIcon size={16} aria-hidden="true" />
+                        ) : (
+                          <EyeIcon size={16} aria-hidden="true" />
+                        )}
+                      </Button>
+                    </div>
                   </FormControl>
                   <FormMessage className="text-xs" />
                 </FormItem>
@@ -117,7 +139,7 @@ const SignInForm = ({ className }: { className?: string }) => {
                 )}
               </Button>
 
-               <div className="text-center">
+              <div className="text-center">
                 <Link
                   href="/signup"
                   className="underline text-primary text-sm hover:text-primary/80 transition-colors"
@@ -128,7 +150,7 @@ const SignInForm = ({ className }: { className?: string }) => {
             </div>
           </form>
         </Form>
-        
+
       </div>
     </div>
   );

@@ -4,6 +4,10 @@ import React from "react";
 import CreateButton from "@/components/create-button";
 import { ArrowRight, ChartLine, Plus } from "lucide-react";
 import { notFound } from "next/navigation";
+import { MdOutlinePhone } from "react-icons/md";
+import { MdEmail } from "react-icons/md";
+import { CiCalendarDate } from "react-icons/ci";
+import { IoIosContact } from "react-icons/io";
 
 type Params = Promise<{ client: string }>;
 
@@ -19,30 +23,110 @@ const page = async ({ params }: { params: Params }) => {
 
   if (!client) notFound();
 
+  console.log(client)
+
   return (
-    <main key={client.id} className="p-10 relative flex flex-col gap-10">
-      <div className="flex justify-between  w-full">
+    <main key={client.id} className="p-10  max-w-5xl relative container flex flex-col gap-10">
+      <div className="flex justify-between  ">
         <div className="space-y-1 w-full" >
-          <div className="flex items-center justify-between w-full">
+          <div className="">
             <h1 className="text-3xl font-medium ">{client.companyName}</h1>
             <Link
               href={`/app/clients/${client.id}/transactions`}
-              className="text-sm text-muted-foreground flex items-center mt-1 group hover:opacity-80 transition-all duration-200 ease-in"
+              className="text-sm text-sky-500 mb-4 hover:text-sky-600 flex items-center mt-1 group hover:opacity-80 transition-all duration-200 ease-in"
             >
-              <ChartLine size={16} /> Transaction{" "}
+              <ChartLine size={16} className="mr-2" /> View all transaction for {client.companyName}{" "}
               <ArrowRight
                 className="group-hover:translate-x-2 transition-all duration-200 ease-in"
                 size={16}
               />
             </Link>
           </div>
-          <p className="text-muted-foreground text-sm">{client.description}</p>
+          <section className="max-w-xl">
+
+            <div className="flex gap-2">
+
+              <div className="*:not-first:mt-2 w-1/2">
+                <Label htmlFor={``}>Card Name</Label>
+                <div className="relative w-full">
+                  <Input
+                    readOnly
+                    value={client.contactName || "No phone number"}
+                    className="read-only:bg-muted w-full peer ps-9 [direction:inherit]"
+                  />
+                  <div className="text-muted-foreground/80 pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 peer-disabled:opacity-50">
+                    <IoIosContact size={16} aria-hidden="true" />
+                  </div>
+                </div>
+              </div>
+              <div className="*:not-first:mt-2 w-1/2">
+                <Label htmlFor={``}>Contact email</Label>
+                <div className="relative">
+                  <Input
+                    readOnly
+                    value={client.contactEmail || "No phone number"}
+                    className="read-only:bg-muted peer ps-9 [direction:inherit]"
+                  />
+                  <div className="text-muted-foreground/80 pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 peer-disabled:opacity-50">
+                    <MdEmail size={16} aria-hidden="true" />
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+            <div className="flex gap-2">
+
+              <div className="*:not-first:mt-2 w-1/2">
+                <Label htmlFor={``}>Card Number</Label>
+                <div className="relative">
+                  <Input
+                    readOnly
+                    value={client.contactPhone || "No phone number"}
+                    className="read-only:bg-muted  peer ps-9 [direction:inherit]"
+                  />
+                  <div className="text-muted-foreground/80 pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 peer-disabled:opacity-50">
+                    <MdOutlinePhone size={16} aria-hidden="true" />
+                  </div>
+                </div>
+              </div>
+              <div className="*:not-first:mt-2 w-1/2">
+
+                <Label htmlFor={``}>Onboarded at</Label>
+                <div className="relative">
+                  <Input
+                    readOnly
+                    value={client.createdAt.toDateString() || "No phone number"}
+                    className="peer ps-9 [direction:inherit] read-only:bg-muted "
+                  />
+                  <div className="text-muted-foreground/80 pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 peer-disabled:opacity-50">
+                    <CiCalendarDate size={16} aria-hidden="true" />
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+            <div className="*:not-first:mt-2">
+              <Label >Description</Label>
+              <Textarea
+                className="read-only:bg-muted"
+                defaultValue={client.description || "no description provided"}
+                readOnly
+                placeholder="Leave a comment"
+              />
+            </div>
+
+          </section>
         </div>
-        {client.Transaction.length > 0 && (
-          <PieChartGraph data={client.Transaction} />
-        )}
+
+        {/* TODO : Chart or some data visual - not clear as of now */}
+        {/* {client.Transaction.length > 0 && (
+          // <PieChartGraph data={client.Transaction} />
+          <RadialChart />
+        )} */}
       </div>
-      <section>
+      <section  className="">
         <div className="flex w-full justify-between">
           <h2 className="text-2xl ">Projects</h2>
           <CreateButton link={`/app/projects/create`} className="">
@@ -90,6 +174,10 @@ import prisma from "@/lib/db";
 import { PieChartGraph } from "@/components/pi-chart";
 import { Badge } from "@/components/ui/badge";
 import { auth } from "@/lib/auth";
+import RadialChart from "@/components/radial-chart";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 
 function ProjectCard({ data }: { data: Project }) {
   return (

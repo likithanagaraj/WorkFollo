@@ -68,15 +68,15 @@ async function ContractDataTable() {
                       <DropdownMenuItem>
                         <Link
                           href={`/app/contract/create?query=${contract.id}`}
-                          className="flex items-center justify-between"
+                          className="flex items-center justify-between gap-6"
                         >
                           <span>Edit</span>
-                          <Edit className="ml-[52]" size={16} />
+                          <Edit  size={16} />
                         </Link>
                       </DropdownMenuItem>
                       <Separator />
                       <DropdownMenuItem className="flex items-center text-destructive justify-between">
-                        Delete
+                        {/* Delete */}
                         <Deletebtn id={contract.id} action="contract" />
                       </DropdownMenuItem>
                     </DropdownMenuContent>

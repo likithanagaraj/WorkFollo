@@ -41,13 +41,13 @@ const data = {
       title: "Dashboard",
       url: "/app",
       icon: Home,
-      isActive: true,  
+      isActive: true,
       description: "Overview of your app",
-     
+
     },
     {
       title: "Clients",
-      url: "/app/clients" ,
+      url: "/app/clients",
       icon: User,
       description: "Manage your clients "
     },
@@ -56,26 +56,26 @@ const data = {
       url: "/app/projects",
       icon: BookOpen,
       description: "Manage your projects"
-     
+
     },
     {
       title: "Transcations",
       url: "/app/transactions",
       icon: ChartLine,
       description: "View your transcations"
-    
+
     },
     {
       title: "Contracts",
       url: "/app/contract",
       icon: File,
-    description: "View your Contracts"
+      description: "View your Contracts"
     },
     {
       title: "Invoice",
       url: "/app/invoice",
       icon: FileBadge,
-    description: "View your Invoices"
+      description: "View your Invoices"
     },
   ],
 }
@@ -85,13 +85,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <TeamSwitcher  />
+        <TeamSwitcher />
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
         {/* <NavProjects projects={data.projects} /> */}
       </SidebarContent>
-      
+
       <SidebarRail />
     </Sidebar>
   )

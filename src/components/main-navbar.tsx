@@ -140,7 +140,7 @@ function MainNavbar() {
               
             </DropdownMenuGroup>
             <DropdownMenuSeparator /> */}
-            <DropdownMenuItem>
+            {/* <DropdownMenuItem>
               <Sparkles
                 size={16}
                 strokeWidth={2}
@@ -148,7 +148,7 @@ function MainNavbar() {
                 aria-hidden="true"
               />
               <span>Upgrade to pro</span>
-            </DropdownMenuItem>
+            </DropdownMenuItem> */}
             <DropdownMenuItem
               onClick={() => {
                 signOut({ callbackUrl: "/" });
