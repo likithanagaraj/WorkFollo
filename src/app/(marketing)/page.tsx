@@ -97,22 +97,25 @@ const HeroSection1 = async (props: { searchParams: SearchParams }) => {
             </Link>
           </div>
         </section>
-        <section className=" p-5 relative flex justify-center items-center ">
-          <div className="size-96 fade-in-45 transition-all duration-300 -top-20 -z-0 opacity-60 md:size-[500px] absolute blur-3xl rounded-full bg-primary" />
-          <Image
-            src={"/assets/dashboard_half.png"}
-            height={1000}
-            width={900}
-            alt="abs img aspect-video"
-            className=" md:block z-0 rounded-lg shadow-2xl"
-          />
-          <Image
-            src={"https://illustrations.popsy.co/gray/product-launch.svg"}
-            height={500}
-            width={300}
-            alt="abs img "
-            className="absolute size-40 md:size-96 right-0 -top-10 md:right-20 md:-top-10"
-          />
+        <section className=" p-5  relative flex justify-center items-center mb-20">
+          {/* <div className="size-52 fade-in-45 transition-all duration-300 -top-20 -z-0 opacity-60 md:size-[500px] absolute blur-3xl rounded-full bg-primary" /> */}
+          <div>
+
+            <Image
+              src={"/assets/dashboard_half.png"}
+              height={1000}
+              width={900}
+              alt="abs img aspect-video"
+              className=" md:block z-0 rounded-lg shadow-2xl"
+            />
+            <Image
+              src={"https://illustrations.popsy.co/gray/product-launch.svg"}
+              height={500}
+              width={300}
+              alt="abs img "
+              className="absolute size-40 md:size-96 right-0 -top-10 md:right-20 md:-top-10"
+            />
+          </div>
         </section>
       </section>
       <Features1 />

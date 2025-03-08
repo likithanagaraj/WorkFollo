@@ -18,12 +18,12 @@ export const signInFormSchema = z.object({
 });
 
 export const addNewClientFormSchema = z.object({
-  companyName: z.string(),
-  contactName: z.string(),
+  companyName: z.string().min(1, "Company name is required"),
+  contactName: z.string().min(1, "Contact name is required"),
   contactEmail: z.string(),
-  phoneNumber: z.string(),
-  address: z.string(),
-  description: z.string(),
+  phoneNumber: z.string().min(1, "Phone number is required"),
+  address: z.string().optional(),
+  description: z.string().min(3, "Description is required"),
 });
 
 export const addNewProjectformSchema = z.object({

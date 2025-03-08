@@ -47,6 +47,7 @@ async function DataTable() {
 
   return (
     <div className=" p-2 shadow-sm border min-h-60">
+      
       {clients.length > 0 ? (
         <Table>
           {/* <TableCaption>A list of your recent invoices.</TableCaption> */}
@@ -65,11 +66,11 @@ async function DataTable() {
                 {/* <TableCell className="font-medium">{client.id}</TableCell> */}
 
                 <TableCell>
-                  <Link href={`/app/clients/${client.id}`}>
+                  <Link href={`/app/clients/${client.id}`} className="font-bold text-primary">
                     {client.companyName}{" "}
                     <ChevronRight
                       size={16}
-                      className="hidden group-hover:inline group-hover:translate-x-2 translate-x-0 group-hover:duration-500 group-hover:delay-200 group-hover:transition-all ease-in"
+                      className=" hidden group-hover:inline group-hover:translate-x-2 translate-x-0 group-hover:duration-500 group-hover:delay-200 group-hover:transition-all ease-in"
                     />
                   </Link>
                 </TableCell>
@@ -84,17 +85,17 @@ async function DataTable() {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
                       <DropdownMenuItem>
-                        <p>Edit</p>
                         <Link
                           href={`/app/clients/create?query=${client.id}`}
-                          className=""
-                        >
+                          className="flex justify-normal gap-6 items-center "
+                          >
+                          <p>Edit</p>
                           <Edit size={14} />
                         </Link>
                       </DropdownMenuItem>
                       <Separator />
                       <DropdownMenuItem className="">
-                        Delete
+                        
                         <Deletebtn id={client.id} action="client" />
                       </DropdownMenuItem>
                     </DropdownMenuContent>

@@ -73,15 +73,15 @@ async function InvoiceDataTable() {
                       <DropdownMenuItem>
                         <Link
                           href={`/app/invoice/create?query=${invoice.id}`}
-                          className="flex items-center justify-between"
+                          className="flex items-center justify-between gap-6"
                         >
                           <span>Edit</span>
-                          <Edit className="ml-[52]" size={16} />
+                          <Edit size={16} />
                         </Link>
                       </DropdownMenuItem>
                       <Separator />
                       <DropdownMenuItem className="flex items-center text-destructive justify-between">
-                        Delete
+                        {/* Delete */}
                         <Deletebtn id={invoice.id} action="invoice" />
                       </DropdownMenuItem>
                     </DropdownMenuContent>

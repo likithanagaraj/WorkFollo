@@ -15,6 +15,7 @@ import { auth } from "@/lib/auth";
 import { transformChartData } from "@/lib/utils";
 import OnboardingDialog from "@/components/onboarding-dialog";
 import { SearchParams } from "@/types";
+import { IoMdTrendingDown } from "react-icons/io";
 
 const Page = async (props: { searchParams: SearchParams }) => {
   const searchParams = await props.searchParams;
@@ -101,6 +102,7 @@ const Page = async (props: { searchParams: SearchParams }) => {
               tooltip="Total income from all projects"
             />
             <DashboardEachChart
+              // icon={IoMdTrendingDown}
               className="second-feature"
               title="Expenses"
               amount={`${expenses.toFixed(0)}`}
@@ -115,7 +117,8 @@ const Page = async (props: { searchParams: SearchParams }) => {
           {/* Graph Section */}
           <div className="grid grid-cols-1 gap-3 fourth-feature">
             {/* @ts-ignore */}
-            <RevenueGraph transactions={transactions} />            {/* <ProjectTackerGraph /> */}
+            <RevenueGraph transactions={transactions} />
+            {/* <ProjectTackerGraph /> */}
           </div>
         </div>
       </main>

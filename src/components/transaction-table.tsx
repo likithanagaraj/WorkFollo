@@ -86,17 +86,17 @@ async function TranscationTable() {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
                       <DropdownMenuItem>
-                        <p>Edit</p>
                         <Link
                           href={`/app/transactions/create?query=${transaction.id}`}
-                          className=""
-                        >
-                          <Edit size={18} />
+                          className="flex items-center justify-between gap-6"
+                          >
+                          <p>Edit</p>
+                          <Edit size={15} />
                         </Link>
                       </DropdownMenuItem>
                       <Separator />
                       <DropdownMenuItem className="">
-                        <p>Delete</p>
+                        {/* <p>Delete</p> */}
                         <Deletebtn id={transaction.id} action="transaction" />
                       </DropdownMenuItem>
                     </DropdownMenuContent>

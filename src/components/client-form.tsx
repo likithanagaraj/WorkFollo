@@ -46,8 +46,10 @@ function ClientForm({ id }: { id: string | string[] | undefined }) {
     if (id && typeof id === "string") {
       const fetchClient = async () => {
         setLoading(true);
+        const kid = Number(id)
         try {
-          const client = await getClient(id);
+          const client = await getClient(kid);
+          // console.log("🎈🎈🎈",client);
           if (client) {
             form.reset({
               ...client,
@@ -143,7 +145,7 @@ function ClientForm({ id }: { id: string | string[] | undefined }) {
               <FormItem>
                 <FormLabel>Phone number</FormLabel>
                 <FormControl>
-                  <PhoneInput {...field} defaultCountry="TR" />
+                  <PhoneInput {...field} defaultCountry="IN" />
                 </FormControl>
                 <FormMessage />
               </FormItem>

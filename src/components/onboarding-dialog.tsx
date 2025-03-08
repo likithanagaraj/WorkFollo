@@ -24,19 +24,19 @@ export default function OnboardingDialog() {
   const steps = [
     {
       target: ".first-feature",
-      content: "This is my awesome feature!",
+      content: "You total income is displayed here",
     },
     {
       target: ".second-feature",
-      content: "This another awesome feature!",
+      content: "Your total expenses displayed here",
     },
     {
       target: ".third-feature",
-      content: "This another awesome feature!",
+      content: "This is showing your monthly revenue",
     },
     {
       target: ".fourth-feature",
-      content: "This another awesome feature!",
+      content: "This is a representation of you growth in revenue and your expenses.",
     },
   ];
   const [step, setStep] = useState(1);
@@ -46,20 +46,20 @@ export default function OnboardingDialog() {
     {
       title: "Welcome to WorkSpace Management",
       description:
-        "Discover a powerful collection of components designed to enhance your development workflow.",
+        "Discover a powerful collection of tools designed to enhance your workflow.",
     },
     {
-      title: "Customizable Components",
+      title: "Create clients, projects and transactions",
       description:
         "Each component is fully customizable and built with modern web standards in mind.",
     },
     {
-      title: "Ready to Start?",
+      title: "Manage Contracts and Invoices",
       description:
         "Begin building amazing interfaces with our comprehensive component library.",
     },
     {
-      title: "Get Support",
+      title: "Get Started",
       description:
         "Access our extensive documentation and community resources to make the most of Origin UI.",
     },

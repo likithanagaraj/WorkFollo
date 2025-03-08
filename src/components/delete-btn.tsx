@@ -55,15 +55,16 @@ function DeleteMenuItem({ id, action }: { id: number, action: "client" | "projec
   };
 
   return (
-    <DropdownMenuItem className="gap-2" onClick={(e) => e.preventDefault()}>
+    <DropdownMenuItem  className="p-0 text-destructive" onClick={(e) => e.preventDefault()}>
       {/* <p>Delete</p> */}
       <AlertDialog>
         <AlertDialogTrigger asChild>
           <Button 
             variant="ghost" 
             size="icon" 
-            className="h-auto w-auto p-0"
+            className="w-full h-auto p-0 flex justify-between"
           >
+            Delete
             <Trash size={15} />
           </Button>
         </AlertDialogTrigger>
